@@ -1,13 +1,12 @@
 import axios from "axios";
-import { MessageBox, Message } from "element-ui";
+import { Notify, Toast } from "vant";
 import store from "@/store";
-import { getToken } from "@/utils/auth";
 
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_APIS, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 5000, // request timeout
+  timeout: 20000, // request timeout
 });
 
 // request interceptor
@@ -16,7 +15,7 @@ service.interceptors.request.use(
     // do something before request is sent
 
     if (store.getters.token) {
-      config.headers["X-Token"] = getToken();
+      config.headers["token"] = store.getters.token;
     }
     return config;
   },
@@ -43,25 +42,35 @@ service.interceptors.response.use(
     const res = response.data;
 
     // if the custom code is not 20000, it is judged as an error.
-    if (res.status !== 0) {
-      Message({
-        message: res.message || "Error",
-        type: "error",
-        duration: 5 * 1000,
-      });
 
-      return Promise.reject(new Error(res.message || "Error"));
-    } else {
-      return res;
+    switch (res.status / 1) {
+      case 0:
+        return res;
+      case 403:
+        // OUT_TOKEN
+        store.commit("OUT_TOKEN"); //
+        break;
+      default:
+        break;
     }
+    Notify({ type: "danger", message: error.msg || "Error" });
+    return Promise.reject(new Error(res.msg || "Error"));
   },
   (error) => {
-    console.log("err" + error); // for debug
-    Message({
-      message: error.message,
-      type: "error",
-      duration: 5 * 1000,
+    if (error.response.status === 403) {
+      store.commit("OUT_TOKEN"); //
+      Notify({
+        type: "danger",
+        message: "请登录",
+      });
+      return Promise.reject(error);
+    }
+
+    Notify({
+      type: "danger",
+      message: error.message || "Error",
     });
+
     return Promise.reject(error);
   }
 );

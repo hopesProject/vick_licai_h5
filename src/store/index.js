@@ -1,25 +1,37 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import getters from './getters'
+import { login } from "@/api";
+import router from "@/router";
+import Vue from "vue";
+import Vuex from "vuex";
+import createPersistedState from "vuex-persistedstate";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
-// https://webpack.js.org/guides/dependency-management/#requirecontext
-const modulesFiles = require.context('./modules', true, /\.js$/)
+let state = {
+  userInfo: {},
+  token: "",
+};
 
-// you do not need `import app from './modules/app'`
-// it will auto require all vuex module from modules file
-const modules = modulesFiles.keys().reduce((modules, modulePath) => {
-  // set './app.js' => 'app'
-  const moduleName = modulePath.replace(/^\.\/(.*)\.\w+$/, '$1')
-  const value = modulesFiles(modulePath)
-  modules[moduleName] = value.default
-  return modules
-}, {})
-
-const store = new Vuex.Store({
-  modules,
-  getters
-})
-
-export default store
+export default new Vuex.Store({
+  plugins: [createPersistedState()],
+  state,
+  actions: {
+    async getLogin({ commit }, data) {
+      commit("SET_TOKEN", data);
+    },
+  },
+  mutations: {
+    SET_TOKEN(state, data) {
+      state.token = data.token;
+      state.userInfo = data.user;
+    },
+    OUT_TOKEN(state, data) {
+      state.token = "";
+      state.userInfo = {};
+      router.push("/login");
+    },
+  },
+  getters: {
+    token: (state) => state.token,
+    userInfo: (state) => state.userInfo,
+  },
+});

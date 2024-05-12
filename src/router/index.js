@@ -1,349 +1,215 @@
+// router.js
 import Vue from "vue";
-import Router from "vue-router";
-Vue.use(Router);
+import VueRouter from "vue-router";
+import store from "@/store";
 
-/* Layout */
-import Layout from "@/layout";
+// 导入组件
+import Home from "@/views/Home";
+import About from "@/views/About.vue";
+import information from "@/views/information";
+import vipList from "@/views/vip-list";
+import recharge from "@/views/recharge";
+import login from "@/views/login";
+import withdrawal from "@/views/withdrawal";
+import PurchaseHistory from "@/views/PurchaseHistory";
+import EarningsRecord from "@/views/Earnings-record";
+import bankCard from "@/views/bank-card";
+import My from "@/views/My";
+import download from "@/views/download";
+import addBankCard from "@/views/add-bank-card";
+import Team from "@/views/team";
+import share from "@/views/share";
+import password from "@/views/password";
+import register from "@/views/register";
+import capital from "@/views/capital";
+import invite from "@/views/invite";
 
-export const constantRoutes = [
-  {
-    path: "/redirect",
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: "/redirect/:path(.*)",
-        component: () => import("@/views/redirect/index"),
-      },
-    ],
-  },
-  {
-    path: "/login",
-    component: () => import("@/views/login/index"),
-    hidden: true,
-  },
-  {
-    path: "/auth-redirect",
-    component: () => import("@/views/login/auth-redirect"),
-    hidden: true,
-  },
-  {
-    path: "/404",
-    component: () => import("@/views/error-page/404"),
-    hidden: true,
-  },
-  {
-    path: "/401",
-    component: () => import("@/views/error-page/401"),
-    hidden: true,
-  },
+Vue.use(VueRouter);
+
+const routes = [
   {
     path: "/",
-    component: Layout,
-    redirect: "/dashboard",
-    children: [
-      {
-        path: "dashboard",
-        component: () => import("@/views/dashboard/index"),
-        name: "Dashboard",
-        meta: { title: "我的桌面", icon: "dashboard", affix: true },
-      },
-    ],
+    component: Home,
+    meta: {
+      show: true,
+    },
   },
   {
-    path: "/esmanager",
-    component: Layout,
-    redirect: "/esmanager/administrator",
-    meta: { title: "系统设置", icon: "dashboard", affix: true },
-    children: [
-      {
-        path: "administrator",
-        component: () => import("@/views/esmanager/administrator"),
-        name: "administrator",
-        meta: { title: "管理员", icon: "dashboard", affix: true },
-      },
-      {
-        path: "platform",
-        component: () => import("@/views/esmanager/platform"),
-        name: "platform",
-        meta: { title: "平台设置", icon: "dashboard", affix: true },
-      },
-      // {
-      //   path: "distribution",
-      //   component: () => import("@/views/esmanager/distribution"),
-      //   name: "distribution",
-      //   meta: { title: "分销设置", icon: "dashboard", affix: true },
-      // },
-      // {
-      //   path: 'pay',
-      //   component: () => import('@/views/esmanager/pay'),
-      //   name: 'pay',
-      //   meta: { title: '支付设置', icon: 'dashboard', affix: true }
-      // },
-      // {
-      //   path: 'message',
-      //   component: () => import('@/views/esmanager/message'),
-      //   name: 'message',
-      //   meta: { title: '短信设置', icon: 'dashboard', affix: true }
-      // },
-      {
-        path: "salary",
-        component: () => import("@/views/esmanager/salary"),
-        name: "salary",
-        meta: { title: "薪资设置", icon: "dashboard", affix: true },
-      },
-      {
-        path: "grade",
-        component: () => import("@/views/esmanager/grade"),
-        name: "grade",
-        meta: { title: "等级设置", icon: "dashboard", affix: true },
-      },
-    ],
+    path: "/about",
+    component: About,
+    meta: {
+      show: true,
+    },
   },
+  // 消息列表
   {
-    path: "/advertising-management",
-    component: Layout,
-    redirect: "/advertising-management/list",
-    meta: { title: "广告管理", icon: "dashboard", affix: true },
-    children: [
-      {
-        path: "list",
-        component: () => import("@/views/advertising-management/list"),
-        name: "list",
-        meta: { title: "广告列表", icon: "dashboard", affix: true },
-      },
-    ],
+    path: "/information",
+    component: information,
+    meta: {
+      show: false,
+    },
   },
+  // vip列表
   {
-    path: "/article",
-    component: Layout,
-    redirect: "/article/article-list",
-    meta: { title: "文章管理", icon: "dashboard", affix: true },
-    children: [
-      // {
-      //   path: "article-list",
-      //   component: () => import("@/views/article/article-list"),
-      //   name: "articleList",
-      //   meta: { title: "文章列表", icon: "dashboard", affix: true },
-      // },
-      {
-        path: "events-list",
-        component: () => import("@/views/article/events-list"),
-        name: "eventsList",
-        meta: { title: "公告列表", icon: "dashboard", affix: true },
-      },
-      {
-        path: "news-list",
-        component: () => import("@/views/article/news-list"),
-        name: "newsList",
-        meta: { title: "新闻列表", icon: "dashboard", affix: true },
-      },
-      {
-        path: "official-list",
-        component: () => import("@/views/article/official-list"),
-        name: "officialList",
-        meta: { title: "官方列表", icon: "dashboard", affix: true },
-      },
-    ],
+    path: "/vip-list",
+    component: vipList,
+    meta: {
+      show: false,
+    },
   },
+  // 充值
   {
-    path: "/member",
-    component: Layout,
-    redirect: "/member/member-list",
-    meta: { title: "会员管理", icon: "dashboard", affix: true },
-    children: [
-      {
-        path: "member-list",
-        component: () => import("@/views/member/member-list"),
-        name: "memberList",
-        meta: { title: "会员列表", icon: "dashboard", affix: true },
-      },
-      {
-        path: "wallet-list",
-        component: () => import("@/views/member/wallet-list"),
-        name: "walletList",
-        meta: { title: "钱包列表", icon: "dashboard", affix: true },
-      },
-      {
-        path: "sms-list",
-        component: () => import("@/views/member/sms-list"),
-        name: "smsList",
-        meta: { title: "短信管理", icon: "dashboard", affix: true },
-      },
-    ],
+    path: "/recharge",
+    component: recharge,
+    meta: {
+      show: false,
+    },
   },
+  // 登录
   {
-    path: "/product",
-    component: Layout,
-    redirect: "/product/product-list",
-    meta: { title: "产品管理", icon: "dashboard", affix: true },
-    children: [
-      {
-        path: "category-list",
-        component: () => import("@/views/product/category-list"),
-        name: "categoryList",
-        meta: { title: "分类列表", icon: "dashboard", affix: true },
-      },
-      {
-        path: "normal-list",
-        component: () => import("@/views/product/normal-list"),
-        name: "normalList",
-        meta: { title: "产品列表", icon: "dashboard", affix: true },
-      },
-      // {
-      //   path: "member-list",
-      //   component: () => import("@/views/product/member-list"),
-      //   name: "productMemberList",
-      //   meta: { title: "会员列表", icon: "dashboard", affix: true },
-      // },
-      // {
-      //   path: "benefits-list",
-      //   component: () => import("@/views/product/benefits-list"),
-      //   name: "benefitsList",
-      //   meta: { title: "福利列表", icon: "dashboard", affix: true },
-      // },
-      // {
-      //   path: "events-list",
-      //   component: () => import("@/views/product/events-list"),
-      //   name: "eventsList",
-      //   meta: { title: "活动列表", icon: "dashboard", affix: true },
-      // },
-    ],
+    path: "/login",
+    component: login,
+    meta: {
+      show: false,
+    },
   },
+  // 分享
   {
-    path: "/order",
-    component: Layout,
-    redirect: "/order/order-list",
-    meta: { title: "订单管理", icon: "dashboard", affix: true },
-
-    children: [
-      {
-        path: "order-list",
-        component: () => import("@/views/order/list"),
-        name: "orderList",
-        meta: { title: "产品列表", icon: "dashboard", affix: true },
-      },
-    ],
+    path: "/share",
+    component: share,
+    meta: {
+      show: false,
+    },
   },
+  // 提现
   {
-    path: "/reward",
-    component: Layout,
-    redirect: "/reward/list",
-    meta: { title: "奖励管理", icon: "dashboard", affix: true },
-
-    children: [
-      {
-        path: "list",
-        component: () => import("@/views/reward/list"),
-        name: "rewardList",
-        meta: { title: "奖励列表", icon: "dashboard", affix: true },
-      },
-    ],
+    path: "/withdrawal",
+    component: withdrawal,
+    meta: {
+      show: false,
+    },
   },
+  // Purchase History购买记录
   {
-    path: "/property",
-    component: Layout,
-    redirect: "/property/property-list",
-    meta: { title: "财产管理", icon: "dashboard", affix: true },
-
-    children: [
-      {
-        path: "scores-list",
-        component: () => import("@/views/property/scores"),
-        name: "scoresList",
-        meta: { title: "系统上分列表", icon: "dashboard", affix: true },
-      },
-      {
-        path: "topup-list",
-        component: () => import("@/views/property/topup"),
-        name: "topupList",
-        meta: { title: "法币充值列表", icon: "dashboard", affix: true },
-      },
-      {
-        path: "withdraw-list",
-        component: () => import("@/views/property/withdraw"),
-        name: "withdrawList",
-        meta: { title: "法币提现列表", icon: "dashboard", affix: true },
-      },
-    ],
+    path: "/purchase-history",
+    component: PurchaseHistory,
+    meta: {
+      show: false,
+    },
   },
+  // Purchase History收益记录
   {
-    path: "/envelope",
-    component: Layout,
-    redirect: "/envelope/envelope-list",
-    meta: { title: "红包管理", icon: "dashboard", affix: true },
-
-    children: [
-      {
-        path: "envelope-list",
-        component: () => import("@/views/envelope/list"),
-        name: "envelopeList",
-        meta: { title: "红包列表", icon: "dashboard", affix: true },
-      },
-      {
-        path: "envelope-record",
-        component: () => import("@/views/envelope/record"),
-        name: "recordList",
-        meta: { title: "红包记录", icon: "dashboard", affix: true },
-      },
-    ],
+    path: "/earnings-record",
+    component: EarningsRecord,
+    meta: {
+      show: true,
+    },
   },
+  // 下载
   {
-    path: "/statistical",
-    component: Layout,
-    redirect: "/statistical/index",
-    meta: { title: "统计管理", icon: "dashboard", affix: true },
-
-    children: [
-      {
-        path: "index",
-        component: () => import("@/views/statistical/index"),
-        name: "statistics",
-        meta: { title: "数据统计", icon: "dashboard", affix: true },
-      },
-      {
-        path: "performance",
-        component: () => import("@/views/statistical/performance"),
-        name: "performance",
-        meta: { title: "业绩统计", icon: "dashboard", affix: true },
-      },
-    ],
+    path: "/download",
+    component: download,
+    meta: {
+      show: false,
+    },
+  },
+  // Purchase 银行卡
+  {
+    path: "/bank-card",
+    component: bankCard,
+    meta: {
+      show: false,
+    },
+  },
+  // 添加银行卡
+  {
+    path: "/add-bank-card",
+    component: addBankCard,
+    meta: {
+      show: false,
+    },
+  },
+  // 我的
+  {
+    path: "/my",
+    component: My,
+    meta: {
+      show: true,
+      requiresAuth: true,
+    },
+  },
+  // 团队
+  {
+    path: "/team",
+    component: Team,
+    meta: {
+      show: true,
+    },
+  },
+  // 忘记密码
+  {
+    path: "/password",
+    component: password,
+    meta: {
+      show: false,
+    },
+  },
+  // 注册
+  {
+    path: "/register",
+    component: register,
+    meta: {
+      show: false,
+    },
+  },
+  // 资金详情
+  {
+    path: "/capital",
+    component: capital,
+    meta: {
+      show: false,
+    },
+  },
+  // 邀请好友
+  {
+    path: "/invite",
+    component: invite,
+    meta: {
+      show: false,
+    },
   },
   // {
-  //   path: "/ceshi",
-  //   component: Layout,
-  //   redirect: "/ceshi/index",
-  //   children: [
-  //     {
-  //       path: "index",
-  //       component: () => import("@/views/ceshi/index"),
-  //       name: "ceshi",
-  //       meta: { title: "ceshi", icon: "ceshi", affix: true },
-  //     },
-  //   ],
+  //   // 会匹配所有路径
+  //   path: "*",
+  //   redirect: "/",
   // },
-
-  /** when your routing map is too long, you can split it into small modules **/
-  // componentsRouter,
-  // chartsRouter,
-  // nestedRouter,
-  // tableRouter,
-
-  // 404 page must be placed at the end !!!
-  { path: "*", redirect: "/404", hidden: true },
 ];
 
-const createRouter = () =>
-  new Router({
-    // mode: 'history', // require service support
-    scrollBehavior: () => ({ y: 0 }),
-    routes: constantRoutes,
-  });
-
-const router = createRouter();
-export function resetRouter() {
-  const newRouter = createRouter();
-  router.matcher = newRouter.matcher; // reset router
-}
+const router = new VueRouter({
+  routes,
+  scrollBehavior: () => ({ y: 0 }),
+});
+router.beforeEach((to, from, next) => {
+  // 检查是否需要认证
+  if (to.meta.requiresAuth) {
+    // 判断用户是否已登录
+    if (store.getters.token) {
+      // 用户已登录，允许访问
+      next();
+    } else {
+      // 用户未登录，并且当前不在登录页面或者当前页面不需要认证
+      if (to.path !== "/login") {
+        // 重定向到登录页面
+        next("/login");
+      } else {
+        // 如果已经在登录页面，则放行
+        next();
+      }
+    }
+  } else {
+    // 不需要认证的页面，直接放行
+    next();
+  }
+});
 
 export default router;
