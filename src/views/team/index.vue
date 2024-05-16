@@ -7,38 +7,97 @@
       <div>疑人勿用，用人勿疑</div>
       <div></div>
       <van-tabs v-model="active" class="box-tabs" line-height="0">
-        <van-tab title="1级成员"></van-tab>
-        <van-tab title="2级成员"></van-tab>
-        <van-tab title="3级成员"></van-tab>
+        <van-tab :title="$t('1级成员')" :name="1"></van-tab>
+        <van-tab :title="$t('2级成员')" :name="2"></van-tab>
+        <van-tab :title="$t('3级成员')" :name="3"></van-tab>
       </van-tabs>
     </div>
     <div class="box">
       <div class="box-content">
-        <div>
-          <img
-            src="https://copyright.bdstatic.com/vcg/creative/cc9c744cf9f7c864889c563cbdeddce6.jpg@h_1280"
-            alt=""
-          />
-          <div class="box-content-user">
-            <div>
-              <span>183****3233</span>
-              <span>LV.1</span>
-            </div>
-            <div>ID：1258</div>
-          </div>
-        </div>
+        <van-pull-refresh
+          :pulling-text="$t('下拉即可刷新...')"
+          :loosing-text="$t('释放即可刷新...')"
+          :loading-text="$t('加载中...')"
+          v-model="refreshing"
+          @refresh="onRefresh"
+        >
+          <van-list
+            v-model="loading"
+            :finished="finished"
+            :finished-text="$t('没有更多了')"
+            :loading-text="$t('加载中...')"
+            @load="onLoad"
+          >
+            <van-cell v-for="item in data" :key="item.id">
+              <div class="item-box">
+                <img
+                  src="https://copyright.bdstatic.com/vcg/creative/cc9c744cf9f7c864889c563cbdeddce6.jpg@h_1280"
+                  alt=""
+                />
+                <div class="box-content-user">
+                  <div>
+                    <span>{{ item.phone }}</span>
+                    <span>LV.1</span>
+                  </div>
+                  <div>ID：{{ item.code }}</div>
+                </div>
+              </div>
+            </van-cell>
+            <!-- <div slot="finished"></div> -->
+          </van-list>
+        </van-pull-refresh>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { queryUserLevel } from "@/api";
+import refresh from "@/mixins/refresh";
+
 export default {
+  mixins: [refresh],
+
   data() {
     return {
-      active: 0,
+      active: 1,
     };
   },
+  watch: {
+    active(v) {
+      this.pageNum = 1;
+      this.getList();
+    },
+  },
+  mounted() {
+    this.getList();
+  },
   methods: {
+    async getList(isRefreshing) {
+      let pageNum = this.pageNum;
+      const res = await queryUserLevel({
+        level: this.active,
+        pageSize: this.pageSize,
+        pageNum: this.pageNum,
+      });
+      if (isRefreshing) {
+        this.refreshing = false;
+      }
+      this.loading = false;
+      try {
+        if (res?.status === 0) {
+          if (pageNum !== 1) {
+            this.data = [...this.data, ...res.data.list];
+          } else {
+            this.data = res.data.list;
+          }
+        }
+        if (this.data.length >= res.data.total) {
+          this.finished = true;
+        }
+      } catch (error) {
+        this.finished = true;
+      }
+    },
     onClickLeft() {
       this.$router.go(-1);
     },
@@ -88,6 +147,7 @@ export default {
   bottom: -38px;
   left: 0;
   width: 100%;
+  z-index: 100;
 
   :deep(.van-tabs__wrap) {
     border-radius: 40px;
@@ -121,7 +181,7 @@ export default {
 .box-content {
   padding-top: 60px;
 
-  > div {
+  .item-box {
     height: 152px;
     background: #ffffff;
     border-radius: 76px;

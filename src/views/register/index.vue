@@ -7,28 +7,42 @@
 
       <van-cell-group>
         <van-field
+          class="border-box"
+          clearable
           v-model="form.phone"
           :placeholder="$t('+91 手机号')"
           input-align="left"
         />
-        <van-field
-          v-model="form.code"
-          :placeholder="$t('验证码')"
-          input-align="left"
-        />
-        <van-field
-          v-model="form.pwd"
-          type="password"
-          :placeholder="$t('密码')"
-          input-align="left"
-        />
-        <van-field
-          v-model="form.passwordNew"
-          type="password"
+
+        <div class="flex border-box">
+          <van-field
+            v-model="form.code"
+            :placeholder="$t('验证码')"
+            input-align="left"
+            center
+            clearable
+          >
+            <template #button>
+              <van-button
+                :disabled="codeButTexst !== '发送验证码'"
+                @click="sendCode"
+                type="primary"
+                size="small"
+              >
+                {{ $t(codeButTexst) }}</van-button
+              >
+            </template>
+          </van-field>
+        </div>
+        <PasswordInput :placeholder="$t('密码')" name="pwd" @change="iniput" />
+        <PasswordInput
           :placeholder="$t('确认密码')"
-          input-align="left"
+          name="passwordNew"
+          @change="iniput"
         />
+
         <van-field
+          class="border-box"
           v-model="form.inviteCode"
           :placeholder="$t('邀请码')"
           input-align="left"
@@ -56,12 +70,16 @@
   </div>
 </template>
 <script>
-import { register } from "@/api";
+import { register, sendCode } from "@/api";
 import { Toast } from "vant";
+import PasswordInput from "@/components/PasswordInput/index.vue";
 
 export default {
+  components: { PasswordInput },
   data() {
     return {
+      codeButTexst: "发送验证码",
+      tiem: null,
       form: {
         phone: "", //手机号码
         code: "", //验证码
@@ -71,7 +89,39 @@ export default {
       },
     };
   },
+  beforeDestroy() {
+    if (this.tiem) {
+      clearInterval(this.tiem);
+      this.tiem = null;
+    }
+  },
   methods: {
+    iniput(e, name) {
+      this.form[name] = e;
+    },
+    async sendCode() {
+      if (this.codeButTexst !== "发送验证码") {
+        return;
+      }
+      if (this.form.phone) {
+        const res = await sendCode({
+          phoneNumber: this.form.phone,
+        });
+        if (res.status === 0) {
+          Toast(this.$t("验证码发送成功"));
+          this.codeButTexst = 60;
+          this.tiem = setInterval(() => {
+            this.codeButTexst = this.codeButTexst - 1;
+            if (this.codeButTexst === 0) {
+              this.codeButTexst = "发送验证码";
+              clearInterval(this.tiem);
+            }
+          }, 1000);
+        }
+      }
+
+      console.log(res);
+    },
     async registerApi() {
       if (this.form.phone === "") {
         Toast(this.$t("手机号码不能为空"));
@@ -101,6 +151,7 @@ export default {
 
       const res = await register(this.form);
       if (res.code === 0) {
+        this.$router.push("/login");
       }
     },
   },
@@ -136,8 +187,8 @@ export default {
       line-height: 80px;
       background-color: transparent;
       font-size: 36px;
-      border-bottom: 4px solid #fff;
-      margin-bottom: 16px;
+      // border-bottom: 4px solid #fff;
+      // margin-bottom: 16px;
     }
   }
 
@@ -200,5 +251,14 @@ export default {
       top: 50%;
     }
   }
+}
+.border-box {
+  border-bottom: 4px solid #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+::v-deep .van-button--normal {
+  padding: 0 5px;
 }
 </style>

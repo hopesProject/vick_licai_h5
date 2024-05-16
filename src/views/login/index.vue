@@ -9,11 +9,10 @@
           placeholder="+91 输入账号手机号"
           input-align="left"
         />
-        <van-field
-          v-model="form.password"
-          type="password"
-          placeholder="请输入密码"
-          input-align="left"
+        <PasswordInput
+          :placeholder="$t('请输入密码')"
+          name="password"
+          @change="iniput"
         />
       </van-cell-group>
       <div class="register">
@@ -40,8 +39,10 @@
 import { login } from "@/api";
 import { Toast } from "vant";
 import { mapActions } from "vuex";
+import PasswordInput from "@/components/PasswordInput/index.vue";
 
 export default {
+  components: { PasswordInput },
   data() {
     return {
       loading: false,
@@ -53,6 +54,9 @@ export default {
   },
   methods: {
     ...mapActions(["getLogin"]),
+    iniput(e, name) {
+      this.form[name] = e;
+    },
     async login() {
       if (!this.form.phone) {
         return Toast.fail(this.$t("请输入手机号码"));
@@ -66,13 +70,11 @@ export default {
         if (res.status == 0) {
           this.getLogin(res.data);
           this.$router.push("/");
-          this.loading = false;
         }
       } catch (error) {
-        console.log(3333);
         this.loading = false;
       }
-      console.log(555);
+      this.loading = false;
     },
   },
 };

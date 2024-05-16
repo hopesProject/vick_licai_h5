@@ -10,8 +10,12 @@
             <div class="money-num">
               <img src="@/assets/capital-icon1.png" alt="" />
               <div>
-                <span>5000</span>
-                <span>充值</span>
+                <span>
+                  {{
+                    userInfo.cumulativeRechargeAmount | _toLocaleString(false)
+                  }}</span
+                >
+                <span>{{ $t("充值") }}</span>
               </div>
             </div>
           </van-col>
@@ -19,8 +23,12 @@
             <div class="money-num">
               <img src="@/assets/capital-icon2.png" alt="" />
               <div>
-                <span>5000</span>
-                <span>提现</span>
+                <span>
+                  {{
+                    userInfo.cumulativeWithdrawalAmount | _toLocaleString(false)
+                  }}</span
+                >
+                <span>{{ $t("提现") }}</span>
               </div>
             </div>
           </van-col>
@@ -29,31 +37,97 @@
     </div>
     <div class="box">
       <van-tabs v-model="active" class="box-tabs" line-height="0">
-        <van-tab title="平衡"></van-tab>
-        <van-tab title="充电"></van-tab>
-        <van-tab title="提取"></van-tab>
+        <van-tab :title="$t('全部')" :name="0"></van-tab>
+        <van-tab :title="$t('充值')" :name="1"></van-tab>
+        <van-tab :title="$t('提现')" :name="2"></van-tab>
+        <van-tab :title="$t('购买')" :name="3"></van-tab>
+        <van-tab :title="$t('奖励')" :name="4"></van-tab>
+        <van-tab :title="$t('分润')" :name="5"></van-tab>
+        <van-tab :title="$t('收益')" :name="6"></van-tab>
       </van-tabs>
-      <div class="box-content">
-        <div class="content-txt">
-          <img src="@/assets/capital-icon3.png" alt="" />
-          <div>
-            <div>获得I级奖励利润</div>
-            <div>+2698.00</div>
-          </div>
-        </div>
-        <div>2022-11-18</div>
-      </div>
+      <van-pull-refresh
+        :pulling-text="$t('下拉即可刷新...')"
+        :loosing-text="$t('释放即可刷新...')"
+        :loading-text="$t('加载中...')"
+        v-model="refreshing"
+        @refresh="onRefresh"
+      >
+        <van-list
+          v-model="loading"
+          :finished="finished"
+          :finished-text="$t('没有更多了')"
+          :loading-text="$t('加载中...')"
+          @load="onLoad"
+        >
+          <van-cell v-for="item in data" :key="item.id">
+            <div class="box-content">
+              <div class="content-txt">
+                <img src="@/assets/capital-icon3.png" alt="" />
+                <div>
+                  <div>{{ item.mDesc }}</div>
+                  <div>{{ item.amount }}</div>
+                </div>
+              </div>
+              <div>{{ item.createTime | _timeFormat("YYYY-MM-DD") }}</div>
+            </div>
+          </van-cell>
+          <!-- <div slot="finished"></div> -->
+        </van-list>
+      </van-pull-refresh>
     </div>
   </div>
 </template>
 <script>
+import { transactionRecord } from "@/api";
+import { Toast } from "vant";
+import refresh from "@/mixins/refresh";
+import { mapGetters } from "vuex";
+
 export default {
+  mixins: [refresh],
+  computed: {
+    ...mapGetters(["userInfo"]),
+  },
   data() {
     return {
       fanhui: require("@/assets/fanhui.png"),
+      // 1 充值 2 体现 3 购买 4 奖励 5分润 6 收益
+      active: 0,
     };
   },
+  watch: {
+    active(v) {
+      this.getList();
+    },
+  },
+  created() {
+    // this.getList();
+  },
   methods: {
+    async getList(isRefreshing) {
+      let pageNum = this.pageNum;
+      const res = await transactionRecord({
+        type: this.active === 0 ? "" : this.active,
+      });
+      this.loading = false;
+      if (isRefreshing) {
+        this.refreshing = false;
+      }
+      try {
+        if (res.status === 0) {
+          if (pageNum !== 1) {
+            this.data = [...this.data, ...res.data];
+          } else {
+            this.data = res.data;
+          }
+        }
+        // if (this.data.length >= res.data.total) {
+        this.finished = true;
+        // }
+      } catch (error) {
+        this.finished = true;
+      }
+    },
     onClickLeft() {
       this.$router.go(-1);
     },
@@ -66,8 +140,8 @@ export default {
 <style lang="scss" scoped>
 .wrapper {
   width: 100vw;
-  height: 100vh;
-  padding-bottom: 16px;
+  min-height: 100vh;
+
   display: flex;
   flex-direction: column;
 }
@@ -153,7 +227,7 @@ export default {
 
 .box {
   flex: 1;
-  overflow-y: auto;
+  // overflow-y: auto;
   background: linear-gradient(to bottom, #ffffff, #f9d9d2);
 }
 
@@ -218,5 +292,14 @@ export default {
       }
     }
   }
+}
+
+::v-deep .van-cell {
+  padding: 0;
+}
+::v-deep .van-list__error-text,
+::v-deep .van-list__finished-text,
+::v-deep .van-list__loading {
+  background-color: #fff;
 }
 </style>

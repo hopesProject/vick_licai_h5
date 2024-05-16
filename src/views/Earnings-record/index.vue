@@ -1,7 +1,6 @@
 <template>
   <div>
     <van-nav-bar :title="$t('收益记录')" />
-
     <header>
       <div class="bg-header"></div>
       <img
@@ -9,59 +8,82 @@
         alt=""
       />
       <div class="id-img">
-        <div class="phone">{{ userInfo.phone }}</div>
-        <div>ID账号：{{ userInfo.id }}</div>
+        <div class="phone">{{ userInfo.phone | _phoneSubstring }}</div>
+        <div>ID账号：{{ userInfo.code }}</div>
       </div>
     </header>
     <main>
-      <div v-for="item in data" :key="item.id" class="item-box">
-        <div class="item-header">
-          <img :src="imgHeader" alt="" />
-          <div class="quxshitime">
-            {{ $t("创建时间") }}：{{
-              item.createTime | _timeFormat("MM-DD-YYYY")
-            }}
-          </div>
-          <div>
-            {{ $t("到期时间") }}：{{ item.endTime | _timeFormat("MM-DD-YYYY") }}
-          </div>
-        </div>
-        <div class="item-content">
-          <img :src="item.img" alt="" />
-
-          <div>
-            <div class="h3">基金编号：{{ item.id }}</div>
-            <div class="content-sdf">
-              <div class="content">
-                <div class="mb">
-                  买入价格：{{ item.amount | _toLocaleString(false) }}
+      <van-pull-refresh
+        :pulling-text="$t('下拉即可刷新...')"
+        :loosing-text="$t('释放即可刷新...')"
+        :loading-text="$t('加载中...')"
+        v-model="refreshing"
+        @refresh="onRefresh"
+      >
+        <van-list
+          v-model="loading"
+          :finished="finished"
+          :finished-text="$t('没有更多了')"
+          :loading-text="$t('加载中...')"
+          @load="onLoad"
+        >
+          <van-cell v-for="item in data" :key="item.id">
+            <div class="item-box">
+              <div class="item-header">
+                <img :src="imgHeader" alt="" />
+                <div class="quxshitime">
+                  {{ $t("创建时间") }}：{{
+                    item.createTime | _timeFormat("MM-DD-YYYY")
+                  }}
                 </div>
-                <div>总收入：$180.00</div>
+                <div>
+                  {{ $t("到期时间") }}：{{
+                    item.endTime | _timeFormat("MM-DD-YYYY")
+                  }}
+                </div>
               </div>
-              <div class="time">
-                <div class="mb">每日收入：612.00</div>
-                <div>积累收入：612.00</div>
-                <div></div>
+              <div class="item-content">
+                <img :src="item.img" alt="" />
+
+                <div>
+                  <div class="h3">基金编号：{{ item.id }}</div>
+                  <div class="content-sdf">
+                    <div class="content">
+                      <div class="mb">
+                        买入价格：{{ item.amount | _toLocaleString(false) }}
+                      </div>
+                      <div>总收入：$180.00</div>
+                    </div>
+                    <div class="time">
+                      <div class="mb">每日收入：612.00</div>
+                      <div>积累收入：612.00</div>
+                      <div></div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
+          </van-cell>
+          <!-- <div slot="finished"></div> -->
+        </van-list>
+      </van-pull-refresh>
     </main>
   </div>
 </template>
 
 <script>
-import { productRecord } from "@/api";
+import { transactionRecord } from "@/api";
 import { mapGetters } from "vuex";
-// userInfo
+import refresh from "@/mixins/refresh";
+
 export default {
+  mixins: [refresh],
+
   computed: {
     ...mapGetters(["userInfo"]),
   },
   data() {
     return {
-      data: [],
       imgHeader: require("@/assets/5.png"),
     };
   },
@@ -69,11 +91,28 @@ export default {
     this.getList();
   },
   methods: {
-    async getList() {
-      const res = await productRecord();
-      if (res.status == 0) {
-        console.log(res);
-        this.data = res.data.records;
+    async getList(isRefreshing) {
+      let pageNum = this.pageNum;
+      const res = await transactionRecord({
+        type: 6,
+      });
+      this.loading = false;
+      if (isRefreshing) {
+        this.refreshing = false;
+      }
+      try {
+        if (res.status === 0) {
+          if (pageNum !== 1) {
+            this.data = [...this.data, ...res.data.list];
+          } else {
+            this.data = res.data.list;
+          }
+        }
+        // if (this.data.length >= res.data.total) {
+        this.finished = true;
+        // }
+      } catch (error) {
+        this.finished = true;
       }
     },
 

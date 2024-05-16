@@ -20,15 +20,8 @@ html {
     overflow: initial;
   }
 }
-
-.van-toast {
-  // min-width: 200px;
-  // width: 200px;
-  // min-height: 150px;
-  // font-size: 30px;
-  // line-height: 35px;
-}
-.van-notify {
-  // font-size: 30px;
-  // line-height: 35px;
+.van-list__error-text,
+.van-list__finished-text,
+.van-list__loading {
+  min-height: 200px;
 }

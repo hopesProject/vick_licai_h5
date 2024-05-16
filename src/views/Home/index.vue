@@ -24,12 +24,14 @@
             <img :src="topUp" alt="" />
           </div>
           <div>
-            <p class="p-yue">₹0.00</p>
-            <p class="p-ba">recharge balance</p>
+            <p class="p-yue">
+              {{ userInfo.cumulativeRechargeAmount | _toLocaleString(false) }}
+            </p>
+            <p class="p-ba">{{ $t("充值金额") }}</p>
           </div>
         </div>
         <div class="flex justify-end text w-full">
-          <div>recharge</div>
+          <div>{{ $t("充值") }}</div>
         </div>
       </div>
       <div class="yue-item" @click="$router.push('/withdrawal')">
@@ -38,12 +40,14 @@
             <img :src="topUp" alt="" />
           </div>
           <div>
-            <p class="p-yue">₹0.00</p>
-            <p class="p-ba">withdrawal balance</p>
+            <p class="p-yue">
+              {{ userInfo.cumulativeWithdrawalAmount | _toLocaleString(false) }}
+            </p>
+            <p class="p-ba">{{ $t("提现金额") }}</p>
           </div>
         </div>
         <div class="flex justify-end text w-full">
-          <div>withdrawal</div>
+          <div>{{ $t("提现") }}</div>
         </div>
       </div>
     </div>
@@ -51,19 +55,19 @@
       <van-row gutter="10" class="w-full" type="flex" justify="space-between">
         <van-col span="6" class="flex-clo" @click="$router.push('/vip-list')">
           <img :src="icon4" alt="" />
-          <span> Benefit Details</span>
+          <span>VIP</span>
         </van-col>
         <van-col span="6" class="flex-clo" @click="$router.push('/capital')">
           <img :src="icon3" alt="" />
-          <span> Funding Details</span>
+          <span> {{ $t("资金流水") }}</span>
         </van-col>
         <van-col span="6" class="flex-clo" @click="$router.push('/share')">
           <img :src="icon2" alt="" />
-          <span> share</span>
+          <span> {{ $t("分享") }}</span>
         </van-col>
         <van-col span="6" class="flex-clo" @click="$router.push('/team')">
           <img :src="icon1" alt="" />
-          <span> team</span>
+          <span> {{ $t("团队") }}</span>
         </van-col>
       </van-row>
     </div>
@@ -95,10 +99,20 @@
             <img :src="item.img" alt="" />
           </div>
           <div class="item-text">
-            <div>产品基金代码：12354</div>
-            <div class="text1">购买价格：{{ item.price }}</div>
-            <div class="text1">总收入：{{ item.totalProductRevenue }}</div>
-            <div class="text2">日收入：100&nbsp;&nbsp;&nbsp;累计收入：100</div>
+            <div>{{ $t("产品基金代码：") }}{{ item.id }}</div>
+            <div class="text1">{{ $t("购买价格：") }}{{ item.price }}</div>
+            <!-- <div class="text1">
+              {{ $t("总收入：") }}{{ item.totalProductRevenue }}
+            </div> -->
+            <div class="text2">
+              {{ $t("日收入：")
+              }}{{
+                item.dailyProductRevenue | _toLocaleString(false)
+              }}&nbsp;&nbsp;&nbsp;{{ $t("累计收入：")
+              }}{{
+                (item.dailyProductRevenue * item.cycle) | _toLocaleString(false)
+              }}
+            </div>
           </div>
           <div v-if="token" class="goumai-but" @click="purchaseShowClick(item)">
             {{ $t("购买") }}
@@ -117,7 +131,7 @@
       :close-on-click-overlay="false"
     >
       <div class="notice-box">
-        <div class="notice-title">活动通知</div>
+        <div class="notice-title">{{ $t("活动通知") }}</div>
         <pre class="notice-txt">
           1.最新优惠活动没法及时告诉你哦开通后消息及时推送，不错过任何消息.
           2.最新优惠活动没法及时告诉你哦开通后消息及时推送，不错过任何消息.
@@ -138,15 +152,30 @@
         <div class="purchase-top">
           <van-row type="flex" justify="space-between" class="purchase-income">
             <van-col span="11">
-              <div>每日收入：94.5</div>
+              <div>
+                {{ $t("每日收入：")
+                }}{{
+                  (purchaseShowData.dailyProductRevenue * stepperValue)
+                    | _toLocaleString(false)
+                }}
+              </div>
             </van-col>
             <van-col span="11">
-              <div>每日收入：94.5</div>
+              <div>
+                {{ $t("总收益：") }}
+
+                {{
+                  (purchaseShowData.dailyProductRevenue *
+                    purchaseShowData.cycle *
+                    stepperValue)
+                    | _toLocaleString(false)
+                }}
+              </div>
             </van-col>
           </van-row>
           <van-row type="flex" justify="space-between" class="purchase-num">
-            <van-col span="8">日产量</van-col>
-            <van-col span="10">
+            <van-col span="6">{{ $t("购买数量") }}</van-col>
+            <van-col span="12">
               <van-stepper v-model="stepperValue" button-size="28px"
             /></van-col>
           </van-row>
@@ -157,9 +186,15 @@
             alt=""
           />
           <div class="purchase-commodity">
-            <div>VIP1福利基金</div>
-            <div><span>购买价格：</span><span>$200.00</span></div>
-            <div><span>总收入：</span><span>$200.00</span></div>
+            <div>{{ purchaseShowData.productTitle }}</div>
+            <div>
+              <span>{{ $t("购买价格：") }}</span
+              ><span>{{ purchaseShowData.price }}</span>
+            </div>
+            <div>
+              <span>{{ $t("总价格：") }}</span
+              ><span>{{ purchaseShowData.price * stepperValue }}</span>
+            </div>
           </div>
         </div>
         <div class="purchase-but">
@@ -169,7 +204,7 @@
             color="linear-gradient(0deg,#ff947c 0%, #ffb98c 100%), linear-gradient(0deg,#e11b31 1%, #f3354e 100%)"
             :round="true"
             @click="ljizhifu"
-            >立即支付</van-button
+            >{{ $t("立即支付") }}</van-button
           >
         </div>
       </div>
@@ -187,7 +222,7 @@ import { Toast } from "vant";
 import { mapGetters } from "vuex";
 export default {
   computed: {
-    ...mapGetters(["token"]),
+    ...mapGetters(["token", "userInfo"]),
     tabs() {
       return this.fenleiData;
     },
@@ -198,20 +233,18 @@ export default {
   },
   methods: {
     async ljizhifu() {
-      const toast = Toast.loading({
-        message: this.$t("加载中..."),
-        forbidClick: true,
-        loadingType: "spinner",
-      });
       const res = await buyProduct({
-        id: this.purchaseShowData.id,
-        count: this.stepperValue,
+        pid: this.purchaseShowData.id,
+        num: this.stepperValue,
       });
+
       if (res.status === 0) {
-        toast.message = this.$t(`购买成功`);
+        this.purchaseShow = false;
         setTimeout(() => {
-          Toast.clear();
+          Toast.success(this.$t(`购买成功`));
         }, 1000);
+        this.$router.push("/purchase-history");
+      } else {
         this.purchaseShow = false;
       }
     },
@@ -684,6 +717,7 @@ export default {
     }
 
     .purchase-top {
+      font-size: 18px;
       .purchase-income {
         .van-col {
           > div {

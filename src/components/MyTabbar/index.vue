@@ -24,7 +24,7 @@ export default {
     tabbar() {
       return [
         {
-          name: "首页",
+          name: this.$t("首页"),
           to: "/",
           icon: {
             active: require("@/assets/home1.png"),
@@ -32,7 +32,7 @@ export default {
           },
         },
         {
-          name: "收益",
+          name: this.$t("收益"),
           to: "/earnings-record",
           icon: {
             active: require("@/assets/Classification1.png"),
@@ -40,7 +40,7 @@ export default {
           },
         },
         {
-          name: "团队",
+          name: this.$t("团队"),
           to: "/team",
           icon: {
             active: require("@/assets/team1.png"),
@@ -48,7 +48,7 @@ export default {
           },
         },
         {
-          name: "我的",
+          name: this.$t("我的"),
           to: "/my",
           icon: {
             active: require("@/assets/my1.png"),
@@ -65,7 +65,7 @@ export default {
   },
 
   created() {
-    console.log(this.$route.path);
+   
     this.tabbar.map((item, index) => {
       if (item.to === this.$route.path) {
         this.active = index;

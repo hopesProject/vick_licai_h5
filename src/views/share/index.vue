@@ -2,14 +2,14 @@
   <div class="wrapper">
     <img @click="$router.go(-1)" :src="fanhui" alt="" class="fanhui" />
     <div class="title">
-      <div>邀请好友</div>
-      <div>分享现金</div>
+      <div>{{ $t("邀请好友") }}</div>
+      <div>{{ $t("分享现金") }}</div>
     </div>
     <div class="card-income">
-      <div class="income">提成收益</div>
+      <div class="income">{{ $t("提成收益") }}</div>
       <van-row type="flex" justify="space-between" class="income-title">
-        <van-col span="12">团队成员级别</van-col>
-        <van-col span="8">佣金比例</van-col>
+        <van-col span="12">{{ $t("团队成员级别") }}</van-col>
+        <van-col span="8">{{ $t("佣金比例") }}</van-col>
       </van-row>
       <van-row type="flex" justify="space-between" class="income-txt">
         <van-col span="12">直属会员（1级）</van-col>
@@ -22,39 +22,59 @@
     </div>
     <div class="card-illustrate">
       <div class="illustrate">
-        <div class="card-title">邀请收益</div>
-        <div class="illustrate-txt">如果您邀请其他人加入团队，您将成 为团队的领导者。当您的团队成员购 买产品时，您都会获得一定比例的佣金。</div>
+        <div class="card-title">{{ $t("邀请收益") }}</div>
+        <div class="illustrate-txt">
+          {{
+            $t(
+              "如果您邀请其他人加入团队，您将成 为团队的领导者。当您的团队成员购买产品时，您都会获得一定比例的佣金。"
+            )
+          }}
+        </div>
       </div>
     </div>
     <div class="card-illustrate">
       <div class="illustrate">
-        <div class="card-title">长期收益</div>
-        <div class="illustrate-txt">如果您邀请A，您将获得A总投资额的30%。
-          A邀请B，您将获得B总投资额的6%的奖励B邀请C，你将获得C总投资额的3%作为奖励。您获得的奖励收益不会影响您的团队成员购买产品的投资收益。</div>
+        <div class="card-title">{{ $t("长期收益") }}</div>
+        <div class="illustrate-txt">
+          {{
+            $t(
+              " 如果您邀请A，您将获得A总投资额的30%。A邀请B，您将获得B总投资额的6%的奖励B邀请C，你将获得C总投资额的3%作为奖励。您获得的奖励收益不会影响您的团队成员购买产品的投资收益。"
+            )
+          }}
+        </div>
       </div>
     </div>
     <div class="invitation">
       <div class="invitation-code">
-        <img src="" alt="">
-        <div>我的邀请码：JHYGT</div>
+        <img src="" alt="" />
+        <div>{{ $t("我的邀请码：") }}{{ userInfo.invitationCode }}</div>
       </div>
     </div>
-    <div class="send">发送邀请</div>
+    <div class="send">{{ $t("发送邀请") }}</div>
   </div>
 </template>
 <script>
+import { mapActions, mapGetters } from "vuex";
+
 export default {
-  data () {
+  computed: {
+    ...mapGetters(["userInfo"]),
+  },
+  data() {
     return {
       fanhui: require("@/assets/fanhui.png"),
-    }
+    };
+  },
+  mounted() {
+    this.getUserInfo();
   },
   methods: {
-    onClickLeft () {
+    ...mapActions(["getUserInfo"]),
+    onClickLeft() {
       this.$router.go(-1);
-    }
-  }
-}
+    },
+  },
+};
 </script>
 <style lang="scss" scoped>
 .wrapper {
@@ -180,12 +200,12 @@ export default {
     justify-content: center;
     padding-top: 40px;
 
-    >img {
+    > img {
       width: 120px;
       height: 110px;
     }
 
-    >div {
+    > div {
       margin-left: 16px;
       font-size: 33px;
       color: #ffffff;

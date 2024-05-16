@@ -1,23 +1,30 @@
 <template>
   <div>
-    <van-nav-bar :title="$t('银行卡管理')" left-arrow @click-left="onClickLeft" />
+    <van-nav-bar
+      :title="$t('银行卡管理')"
+      left-arrow
+      @click-left="onClickLeft"
+    />
 
     <div class="box">
       <div class="item-box"></div>
-      <div class="item-box item-box1"></div>
-      <div class="item-box item-box2"></div>
-      <img src="@/assets/addbank.png" alt="" @click="$router.push('/add-bank-card')">
+
+      <img
+        src="@/assets/addbank.png"
+        alt=""
+        @click="$router.push('/add-bank-card')"
+      />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  data () {
-    return {}
+  data() {
+    return {};
   },
   methods: {
-    onClickLeft () {
+    onClickLeft() {
       this.$router.go(-1);
     },
   },
@@ -48,12 +55,13 @@ export default {
 
 .box {
   position: relative;
+  height: calc(100vh - 1.33333rem);
 
-  >img {
+  > img {
     width: 118px;
     height: 118px;
     position: absolute;
-    bottom: -50px;
+    bottom: 50px;
     left: 50%;
     transform: translateX(-50%);
   }

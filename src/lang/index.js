@@ -4,15 +4,15 @@ import VueI18n from "vue-i18n";
 import zh from "./zh.json";
 import en from "./en.json";
 import Cookies from "js-cookie";
-
+import store from "@/store";
 Vue.use(VueI18n); // 全局注册国际化包
 
 // 准备翻译的语言环境信息
 const i18n = new VueI18n({
   // locale: Cookies.get("language") || "en", // set locale
-  locale: "zh", // set locale
+  locale: store.getters.lang, // set locale
   messages: {
-    zh: {
+    "zh-CN": {
       ...zh,
     },
     en: {

@@ -49,12 +49,13 @@ service.interceptors.response.use(
       case 403:
         // OUT_TOKEN
         store.commit("OUT_TOKEN"); //
-        break;
+        Toast.fail('');
+        return res;
       default:
         break;
     }
-    Notify({ type: "danger", message: error.msg || "Error" });
-    return Promise.reject(new Error(res.msg || "Error"));
+    Toast.fail(res.msg || "Error");
+    return res;
   },
   (error) => {
     if (error.response.status === 403) {

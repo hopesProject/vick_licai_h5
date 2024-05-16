@@ -10,9 +10,14 @@ import "./icons"; // icon
 import "@/styles/index.scss"; // global css
 import "amfe-flexible";
 import "@/utils/components";
+import VueClipboard from "vue-clipboard2";
+
 Toast.setDefaultOptions("loading", { forbidClick: true });
 
 Vue.config.productionTip = false;
+
+Vue.use(VueClipboard);
+
 Object.keys(filters).forEach((key) => {
   Vue.filter(key, filters[key]);
 });

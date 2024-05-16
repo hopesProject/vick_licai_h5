@@ -9,15 +9,34 @@
         <van-col span="8">{{ $t("成长值") }}</van-col>
         <van-col span="8">{{ $t("距离升级") }} -</van-col>
       </van-row>
-      <van-row class="data-item" type="flex" justify="center" align="center">
+      <van-row
+        class="data-item"
+        type="flex"
+        justify="center"
+        align="center"
+        v-for="item in data"
+        :key="item.id"
+      >
         <van-col span="8" class="relative">
-          <img :src="touxiang" alt="" />
-          <div class="relatives">1</div>
+          <img :src="item.img" alt="" />
+          <div class="relatives">{{ item.level }}</div>
         </van-col>
-        <van-col span="8">500点</van-col>
+        <van-col span="8">{{ item.amount }}</van-col>
         <van-col span="8" class="right-text">
-          <van-progress :percentage="50" />
-          <div class="trest">{{ $t("已达成") }}</div>
+          <van-progress
+            :percentage="
+              (userInfo.sumBuyAmount / item.amount) * 100 >= 100
+                ? 100
+                : (userInfo.sumBuyAmount / item.amount) * 100
+            "
+          />
+          <div class="trest">
+            {{
+              (userInfo.sumBuyAmount / item.amount) * 100 >= 100
+                ? $t("已达成")
+                : $t("未达成")
+            }}
+          </div>
         </van-col>
       </van-row>
     </div>
@@ -35,11 +54,29 @@
 </template>
 
 <script>
+import { getLevelSetting } from "@/api";
+import { mapGetters } from "vuex";
+
 export default {
+  computed: {
+    ...mapGetters(["userInfo"]),
+  },
   data() {
     return {
       touxiang: require("@/assets/touxiangvip.png"),
+      data: [],
     };
+  },
+  mounted() {
+    this.getList();
+  },
+  methods: {
+    async getList() {
+      const res = await getLevelSetting();
+      if (res.status === 0) {
+        this.data = res.data;
+      }
+    },
   },
 };
 </script>

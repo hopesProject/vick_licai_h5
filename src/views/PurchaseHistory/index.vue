@@ -9,38 +9,96 @@
         alt=""
       />
       <div class="id-img">
-        <div class="phone">123***789</div>
-        <div>ID账号：888888</div>
+        <div class="phone">{{ userInfo.phone | _phoneSubstring }}</div>
+        <div>{{ $t("ID账号：") }}{{ userInfo.code }}</div>
       </div>
     </header>
     <main>
-      <div v-for="item in data" :key="item.id" class="item-box">
-        <img
-          src="https://t7.baidu.com/it/u=4036010509,3445021118&fm=193&f=GIF"
-          alt=""
-        />
-        <div class="content">
-          <div class="mb">商品名称：1234456</div>
-          <div>购买金额：109</div>
-        </div>
-        <div class="time">
-          <div>购买时间：<span>2022-11-11</span></div>
-          <div>到期时间：<span>2022-11-11</span></div>
-          <div></div>
-        </div>
-      </div>
+      <van-pull-refresh
+        :pulling-text="$t('下拉即可刷新...')"
+        :loosing-text="$t('释放即可刷新...')"
+        :loading-text="$t('加载中...')"
+        v-model="refreshing"
+        @refresh="onRefresh"
+      >
+        <van-list
+          v-model="loading"
+          :finished="finished"
+          :finished-text="$t('没有更多了')"
+          :loading-text="$t('加载中...')"
+          @load="onLoad"
+        >
+          <van-cell v-for="item in data" :key="item.id">
+            <div class="item-box">
+              <img :src="item.img" alt="" />
+              <div class="content">
+                <div class="mb">
+                  {{ $t("商品名称：") }}{{ item.productTitle }}
+                </div>
+                <div>{{ $t("购买金额：") }}{{ item.price * item.num }}</div>
+              </div>
+              <div class="time">
+                <div>
+                  {{ $t("购买时间：")
+                  }}<span>
+                    {{ item.createTime | _timeFormat("YYYY-MM-DD") }}
+                  </span>
+                </div>
+                <div>
+                  {{ $t("到期时间：")
+                  }}<span> {{ item.endTime | _timeFormat("YYYY-MM-DD") }}</span>
+                </div>
+                <div></div>
+              </div>
+            </div>
+          </van-cell>
+          <!-- <div slot="finished"></div> -->
+        </van-list>
+      </van-pull-refresh>
     </main>
   </div>
 </template>
 
 <script>
+import { productRecord } from "@/api";
+import { mapGetters } from "vuex";
+import refresh from "@/mixins/refresh";
+
 export default {
+  mixins: [refresh],
+  computed: {
+    ...mapGetters(["userInfo"]),
+  },
   data() {
     return {
-      data: [{ id: 1 }, { id: 2 }],
+      data: [],
     };
   },
+  created() {
+    // this.getList();
+  },
   methods: {
+    async getList(isRefreshing) {
+      let pageNum = this.pageNum;
+      const res = await productRecord();
+      if (isRefreshing) {
+        this.refreshing = false;
+      }
+      this.loading = false;
+      try {
+        if (res?.status === 0) {
+          if (pageNum !== 1) {
+            this.data = [...this.data, ...res.data];
+          } else {
+            this.data = res.data;
+          }
+        }
+        // if (this.data.length >= res.data.total) {
+        this.finished = true;
+        // }
+      } catch (error) {}
+      this.finished = true;
+    },
     onClickLeft() {
       this.$router.go(-1);
     },
@@ -74,7 +132,7 @@ main {
   }
   .content {
     flex: 1;
-    font-size: 28px;
+    font-size: 24px;
     font-family: Adobe Heiti Std, Adobe Heiti Std-R;
     font-weight: normal;
     text-align: left;

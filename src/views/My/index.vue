@@ -3,18 +3,27 @@
     <header>
       <van-row>
         <van-col span="12">
-          <div class="phone">123***789</div>
-          <div class="Id">{{ $t("ID账号：") }}888888</div>
+          <div class="phone">{{ userInfo.phone | _phoneSubstring }}</div>
+          <div class="Id">{{ $t("ID账号：") }}{{ userInfo.code }}</div>
           <div>
-            {{ $t("邀请码：") }}123456
+            {{ $t("邀请码：") }}{{ userInfo.invitationCode }}
 
-            <span class="fz">{{ $t("复制") }}</span>
+            <span
+              class="fz"
+              v-clipboard:copy="userInfo.invitationCode"
+              v-clipboard:success="onCopy"
+              >{{ $t("复制") }}</span
+            >
           </div>
         </van-col>
         <van-col span="12" class="flex flex-col items-end">
-          <div class="vip">VIP1</div>
+          <div class="vip">VIP{{ userInfo.vip }}</div>
           <div class="img">
-            <img src="https://t7.baidu.com/it/u=4036010509,3445021118&fm=193&f=GIF" alt="" />
+            <!-- <img :src="userInfo.img" alt="" /> -->
+            <img
+              src="https://t7.baidu.com/it/u=4036010509,3445021118&fm=193&f=GIF"
+              alt=""
+            />
           </div>
         </van-col>
       </van-row>
@@ -24,37 +33,51 @@
         <div class="trxt-box">
           <img :src="chzhiong" alt="" />
           <div>
-            <p>3000.00 <span>₹</span></p>
-            <p class="jine">充值金额</p>
+            <p>
+              {{ userInfo.cumulativeRechargeAmount | _toLocaleString(false) }}
+            </p>
+            <p class="jine">{{ $t("充值金额") }}</p>
           </div>
         </div>
-        <div class="but-box" @click="$router.push('/recharge')">立即充值</div>
+        <div class="but-box" @click="$router.push('/recharge')">
+          {{ $t("立即充值") }}
+        </div>
       </div>
 
       <div class="main-haeder-item main-haeder-item1">
         <div class="trxt-box">
           <img :src="shouyi" alt="" />
           <div>
-            <p>3000.00 <span>₹</span></p>
-            <p class="jine">提取金额</p>
+            <p>
+              {{ userInfo.cumulativeWithdrawalAmount | _toLocaleString(false) }}
+            </p>
+            <p class="jine">{{ $t("提取金额") }}</p>
           </div>
         </div>
-        <div class="but-box" @click="$router.push('/withdrawal')">立即提现</div>
+        <div class="but-box" @click="$router.push('/withdrawal')">
+          {{ $t("立即提现") }}
+        </div>
       </div>
 
       <div class="my-earnings">
-        <div class="title-box">我的收益</div>
+        <div class="title-box">{{ $t("我的收益") }}</div>
         <van-row class="earning-list" type="flex" justify="space-between">
           <van-col span="12">
             <div class="list-item">
-              <h3>累计收益</h3>
-              <div class="text">3000.00</div>
+              <h3>{{ $t("累计收益") }}</h3>
+              <div class="text">
+                {{ userInfo.cumulativeEarnings | _toLocaleString(false) }}
+              </div>
             </div>
           </van-col>
           <van-col span="12">
             <div class="list-item list-items">
-              <h3>累计提款</h3>
-              <div class="text">3000.00</div>
+              <h3>{{ $t("累计提款") }}</h3>
+              <div class="text">
+                {{
+                  userInfo.cumulativeWithdrawalAmount | _toLocaleString(false)
+                }}
+              </div>
             </div>
           </van-col>
         </van-row>
@@ -67,10 +90,16 @@
       </div>
 
       <div class="accessibility">
-        <div class="title-box">辅助功能</div>
+        <div class="title-box">{{ $t("辅助功能") }}</div>
 
         <van-row type="flex" justify="space-between">
-          <van-col :class="`van-col-bg`" span="8" v-for="item in fuzhu" :key="item.img" @click="goRouter(item.router)">
+          <van-col
+            :class="`van-col-bg`"
+            span="8"
+            v-for="item in fuzhu"
+            :key="item.img"
+            @click="goRouter(item.router)"
+          >
             <img :src="item.img" alt="" />
             <div class="span">
               {{ item.name }}
@@ -83,76 +112,86 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+import clipboard2 from "@/mixins/clipboard2";
+
 export default {
+  mixins: [clipboard2],
+
   computed: {
-    fuzhu () {
+    ...mapGetters(["userInfo"]),
+    fuzhu() {
       return [
         {
           img: require("@/assets/my-icon1.png"),
           name: this.$t("团队"),
-          router: '/team'
+          router: "/team",
         },
         {
           img: require("@/assets/my-icon2.png"),
           name: this.$t("VIP等级"),
-          router: '/vip-list'
+          router: "/vip-list",
         },
         {
           img: require("@/assets/my-icon3.png"),
           name: this.$t("购买记录"),
-          router: '/purchase-history'
+          router: "/purchase-history",
         },
         {
           img: require("@/assets/my-icon4.png"),
           name: this.$t("资金详情"),
-          router: '/capital'
+          router: "/capital",
         },
         {
           img: require("@/assets/my-icon5.png"),
           name: this.$t("收益详情"),
-          router: '/earnings-record'
+          router: "/earnings-record",
         },
         {
           img: require("@/assets/my-icon6.png"),
           name: this.$t("银行卡管理"),
-          router: '/bank-card'
+          router: "/bank-card",
         },
         {
           img: require("@/assets/my-icon7.png"),
           name: this.$t("分享"),
-          router: '/share'
+          router: "/share",
         },
         {
           img: require("@/assets/my-icon8.png"),
           name: this.$t("语言"),
-          router: ''
+          router: "/lang",
         },
         {
           img: require("@/assets/my-icon9.png"),
           name: this.$t("下载"),
-          router: '/download'
+          router: "/download",
         },
         {
           img: require("@/assets/my-icon10.png"),
           name: this.$t("关于"),
-          router: ''
+          router: "",
         },
       ];
     },
   },
-  data () {
+  data() {
     return {
       chzhiong: require("@/assets/充值中心.png"),
       shouyi: require("@/assets/收益详情 拷贝 2.png"),
     };
   },
+  mounted() {
+    this.getUserInfo();
+  },
   methods: {
-    goRouter (key) {
+    ...mapActions(["getUserInfo"]),
+    goRouter(key) {
       if (key) {
-        this.$router.push(key)
+        this.$router.push(key);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -6,6 +6,10 @@ const moment = require("moment-timezone");
 export function _timeFormat(v, format = "YYYY-MM-DD HH:mm:ss") {
   return moment(v).format(format);
 }
+export function _phoneSubstring(str) {
+  let result = str.substring(0, 3) + "***" + str.substring(str.length - 3);
+  return result;
+}
 
 export function _toLocaleString(
   number,

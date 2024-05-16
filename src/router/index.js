@@ -23,6 +23,7 @@ import password from "@/views/password";
 import register from "@/views/register";
 import capital from "@/views/capital";
 import invite from "@/views/invite";
+import lang from "@/views/lang";
 
 Vue.use(VueRouter);
 
@@ -174,6 +175,14 @@ const routes = [
   {
     path: "/invite",
     component: invite,
+    meta: {
+      show: false,
+    },
+  },
+  // 邀请好友
+  {
+    path: "/lang",
+    component: lang,
     meta: {
       show: false,
     },
