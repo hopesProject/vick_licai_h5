@@ -92,3 +92,16 @@ export function getLevelSetting(params) {
     params,
   });
 }
+
+// this.actionUrl = process.env.VUE_APP_BASE_APIS + "/file/upload";
+// 上传图片
+export function fileUpload(data) {
+  return request({
+    url: "/file/upload", // 假地址 自行替换
+    method: "post",
+    data: qs.stringify(data),
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+}

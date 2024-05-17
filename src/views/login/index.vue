@@ -1,25 +1,38 @@
 <template>
-  <div class="wrapper">
-    <come-back />
+  <div class="wrapper fanhui">
+    <van-nav-bar
+      :title="$t('登录')"
+      left-arrow
+      @click-left="onClickLeft"
+      @click-right="onClickRight"
+    >
+      <template #right>
+        <svg-icon iconClass="lang" style="font-size: 20px"></svg-icon>
+      </template>
+    </van-nav-bar>
+
     <div class="box">
       <div class="header">Welcome !</div>
+      <van-tabs class="box-tabs" v-model="activeName">
+        <van-tab title="手机号码" name="a"></van-tab>
+        <van-tab title="账户" name="b"></van-tab>
+      </van-tabs>
       <van-cell-group>
-        <van-field
-          v-model="form.phone"
-          placeholder="+91 输入账号手机号"
-          input-align="left"
-        />
+        <div class="border-box-flex border-box">
+          <div class="border-quhao">+91</div>
+          <van-field
+            v-model="form.phone"
+            placeholder="输入账号手机号"
+            input-align="left"
+          />
+        </div>
         <PasswordInput
           :placeholder="$t('请输入密码')"
           name="password"
           @change="iniput"
         />
       </van-cell-group>
-      <div class="register">
-        <div @click="$router.push('/register')">注册</div>
-        <div @click="$router.push('/password')">忘记密码</div>
-      </div>
-      <div class="login-button">
+      <div class="logon">
         <van-button
           @click="login"
           :loading="loading"
@@ -29,6 +42,12 @@
           :round="true"
           >登录</van-button
         >
+      </div>
+      <div class="register">
+        <div @click="$router.push('/register')">注册</div>
+        <div @click="$router.push('/password')">忘记密码</div>
+      </div>
+      <div class="login-button">
         <div class="download" @click="$router.push('/download')">下载APP</div>
         <img src="@/assets/login-icon.png" alt="" />
       </div>
@@ -46,6 +65,7 @@ export default {
   data() {
     return {
       loading: false,
+      activeName: "a",
       form: {
         phone: "",
         password: "",
@@ -53,6 +73,12 @@ export default {
     };
   },
   methods: {
+    onClickLeft() {
+      this.$router.go(-1);
+    },
+    onClickRight() {
+      this.$router.push("/lang");
+    },
     ...mapActions(["getLogin"]),
     iniput(e, name) {
       this.form[name] = e;
@@ -98,7 +124,7 @@ export default {
   height: 60%;
 
   .header {
-    padding-bottom: 100px;
+    padding-bottom: 70px;
     font-weight: bold;
   }
 
@@ -109,8 +135,8 @@ export default {
       line-height: 80px;
       background-color: transparent;
       font-size: 36px;
-      border-bottom: 4px solid #fff;
-      margin-bottom: 16px;
+      //border-bottom: 4px solid #fff;
+      // margin-bottom: 16px;
     }
   }
 
@@ -121,7 +147,8 @@ export default {
 
     > div:nth-child(1) {
       font-size: 24px;
-      font-family: Adobe Heiti Std, Adobe Heiti Std-R;
+      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
       font-weight: normal;
       text-decoration: underline;
       text-align: left;
@@ -132,7 +159,8 @@ export default {
 
     > div:nth-child(2) {
       font-size: 24px;
-      font-family: PingFang SC, PingFang SC-Regular;
+      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
       font-weight: 400;
       text-align: left;
       color: #00d1cb;
@@ -142,6 +170,8 @@ export default {
   }
 
   .login-button {
+    display: flex;
+    flex-direction: column;
     margin-top: 50px;
     width: 50%;
     position: relative;
@@ -156,7 +186,7 @@ export default {
       background: linear-gradient(to right, #ff947c, #ffb98c);
       -webkit-background-clip: text;
       background-clip: text;
-      color: transparent;
+      color: #fff;
       font-size: 24px;
       font-weight: 400;
       margin-top: 20px;
@@ -169,5 +199,72 @@ export default {
       top: 50%;
     }
   }
+}
+
+.border-box {
+  border-bottom: 4px solid #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .border-quhao {
+    width: 118px;
+    height: 53px;
+    line-height: 53px;
+    font-size: 31px;
+    text-align: center;
+    color: #ffffff;
+    background: linear-gradient(0deg, #ff947c 0%, #ffb98c 100%), #498de4;
+    border-radius: 22px;
+    margin-left: 20px;
+  }
+}
+.logon {
+  // width: 50%;
+  margin: 50px auto 0;
+}
+.box-tabs {
+  padding: 0 40px;
+  margin-bottom: 30px;
+  :deep(.van-tabs__nav) {
+    background-color: transparent;
+  }
+  :deep(.van-tabs__wrap) {
+    background-color: transparent;
+    border-radius: 40px;
+    height: 60px;
+    box-shadow: -10px 0px 17px 1.5px rgba(20, 7, 0, 0.1);
+
+    .van-tab {
+      font-size: 30px;
+      color: #999999;
+
+      .van-tab__text {
+        height: 80px;
+        line-height: 80px;
+      }
+    }
+
+    .van-tab--active {
+      margin: 4px;
+      background: linear-gradient(0deg, #ff957c 0%, #ffba8b 100%), #ffffff;
+      border-radius: 40px;
+      color: #ffffff;
+    }
+    .van-tabs__line {
+      background-color: transparent;
+    }
+  }
+}
+:deep(.van-nav-bar) {
+  background-color: transparent;
+  .van-nav-bar__content .van-nav-bar__title {
+    // color: #fff;
+  }
+  .van-icon {
+    color: #fff;
+  }
+}
+::v-deep .van-hairline--bottom::after {
+  border: none;
 }
 </style>

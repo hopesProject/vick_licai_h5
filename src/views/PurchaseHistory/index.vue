@@ -133,7 +133,8 @@ main {
   .content {
     flex: 1;
     font-size: 24px;
-    font-family: Adobe Heiti Std, Adobe Heiti Std-R;
+    font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
     font-weight: normal;
     text-align: left;
     color: #333333;
@@ -144,7 +145,8 @@ main {
   }
   .time {
     font-size: 20px;
-    font-family: Adobe Heiti Std, Adobe Heiti Std-R;
+    font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
     font-weight: normal;
     text-align: left;
     color: #666666;
@@ -158,7 +160,8 @@ header {
   width: 100vw;
   height: 255px;
   font-size: 16px;
-  font-family: Adobe Heiti Std, Adobe Heiti Std-R;
+  font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
   font-weight: normal;
   text-align: left;
   color: #333333;
@@ -183,14 +186,16 @@ header {
   }
   .id-img {
     font-size: 24px;
-    font-family: PingFang SC, PingFang SC-Regular;
+    font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
     font-weight: 400;
     text-align: left;
     color: #333333;
     line-height: 20px;
     .phone {
       font-size: 32px;
-      font-family: Adobe Heiti Std, Adobe Heiti Std-R;
+      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
       font-weight: normal;
       text-align: left;
       color: #333333;

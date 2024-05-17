@@ -8,11 +8,15 @@
         alt=""
       />
       <div class="id-img">
-        <div class="phone">{{ userInfo.phone | _phoneSubstring }}</div>
-        <div>ID账号：{{ userInfo.code }}</div>
+        <div class="phone">{{ $t("昨日收益：") }}</div>
+        <div>{{ $t("预期收益：") }}</div>
       </div>
     </header>
     <main>
+      <van-tabs v-model="active" class="box-tabs" line-height="0">
+        <van-tab :title="$t('进行中')" :name="1"></van-tab>
+        <van-tab :title="$t('已完成')" :name="2"></van-tab>
+      </van-tabs>
       <van-pull-refresh
         :pulling-text="$t('下拉即可刷新...')"
         :loosing-text="$t('释放即可刷新...')"
@@ -84,6 +88,7 @@ export default {
   },
   data() {
     return {
+      active: 1,
       imgHeader: require("@/assets/5.png"),
     };
   },
@@ -146,7 +151,8 @@ main {
     margin-bottom: 50px;
     display: flex;
     font-size: 20px;
-    font-family: PingFang SC, PingFang SC-Regular;
+    font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
     font-weight: 400;
     text-align: center;
     color: #333333;
@@ -166,7 +172,8 @@ main {
   .item-content {
     .h3 {
       font-size: 32px;
-      font-family: PingFang, PingFang-SC-Regular;
+      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
       font-weight: normal;
       text-align: left;
       color: #333333;
@@ -191,7 +198,8 @@ main {
   .content {
     flex: 1;
     font-size: 26px;
-    font-family: PingFang, PingFang-SC-Regular;
+    font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
     font-weight: normal;
     text-align: left;
     color: #999999;
@@ -209,7 +217,8 @@ main {
       margin-bottom: 18px;
     }
     font-size: 26px;
-    font-family: Adobe Heiti Std, Adobe Heiti Std-R;
+    font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
     font-weight: bold;
     text-align: left;
     color: #ffb188;
@@ -220,7 +229,8 @@ header {
   width: 100vw;
   height: 255px;
   font-size: 16px;
-  font-family: Adobe Heiti Std, Adobe Heiti Std-R;
+  font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
   font-weight: normal;
   text-align: left;
   color: #333333;
@@ -245,14 +255,16 @@ header {
   }
   .id-img {
     font-size: 24px;
-    font-family: PingFang SC, PingFang SC-Regular;
+    font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
     font-weight: 400;
     text-align: left;
     color: #333333;
     line-height: 20px;
     .phone {
-      font-size: 32px;
-      font-family: Adobe Heiti Std, Adobe Heiti Std-R;
+      // font-size: 32px;
+      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
       font-weight: normal;
       text-align: left;
       color: #333333;
@@ -270,5 +282,34 @@ header {
 
 ::v-deep .van-nav-bar__content {
   background-color: #ecfafc;
+}
+.box-tabs {
+  padding: 0 40px;
+
+  width: 100%;
+  z-index: 100;
+
+  :deep(.van-tabs__wrap) {
+    border-radius: 40px;
+    height: 88px;
+    box-shadow: -10px 0px 17px 1.5px rgba(20, 7, 0, 0.1);
+
+    .van-tab {
+      font-size: 30px;
+      color: #999999;
+
+      .van-tab__text {
+        height: 80px;
+        line-height: 80px;
+      }
+    }
+
+    .van-tab--active {
+      margin: 4px;
+      background: linear-gradient(0deg, #ff957c 0%, #ffba8b 100%), #ffffff;
+      border-radius: 40px;
+      color: #ffffff;
+    }
+  }
 }
 </style>

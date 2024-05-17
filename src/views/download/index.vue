@@ -50,7 +50,8 @@ main {
   background: #fcfcfc;
   border-radius: 40px;
   font-size: 30px;
-  font-family: Adobe Heiti Std, Adobe Heiti Std-R;
+  font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
   font-weight: normal;
   text-align: center;
   color: #5e89ef;
@@ -64,7 +65,8 @@ main {
   p {
     background: linear-gradient(0deg, #ff947c 0%, #ffb98c 100%);
     font-size: 30px;
-    font-family: Adobe Heiti Std, Adobe Heiti Std-R;
+    font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
     font-weight: normal;
     text-align: center;
     color: #5e89ef;

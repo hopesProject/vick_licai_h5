@@ -31,6 +31,7 @@ export default {
       list: [
         { label: "简体中文", value: "zh-CN" },
         { label: "English", value: "en" },
+        { label: "हिन्दी或हिंदी", value: "hi" },
       ],
     };
   },

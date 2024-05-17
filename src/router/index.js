@@ -24,6 +24,9 @@ import register from "@/views/register";
 import capital from "@/views/capital";
 import invite from "@/views/invite";
 import lang from "@/views/lang";
+import produc from "@/components/ProductList";
+import Comment from "@/views/comment";
+import Release from "@/views/comment/release";
 
 Vue.use(VueRouter);
 
@@ -40,6 +43,20 @@ const routes = [
     component: About,
     meta: {
       show: true,
+    },
+  },
+  {
+    path: "/comment",
+    component: Comment,
+    meta: {
+      show: true,
+    },
+  },
+  {
+    path: "/release",
+    component: Release,
+    meta: {
+      show: false,
     },
   },
   // 消息列表
@@ -185,6 +202,13 @@ const routes = [
     component: lang,
     meta: {
       show: false,
+    },
+  },
+  {
+    path: "/produc",
+    component: produc,
+    meta: {
+      show: true,
     },
   },
   // {

@@ -1,6 +1,15 @@
 <template>
   <div class="wrapper">
-    <come-back :title="$t('注册')" />
+    <van-nav-bar
+      :title="$t('注册')"
+      left-arrow
+      @click-left="onClickLeft"
+      @click-right="onClickRight"
+    >
+      <template #right>
+        <van-icon name="search" size="18" />
+      </template>
+    </van-nav-bar>
 
     <div class="box">
       <div class="header">Welcome !</div>
@@ -8,11 +17,20 @@
       <van-cell-group>
         <van-field
           class="border-box"
-          clearable
-          v-model="form.phone"
-          :placeholder="$t('+91 手机号')"
+          v-model="form.userName"
+          :placeholder="$t('用户名')"
           input-align="left"
         />
+        <div class="border-box-flex border-box">
+          <div class="border-quhao">
+            +91 <img src="@/assets/image_2024-05-16_19-57-54.png" alt="" />
+          </div>
+          <van-field
+            v-model="form.phone"
+            placeholder="手机号"
+            input-align="left"
+          />
+        </div>
 
         <div class="flex border-box">
           <van-field
@@ -48,11 +66,7 @@
           input-align="left"
         />
       </van-cell-group>
-      <div class="register">
-        <div @click="$router.push('/login')">{{ $t("已有账号，去登录") }}</div>
-        <div @click="$router.push('/password')">{{ $t("忘记密码?") }}</div>
-      </div>
-      <div class="login-button">
+      <div class="logon">
         <van-button
           type="primary"
           block
@@ -61,6 +75,12 @@
           :round="true"
           >{{ $t("注册") }}</van-button
         >
+      </div>
+      <div class="register">
+        <div @click="$router.push('/login')">{{ $t("已有账号，去登录") }}</div>
+        <div @click="$router.push('/password')">{{ $t("忘记密码?") }}</div>
+      </div>
+      <div class="login-button">
         <div class="download" @click="$router.push('/download')">
           {{ $t("下载APP") }}
         </div>
@@ -96,6 +116,12 @@ export default {
     }
   },
   methods: {
+    onClickLeft() {
+      this.$router.go(-1);
+    },
+    onClickRight() {
+      this.$router.push("/lang");
+    },
     iniput(e, name) {
       this.form[name] = e;
     },
@@ -184,7 +210,7 @@ export default {
     background-color: transparent;
 
     .van-cell {
-      line-height: 80px;
+      // line-height: 80px;
       background-color: transparent;
       font-size: 36px;
       // border-bottom: 4px solid #fff;
@@ -203,7 +229,8 @@ export default {
 
     > div:nth-child(1) {
       font-size: 24px;
-      font-family: Adobe Heiti Std, Adobe Heiti Std-R;
+      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
       font-weight: normal;
       text-decoration: underline;
       text-align: left;
@@ -214,7 +241,8 @@ export default {
 
     > div:nth-child(2) {
       font-size: 24px;
-      font-family: PingFang SC, PingFang SC-Regular;
+      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
       font-weight: 400;
       text-align: left;
       color: #00d1cb;
@@ -252,13 +280,55 @@ export default {
     }
   }
 }
+
+::v-deep .van-button--normal {
+  padding: 0 5px;
+}
+
 .border-box {
+  > img {
+    width: 36px;
+    height: 36px;
+  }
   border-bottom: 4px solid #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  .border-quhao {
+    align-items: center;
+    display: flex;
+    padding: 0 20px;
+    width: 165px;
+    height: 53px;
+    line-height: 53px;
+    font-size: 31px;
+    text-align: center;
+    color: #ffffff;
+    background: linear-gradient(0deg, #ff947c 0%, #ffb98c 100%), #498de4;
+    border-radius: 22px;
+    margin-left: 20px;
+    img {
+      width: 30px;
+      height: 30px;
+      margin-left: 10px;
+    }
+  }
 }
-::v-deep .van-button--normal {
-  padding: 0 5px;
+.logon {
+  // width: 50%;
+  margin: 50px auto 0;
+}
+
+:deep(.van-nav-bar) {
+  background-color: transparent;
+  .van-nav-bar__content .van-nav-bar__title {
+    // color: #fff;
+  }
+  .van-icon {
+    color: #fff;
+  }
+}
+::v-deep .van-hairline--bottom::after {
+  border: none;
 }
 </style>

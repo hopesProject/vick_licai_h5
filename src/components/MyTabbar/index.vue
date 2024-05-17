@@ -32,14 +32,6 @@ export default {
           },
         },
         {
-          name: this.$t("收益"),
-          to: "/earnings-record",
-          icon: {
-            active: require("@/assets/Classification1.png"),
-            inactive: require("@/assets/Classification.png"),
-          },
-        },
-        {
           name: this.$t("团队"),
           to: "/team",
           icon: {
@@ -47,6 +39,24 @@ export default {
             inactive: require("@/assets/team.png"),
           },
         },
+        {
+          name: this.$t("产品"),
+          to: "/produc",
+          icon: {
+            active: require("@/assets/jr.png"),
+            inactive: require("@/assets/jr.png"),
+          },
+        },
+        {
+          name: this.$t("收益"),
+          // to: "/earnings-record",
+          to: "/comment",
+          icon: {
+            active: require("@/assets/Classification1.png"),
+            inactive: require("@/assets/Classification.png"),
+          },
+        },
+
         {
           name: this.$t("我的"),
           to: "/my",
@@ -65,7 +75,6 @@ export default {
   },
 
   created() {
-   
     this.tabbar.map((item, index) => {
       if (item.to === this.$route.path) {
         this.active = index;

@@ -98,7 +98,6 @@ export default {
   width: 360px;
   height: 177px;
   font-size: 80px;
-  font-family: zhfyh, zhfyh-Regular;
   font-weight: 400;
   color: #ffffff;
   line-height: 95px;
@@ -128,7 +127,8 @@ export default {
 
 .income {
   font-size: 36px;
-  font-family: Adobe Heiti Std, Adobe Heiti Std-R;
+  font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
   font-weight: normal;
   text-align: center;
   color: #83563a;
@@ -138,7 +138,8 @@ export default {
 .income-title {
   line-height: 60px;
   font-size: 30px;
-  font-family: PingFang SC, PingFang SC-Regular;
+  font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
   font-weight: 400;
   color: #83563a;
 }
@@ -146,7 +147,8 @@ export default {
 .income-txt {
   line-height: 50px;
   font-size: 28px;
-  font-family: PingFang SC, PingFang SC-Regular;
+  font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
   font-weight: 400;
   color: #83563a;
 }

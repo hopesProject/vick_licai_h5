@@ -2,12 +2,17 @@
   <div class="wrapper">
     <img @click="$router.go(-1)" :src="fanhui" alt="" class="fanhui" />
     <div class="title">
-      <div>邀请好友</div>
-      <div>收益多多益善</div>
+      <div>{{ $t("邀请好友") }}</div>
+      <div>{{ $t("收益多多益善") }}</div>
     </div>
-    <div class="invite-bg">
-      <img src="@/assets/invite-icon1.png" alt="">
-      <img class="invite-bg-img" src="@/assets/invite-icon2.png" alt="">
+    <div class="invite-bg" style="height: 150px">
+      <img style="height: 200px" src="@/assets/invite-icon1.png" alt="" />
+      <img
+        style="height: 200px"
+        class="invite-bg-img"
+        src="@/assets/invite-icon2.png"
+        alt=""
+      />
     </div>
     <div class="bonus">
       <!-- <img src="@/assets/invite-icon3.png" alt=""> -->
@@ -21,8 +26,37 @@
         <div>₹ 1237.00</div>
       </div>
       <div class="bonus-button">
-        <van-button type="primary" block color="#FF5148" :round="true">立即领取</van-button>
-        <div class="bonus-button-txt">恭喜1235***985用户领取500.00奖金</div>
+        <van-button type="primary" block color="#FF5148" :round="true"
+          >立即领取</van-button
+        >
+
+        <van-swipe
+          style="height: 20px"
+          vertical
+          :autoplay="3000"
+          indicator-color="white"
+        >
+          <van-swipe-item
+            ><div class="bonus-button-txt">
+              恭喜1235***985用户领取500.00奖金
+            </div></van-swipe-item
+          >
+          <van-swipe-item
+            ><div class="bonus-button-txt">
+              恭喜1235***985用户领取500.030奖金
+            </div></van-swipe-item
+          >
+          <van-swipe-item
+            ><div class="bonus-button-txt">
+              恭喜1235***985用户领取500.040奖金
+            </div></van-swipe-item
+          >
+          <van-swipe-item
+            ><div class="bonus-button-txt">
+              恭喜1235***985用户领取500.050奖金
+            </div></van-swipe-item
+          >
+        </van-swipe>
       </div>
     </div>
     <div class="grade">
@@ -67,9 +101,8 @@
               <span>+</span>
             </div>
             <div>成员规模</div>
-            <img class="invite-bg-img" src="@/assets/invite-icon6.png" alt="">
+            <img class="invite-bg-img" src="@/assets/invite-icon6.png" alt="" />
           </div>
-
         </van-col>
         <van-col span="8">
           <div class="revenue-text">
@@ -78,9 +111,8 @@
               <span>+</span>
             </div>
             <div>有效人群</div>
-            <img class="invite-bg-img" src="@/assets/invite-icon6.png" alt="">
+            <img class="invite-bg-img" src="@/assets/invite-icon6.png" alt="" />
           </div>
-
         </van-col>
         <van-col span="8">
           <div class="revenue-text">
@@ -89,32 +121,32 @@
               <span>w</span>
             </div>
             <div>团队收益</div>
-            <img class="invite-bg-img" src="@/assets/invite-icon6.png" alt="">
+            <img class="invite-bg-img" src="@/assets/invite-icon6.png" alt="" />
           </div>
-
         </van-col>
       </van-row>
     </div>
     <div class="prompt">
       <div class="prompt-txt">
-        lorem ipsum dolor slt amet,consecectetur adipiscing elit,seddoeiusmod tempor incididunt ut labore magna allqua.
+        lorem ipsum dolor slt amet,consecectetur adipiscing elit,seddoeiusmod
+        tempor incididunt ut labore magna allqua.
       </div>
     </div>
   </div>
 </template>
 <script>
 export default {
-  data () {
+  data() {
     return {
       fanhui: require("@/assets/fanhui.png"),
-    }
+    };
   },
   methods: {
-    onClickLeft () {
+    onClickLeft() {
       this.$router.go(-1);
-    }
-  }
-}
+    },
+  },
+};
 </script>
 <style lang="scss" scoped>
 .wrapper {
@@ -135,7 +167,7 @@ export default {
 
 .title {
   width: 640px;
-  height: 258px;
+  height: 148px;
   background: rgba(255, 255, 255, 0.32);
   border-radius: 26px;
   box-shadow: -1px 0px 1px 1px #ffffff inset;
@@ -144,18 +176,21 @@ export default {
   left: 50%;
   transform: translateX(-50%);
   z-index: 9;
-
-  >div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  > div {
     color: #ffffff;
     text-shadow: 0.33px 0.95px 0px 0.55px #eb6941 inset;
-    font-size: 90px;
+    font-size: 45px;
     text-align: center;
-    line-height: 120px;
+    line-height: 60px;
   }
 }
 
 .invite-bg {
-  position: relative;
+  // position: relative;
 
   .invite-bg-img {
     position: absolute;
@@ -190,12 +225,12 @@ export default {
     padding-top: 50px;
     text-align: center;
 
-    >div:nth-child(1) {
+    > div:nth-child(1) {
       font-size: 25px;
       color: #343434;
     }
 
-    >div:nth-child(2) {
+    > div:nth-child(2) {
       font-size: 33px;
       color: #c6262d;
     }
@@ -269,20 +304,20 @@ export default {
   align-items: center;
   padding-top: 40px;
 
-  >div:nth-child(1) {
+  > div:nth-child(1) {
     font-size: 79px;
 
-    >span:nth-child(2) {
+    > span:nth-child(2) {
       font-size: 29px;
       vertical-align: top;
     }
   }
 
-  >div:nth-child(2) {
+  > div:nth-child(2) {
     font-size: 22px;
   }
 
-  >img {
+  > img {
     width: 104px;
     height: 82px;
   }
@@ -297,7 +332,7 @@ export default {
   .prompt-txt {
     width: 721px;
     height: 160px;
-    background: rgba(255, 255, 255, 0.80);
+    background: rgba(255, 255, 255, 0.8);
     border: 2.08px solid #f3bc9d;
     border-radius: 20px;
     box-shadow: -4px 0px 11px 4px rgba(205, 85, 51, 0.12);
@@ -305,5 +340,8 @@ export default {
     color: #a64f10;
     padding: 20px 50px;
   }
+}
+:deep(.van-swipe__indicators--vertical) {
+  display: none;
 }
 </style>

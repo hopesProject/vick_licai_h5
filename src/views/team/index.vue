@@ -3,8 +3,11 @@
     <!-- <come-back :title="$t('我的团队')" /> -->
     <van-nav-bar :title="$t('我的团队')" left-arrow @click-left="onClickLeft" />
     <div class="header">
-      <div>团队凝聚力是做好事情的源头</div>
-      <div>疑人勿用，用人勿疑</div>
+      <div>推荐的1级会员返回收益</div>
+      <div>
+        推荐的2级会员返回收益
+        <p>推荐的3级会员返回收益</p>
+      </div>
       <div></div>
       <van-tabs v-model="active" class="box-tabs" line-height="0">
         <van-tab :title="$t('1级成员')" :name="1"></van-tab>
@@ -118,7 +121,7 @@ export default {
   background-image: url("@/assets/team-bg.png");
   background-size: 100%;
   font-weight: 600;
-  font-family: PingFangSC, PingFangSC-Semibold;
+
   padding: 0 40px;
   position: relative;
 

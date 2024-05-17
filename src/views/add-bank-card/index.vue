@@ -3,37 +3,68 @@
     <div class="header">
       <van-icon name="arrow-left" @click="$router.go(-1)" />
       <div>完成资料添加银行卡</div>
-      <img src="@/assets/add-bank-bg.png" alt="">
+      <img src="@/assets/add-bank-bg.png" alt="" />
     </div>
     <div class="box">
       <van-cell-group class="form-field">
-        <van-field v-model="form.xm" label="姓名" placeholder="请输入姓名" label-width="80" />
-        <van-field v-model="form.sjh" label="手机号" placeholder="请输入手机号" label-width="80" />
-        <van-field v-model="form.yhmc" label="银行名称" placeholder="请在这里输入......" label-width="80" />
-        <van-field v-model="form.yhkh" label="银行卡号" placeholder="请在这里输入......" label-width="80" />
-        <van-field v-model="form.gjjrfwzx" label="国际金融服务中心" placeholder="请输入输入......" label-width="150" />
+        <van-field
+          v-model="form.xm"
+          label="姓名"
+          placeholder="请输入姓名"
+          label-width="80"
+        />
+        <van-field
+          v-model="form.sjh"
+          label="手机号"
+          placeholder="请输入手机号"
+          label-width="80"
+        />
+        <van-field
+          v-model="form.yhmc"
+          label="银行名称"
+          placeholder="请在这里输入......"
+          label-width="80"
+        />
+        <van-field
+          v-model="form.yhkh"
+          label="银行卡号"
+          placeholder="请在这里输入......"
+          label-width="80"
+        />
+        <van-field
+          v-model="form.gjjrfwzx"
+          label="国际金融服务中心"
+          placeholder="请输入输入......"
+          label-width="150"
+        />
       </van-cell-group>
       <div class="submit-button">
-        <van-button type="primary" block color="linear-gradient(0deg,#ff947c 0%, #ffb98c 100%), #00a8ff" :round="true"
-          @click="popupShow = true">提交</van-button>
+        <van-button
+          type="primary"
+          block
+          color="linear-gradient(0deg,#ff947c 0%, #ffb98c 100%), #00a8ff"
+          :round="true"
+          @click="popupShow = true"
+          >提交</van-button
+        >
       </div>
     </div>
   </div>
 </template>
 <script>
 export default {
-  data () {
+  data() {
     return {
       form: {
-        xm: '',
-        sjh: '',
-        yhmc: '',
-        yhkh: '',
-        gjjrfwzx: '',
-      }
-    }
-  }
-}
+        xm: "",
+        sjh: "",
+        yhmc: "",
+        yhkh: "",
+        gjjrfwzx: "",
+      },
+    };
+  },
+};
 </script>
 <style lang="scss" scoped>
 .wrapper {
@@ -48,9 +79,9 @@ export default {
     padding: 34px 0 0 34px;
   }
 
-  background-color: #EBF9FC;
+  background-color: #ebf9fc;
 
-  >div {
+  > div {
     color: #999999;
     font-weight: 500;
     text-align: center;
@@ -60,8 +91,7 @@ export default {
 
 .box {
   flex: 1;
-  background: linear-gradient(to bottom, #ffffff, #F9D9D2);
-
+  background: linear-gradient(to bottom, #ffffff, #f9d9d2);
 }
 
 .form-field {
@@ -75,7 +105,8 @@ export default {
     background-color: transparent;
 
     :deep(.van-field__label) {
-      font-family: PingFang SC, PingFang SC-Regular;
+      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
       font-weight: 500;
       color: #333333;
     }

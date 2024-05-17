@@ -3,7 +3,7 @@ import VueI18n from "vue-i18n";
 //引入自定义语言配置
 import zh from "./zh.json";
 import en from "./en.json";
-import Cookies from "js-cookie";
+import hi from "./hi.json";
 import store from "@/store";
 Vue.use(VueI18n); // 全局注册国际化包
 
@@ -17,6 +17,9 @@ const i18n = new VueI18n({
     },
     en: {
       ...en,
+    },
+    hi: {
+      ...hi,
     },
   },
   silentTranslationWarn: true, //解决vue-i18n黄色警告"value of key 'xxx' is not a string"和"cannot translate the value of keypath 'xxx'.use the value of keypath as default",可忽略

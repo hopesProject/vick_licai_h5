@@ -2,12 +2,16 @@
   <div class="page">
     <header>
       <van-row>
-        <van-col span="12">
-          <div class="phone">{{ userInfo.phone | _phoneSubstring }}</div>
-          <div class="Id">{{ $t("ID账号：") }}{{ userInfo.code }}</div>
+        <van-col span="16">
+          <div class="phone">
+            <div style="margin-right: 10px">
+              {{ userInfo.phone | _phoneSubstring }}
+            </div>
+            <div class="vip">VIP{{ userInfo.vip }}</div>
+          </div>
+          <!-- <div class="Id">{{ $t("ID账号：") }}{{ userInfo.code }}</div> -->
           <div>
             {{ $t("邀请码：") }}{{ userInfo.invitationCode }}
-
             <span
               class="fz"
               v-clipboard:copy="userInfo.invitationCode"
@@ -16,13 +20,12 @@
             >
           </div>
         </van-col>
-        <van-col span="12" class="flex flex-col items-end">
-          <div class="vip">VIP{{ userInfo.vip }}</div>
+        <van-col span="6" class="flex flex-col items-end">
           <div class="img">
-            <!-- <img :src="userInfo.img" alt="" /> -->
-            <img
-              src="https://t7.baidu.com/it/u=4036010509,3445021118&fm=193&f=GIF"
-              alt=""
+            <van-uploader
+              upload-icon="https://img01.yzcdn.cn/vant/sand.jpg"
+              preview-size="40px"
+              :after-read="afterRead"
             />
           </div>
         </van-col>
@@ -112,8 +115,10 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 import clipboard2 from "@/mixins/clipboard2";
+import { Dialog } from "vant";
+import { fileUpload } from "@/api";
 
 export default {
   mixins: [clipboard2],
@@ -172,6 +177,16 @@ export default {
           name: this.$t("关于"),
           router: "",
         },
+        {
+          img: require("@/assets/dc.png"),
+          name: this.$t("登出"),
+          router: "dc",
+        },
+        {
+          img: "",
+          name: this.$t(""),
+          router: "",
+        },
       ];
     },
   },
@@ -186,7 +201,32 @@ export default {
   },
   methods: {
     ...mapActions(["getUserInfo"]),
+    ...mapMutations(["OUT_TOKEN"]),
+    // 文件读取完成后触发
+
+    async afterRead(file) {
+      // 此时可以自行将文件上传至服务器
+      const formData = new FormData();
+      formData.append("file", file.file); // file.file 包含文件的原始数据
+      console.log(formData, file);
+      const res = await fileUpload({ file: formData });
+    },
     goRouter(key) {
+      if (key === "dc") {
+        return Dialog.confirm({
+          message: this.$t("是否登出？"),
+          confirmButtonText: this.$t("确认"),
+          cancelButtonText: this.$t("取消"),
+          beforeClose: (action, done) => {
+            if (action === "confirm") {
+              this.OUT_TOKEN();
+              done();
+            } else {
+              done();
+            }
+          },
+        });
+      }
       if (key) {
         this.$router.push(key);
       }
@@ -227,8 +267,9 @@ main {
     }
 
     .span {
-      font-size: 24px;
-      font-family: PingFang SC, PingFang SC-Regular;
+      font-size: 18px;
+      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
       font-weight: 400;
       text-align: left;
       color: #333333;
@@ -243,7 +284,8 @@ main {
       padding-bottom: 20px;
 
       font-size: 30px;
-      font-family: PingFang SC, PingFang SC-Regular;
+      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
       font-weight: 400;
       text-align: left;
       color: #333333;
@@ -262,7 +304,8 @@ main {
     background-size: 100%;
     background-repeat: no-repeat;
     font-size: 36px;
-    font-family: PingFang SC, PingFang SC-Regular;
+    font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
     font-weight: 400;
     text-align: left;
     color: #ffffff;
@@ -276,7 +319,7 @@ main {
 
     .tuceng7text1 {
       font-size: 26px;
-      font-family: PingFang SC, PingFang SC-Regular;
+      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
       font-weight: 400;
       text-align: left;
       color: #ffffff;
@@ -285,7 +328,6 @@ main {
       margin-left: 302px;
     }
   }
-
   .my-earnings {
     width: 691px;
     height: 228px;
@@ -293,12 +335,11 @@ main {
     border-radius: 10px;
     margin: 21px auto 30px;
     overflow: hidden;
-
     .earning-list {
       width: 580px;
       margin: 0 auto;
-      font-size: 31px;
-      font-family: PingFang SC, PingFang SC-Regular;
+      font-size: 20px;
+      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
       font-weight: 400;
       text-align: center;
       color: #f6a582;
@@ -324,7 +365,8 @@ main {
 
         .text {
           font-size: 20px;
-          font-family: PingFang SC, PingFang SC-Regular;
+          font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
           font-weight: 400;
 
           line-height: 17px;
@@ -349,7 +391,8 @@ main {
       padding-bottom: 20px;
 
       font-size: 30px;
-      font-family: PingFang SC, PingFang SC-Regular;
+      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
       font-weight: 400;
       text-align: left;
       color: #333333;
@@ -377,8 +420,9 @@ main {
 
       background: #87593c;
       border-radius: 33px;
-      font-size: 26px;
-      font-family: Adobe Heiti Std, Adobe Heiti Std-R;
+      font-size: 15px;
+      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
       font-weight: normal;
       color: #ffead1;
       letter-spacing: -0.52px;
@@ -399,7 +443,8 @@ main {
       padding: 25px 0 0 38px;
       display: flex;
       font-size: 30px;
-      font-family: Adobe Heiti Std, Adobe Heiti Std-R;
+      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
       font-weight: normal;
       text-align: left;
       color: #333333;
@@ -410,7 +455,8 @@ main {
 
         span {
           font-size: 37px;
-          font-family: PingFang SC, PingFang SC-Regular;
+          font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
           font-weight: 400;
           text-align: left;
           color: #666666;
@@ -420,7 +466,8 @@ main {
 
       .jine {
         font-size: 22px;
-        font-family: Adobe Heiti Std, Adobe Heiti Std-R;
+        font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
         font-weight: normal;
         text-align: left;
         color: #999999;
@@ -450,7 +497,8 @@ main {
 header {
   padding: 0 30px;
   font-size: 30px;
-  font-family: Adobe Heiti Std, Adobe Heiti Std-R;
+  font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
   font-weight: normal;
   text-align: left;
   color: #ffffff;
@@ -465,10 +513,12 @@ header {
     text-align: center;
     background: linear-gradient(0deg, #ff947c 0%, #ffb98c 100%);
     font-size: 36px;
-    font-family: PingFang SC, PingFang SC-Regular;
+    font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
     font-weight: bold;
     color: #f4f4f4;
-    margin-bottom: 27px;
+    // margin-left: 30px;
+    // margin-bottom: 27px;
   }
 
   .img {
@@ -482,8 +532,11 @@ header {
   }
 
   .phone {
+    display: flex;
+    align-items: center;
     font-size: 46px;
-    font-family: Adobe Heiti Std, Adobe Heiti Std-R;
+    font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
     font-weight: normal;
     text-align: left;
     color: #ffffff;
@@ -492,7 +545,8 @@ header {
 
   .Id {
     font-size: 24px;
-    font-family: PingFang SC, PingFang SC-Regular;
+    font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
     font-weight: 400;
     text-align: left;
     color: #ffffff;
@@ -501,6 +555,14 @@ header {
 
   .fz {
     text-decoration: underline;
+  }
+}
+
+:deep(.van-uploader__upload) {
+  border-radius: 50%;
+  overflow: hidden;
+  .van-uploader__upload-icon {
+    font-size: 88px;
   }
 }
 </style>

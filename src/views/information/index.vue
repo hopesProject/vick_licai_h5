@@ -45,7 +45,6 @@ export default {
     padding: 15px 18px;
     display: flex;
     font-size: 27px;
-    font-family: SourceHanSansSC, SourceHanSansSC-Medium;
     font-weight: 500;
     color: #333333;
     .right-box {

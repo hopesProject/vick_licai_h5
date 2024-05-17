@@ -97,7 +97,8 @@ export default {
     margin: 0 auto;
     margin-top: 24px;
     font-size: 34px;
-    font-family: Adobe Heiti Std, Adobe Heiti Std-R;
+    font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
     font-weight: normal;
     text-align: left;
     color: #ffffff;
@@ -106,7 +107,8 @@ export default {
 
     .header-box {
       font-size: 34px;
-      font-family: Adobe Heiti Std, Adobe Heiti Std-R;
+      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
       font-weight: normal;
       color: #ffffff;
       line-height: 34px;
@@ -116,7 +118,8 @@ export default {
 
     .text {
       font-size: 26px;
-      font-family: Adobe Heiti Std, Adobe Heiti Std-R;
+      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
       font-weight: bold;
       text-align: left;
       color: #ffffff;
@@ -131,7 +134,8 @@ export default {
     margin: 0 auto;
     margin-top: 24px;
     font-size: 34px;
-    font-family: Adobe Heiti Std, Adobe Heiti Std-R;
+    font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
     font-weight: normal;
     text-align: left;
     color: #ffffff;
@@ -145,7 +149,8 @@ export default {
       border-radius: 40px;
       box-shadow: -10px 0px 17px 1.5px rgba(20, 7, 0, 0.1);
       font-size: 33px;
-      font-family: PingFang SC, PingFang SC-Regular;
+      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
       font-weight: 400;
       text-align: left;
       color: #222222;
@@ -155,7 +160,8 @@ export default {
 
       .right-text {
         font-size: 26px;
-        font-family: PingFang SC, PingFang SC-Regular;
+        font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
         font-weight: 400;
         text-align: left;
         color: #ff977c;
@@ -172,7 +178,8 @@ export default {
         top: 40px;
         left: 45px;
         font-size: 19px;
-        font-family: PingFang SC, PingFang SC-Regular;
+        font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
         font-weight: bold;
         text-align: left;
         color: #ffffff;
@@ -188,7 +195,8 @@ export default {
 
   header {
     font-size: 145px;
-    font-family: Adobe Heiti Std, Adobe Heiti Std-R;
+    font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
     font-weight: bold;
     text-align: center;
     color: #fefefe;
@@ -204,7 +212,8 @@ export default {
     background: #ffffff;
     border-radius: 27px;
     font-size: 30px;
-    font-family: Adobe Heiti Std, Adobe Heiti Std-R;
+    font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+
     font-weight: normal;
     text-align: center;
     color: #fc8c70;
