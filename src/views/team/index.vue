@@ -3,10 +3,10 @@
     <!-- <come-back :title="$t('我的团队')" /> -->
     <van-nav-bar :title="$t('我的团队')" left-arrow @click-left="onClickLeft" />
     <div class="header">
-      <div>推荐的1级会员返回收益</div>
+      <div>{{ $t("推荐的1级会员返回收益") }}</div>
       <div>
-        推荐的2级会员返回收益
-        <p>推荐的3级会员返回收益</p>
+        {{ $t("推荐的2级会员返回收益") }}
+        <p>{{ $t("推荐的3级会员返回收益") }}</p>
       </div>
       <div></div>
       <van-tabs v-model="active" class="box-tabs" line-height="0">

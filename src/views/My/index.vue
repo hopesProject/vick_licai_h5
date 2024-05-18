@@ -87,9 +87,9 @@
       </div>
 
       <!-- 图层 7.png -->
-      <div class="tuceng7">
-        <div class="tuceng7text">标语标语标语</div>
-        <div class="tuceng7text1">标语标语</div>
+      <div class="tuceng7" @click="$router.push('/share')">
+        <div class="tuceng7text">{{ $t("邀请奖励") }}</div>
+        <div class="tuceng7text1"></div>
       </div>
 
       <div class="accessibility">
@@ -119,6 +119,7 @@ import { mapGetters, mapActions, mapMutations } from "vuex";
 import clipboard2 from "@/mixins/clipboard2";
 import { Dialog } from "vant";
 import { fileUpload } from "@/api";
+import axios from "axios";
 
 export default {
   mixins: [clipboard2],
@@ -208,8 +209,20 @@ export default {
       // 此时可以自行将文件上传至服务器
       const formData = new FormData();
       formData.append("file", file.file); // file.file 包含文件的原始数据
-      console.log(formData, file);
-      const res = await fileUpload({ file: formData });
+      try {
+        const res = await axios.post(
+          process.env.VUE_APP_BASE_APIS + "/file/upload",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        if (res.status === 0) {
+        }
+      } catch (error) {}
     },
     goRouter(key) {
       if (key === "dc") {
@@ -313,6 +326,8 @@ main {
     overflow: hidden;
 
     .tuceng7text {
+      width: 230px;
+      text-align: center;
       margin-top: 35px;
       margin-left: 246px;
     }

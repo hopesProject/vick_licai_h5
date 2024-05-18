@@ -7,9 +7,15 @@
     />
 
     <div class="box">
-      <div class="item-box"></div>
-
+      <div v-if="userInfo.bankCard" class="item-box">
+        <div class="card-box">
+          <p>{{ $t("银行卡号：") }}{{ userInfo.bankCard }}</p>
+          <p>{{ $t("IFSC：") }}{{ userInfo.ifsc }}</p>
+          <p>{{ $t("银行卡名称：") }}{{ userInfo.bankName }}</p>
+        </div>
+      </div>
       <img
+        v-else
         src="@/assets/addbank.png"
         alt=""
         @click="$router.push('/add-bank-card')"
@@ -19,11 +25,20 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+
 export default {
   data() {
     return {};
   },
+  mounted() {
+    this.getUserInfo();
+  },
+  computed: {
+    ...mapGetters(["userInfo"]),
+  },
   methods: {
+    ...mapActions(["getUserInfo"]),
     onClickLeft() {
       this.$router.go(-1);
     },
@@ -43,6 +58,15 @@ export default {
   background-size: 84px 29px;
   background-repeat: no-repeat;
   background-position: left 38px bottom 63px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 30px;
+  // font-family: SourceHanSansSC, SourceHanSansSC-Normal;
+  font-weight: normal;
+  text-align: left;
+  color: #ffffff;
+  padding-right: 50px;
 }
 
 .item-box1 {

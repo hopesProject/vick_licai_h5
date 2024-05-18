@@ -18,11 +18,18 @@
         <van-tab title="账户" name="b"></van-tab>
       </van-tabs>
       <van-cell-group>
-        <div class="border-box-flex border-box">
+        <div class="border-box-flex border-box" v-if="activeName == 'a'">
           <div class="border-quhao">+91</div>
           <van-field
             v-model="form.phone"
             placeholder="输入账号手机号"
+            input-align="left"
+          />
+        </div>
+        <div class="border-box-flex border-box" v-if="activeName == 'b'">
+          <van-field
+            v-model="form.phone"
+            placeholder="请输入用户名"
             input-align="left"
           />
         </div>
@@ -62,6 +69,14 @@ import PasswordInput from "@/components/PasswordInput/index.vue";
 
 export default {
   components: { PasswordInput },
+  watch: {
+    activeName() {
+      this.form = {
+        phone: "",
+        password: "",
+      };
+    },
+  },
   data() {
     return {
       loading: false,
@@ -95,7 +110,10 @@ export default {
         const res = await login(this.form);
         if (res.status == 0) {
           this.getLogin(res.data);
-          this.$router.push("/");
+          Toast.success(this.$t("登录成功"));
+          setTimeout(() => {
+            this.$router.push("/");
+          }, 1500);
         }
       } catch (error) {
         this.loading = false;

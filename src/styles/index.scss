@@ -32,3 +32,10 @@ body {
 .van-list__loading {
   min-height: 200px;
 }
+
+.text-container {
+  width: 500px;
+  white-space: nowrap; /* 禁止文本换行 */
+  overflow: hidden; /* 隐藏溢出文本 */
+  text-overflow: ellipsis; /* 使用省略号表示溢出的文本 */
+}

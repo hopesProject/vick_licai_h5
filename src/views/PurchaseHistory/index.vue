@@ -14,6 +14,10 @@
       </div>
     </header>
     <main>
+      <van-tabs v-model="active" class="box-tabs" line-height="0">
+        <van-tab :title="$t('进行中')" :name="0"></van-tab>
+        <van-tab :title="$t('已完成')" :name="1"></van-tab>
+      </van-tabs>
       <van-pull-refresh
         :pulling-text="$t('下拉即可刷新...')"
         :loosing-text="$t('释放即可刷新...')"
@@ -69,8 +73,15 @@ export default {
   computed: {
     ...mapGetters(["userInfo"]),
   },
+  watch: {
+    active() {
+      this.pageNum = 1;
+      this.getList();
+    },
+  },
   data() {
     return {
+      active: 1,
       data: [],
     };
   },
@@ -80,7 +91,11 @@ export default {
   methods: {
     async getList(isRefreshing) {
       let pageNum = this.pageNum;
-      const res = await productRecord();
+      const res = await productRecord({
+        pageSize: this.pageSize,
+        pageNum: this.pageNum,
+        isComplete: this.active,
+      });
       if (isRefreshing) {
         this.refreshing = false;
       }
@@ -88,9 +103,9 @@ export default {
       try {
         if (res?.status === 0) {
           if (pageNum !== 1) {
-            this.data = [...this.data, ...res.data];
+            this.data = [...this.data, ...res.data.list];
           } else {
-            this.data = res.data;
+            this.data = res.data.list;
           }
         }
         // if (this.data.length >= res.data.total) {
@@ -183,6 +198,8 @@ header {
     background-image: url("@/assets/波浪 拷贝.png");
     background-repeat: no-repeat;
     background-position: bottom left;
+    background-size: 100% 100%;
+
   }
   .id-img {
     font-size: 24px;
@@ -213,5 +230,34 @@ header {
 
 ::v-deep .van-nav-bar__content {
   background-color: #ecfafc;
+}
+.box-tabs {
+  padding: 0 40px;
+
+  width: 100%;
+  z-index: 100;
+
+  :deep(.van-tabs__wrap) {
+    border-radius: 40px;
+    height: 88px;
+    box-shadow: -10px 0px 17px 1.5px rgba(20, 7, 0, 0.1);
+
+    .van-tab {
+      font-size: 30px;
+      color: #999999;
+
+      .van-tab__text {
+        height: 80px;
+        line-height: 80px;
+      }
+    }
+
+    .van-tab--active {
+      margin: 4px;
+      background: linear-gradient(0deg, #ff957c 0%, #ffba8b 100%), #ffffff;
+      border-radius: 40px;
+      color: #ffffff;
+    }
+  }
 }
 </style>

@@ -1,43 +1,20 @@
 <template>
   <div>
-    <van-nav-bar
-      :title="$t('发布')"
-      :right-text="$t('规则')"
-      left-arrow
-      @click-left="onClickLeft"
-      @click-right="onClickRight"
-    />
+    <van-nav-bar :title="$t('规则')" left-arrow @click-left="onClickLeft" />
 
     <main>
-      <van-field
-        v-model="form.comment"
-        rows="5"
-        autosize
-        type="textarea"
-        maxlength="50"
-        :placeholder="$t('发布动态 记录这一刻，晒给懂你的人……')"
-        show-word-limit
-      />
-
-      <div class="main">
-        <van-uploader
-          v-if="!form.img"
-          multiple
-          :max-count="1"
-          :after-read="afterRead"
-        />
-        <van-image v-else width="100" height="100" :src="form.img" />
-        <div>
-          <van-rate
-            v-model="form.start"
-            allow-half
-            void-icon="star"
-            void-color="#eee"
-          />
-        </div>
-        <div class="but-box">
-          <van-button type="primary" @click="set">{{ $t("发布") }}</van-button>
-        </div>
+      <div class="explain">
+        <p>Share withdrawal screenshots to earn cash rewards</p>
+        <p>
+          Method 1. Send your latest successful withdrawal screenshot to the
+          comment area, and you will receive a reward of 10-1000Rs immediately
+          after passing the review.
+        </p>
+        <p>
+          Method 2. Write your experience in the comment area and tell other
+          users how much money you have earned here. After passing the review,
+          you will receive a reward of 5-500Rs.
+        </p>
       </div>
     </main>
   </div>
@@ -52,13 +29,6 @@ export default {
   data() {
     return {
       form: { comment: "", img: "", start: 0 },
-      fileList: [
-        {
-          url: "https://img01.yzcdn.cn/vant/leaf.jpg",
-          status: "uploading",
-          message: "上传中...",
-        },
-      ],
     };
   },
   methods: {
@@ -74,9 +44,7 @@ export default {
         }, 1500);
       }
     },
-    onClickRight() {
-      this.$router.push("/rule");
-    },
+    onClickRight() {},
     onClickLeft() {
       this.$router.go(-1);
     },
@@ -115,11 +83,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.main {
+main {
   padding: 20px;
-}
-.but-box {
-  display: flex;
-  justify-content: flex-end;
 }
 </style>

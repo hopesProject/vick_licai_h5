@@ -8,59 +8,120 @@
     <div class="box">
       <van-cell-group class="form-field">
         <van-field
-          v-model="form.xm"
-          label="姓名"
-          placeholder="请输入姓名"
+          v-model="form.realName"
+          :label="$t('姓名')"
+          :placeholder="$t('请输入姓名')"
           label-width="80"
         />
         <van-field
-          v-model="form.sjh"
-          label="手机号"
-          placeholder="请输入手机号"
+          v-model="userInfo.phone"
+          :label="$t('手机号')"
+          label-width="80"
+          readonly
+        />
+        <van-field
+          v-model="form.bankName"
+          :label="$t('银行名称')"
+          :placeholder="$t('请输入银行名称')"
           label-width="80"
         />
         <van-field
-          v-model="form.yhmc"
-          label="银行名称"
-          placeholder="请在这里输入......"
+          v-model="form.bankCard"
+          :label="$t('银行卡号')"
+          :placeholder="$t('请输入银行卡')"
           label-width="80"
         />
         <van-field
-          v-model="form.yhkh"
-          label="银行卡号"
-          placeholder="请在这里输入......"
+          v-model="form.ifsc"
+          label="NFSC"
+          placeholder="IFSC"
           label-width="80"
         />
         <van-field
-          v-model="form.gjjrfwzx"
-          label="国际金融服务中心"
-          placeholder="请输入输入......"
-          label-width="150"
-        />
+          v-model="form.code"
+          center
+          clearable
+          :label="$t('短信验证码')"
+          :placeholder="$t('请输入短信验证码')"
+        >
+          <template #button>
+            <van-button size="small" type="primary" @click="sendCode">
+              {{ $t(codeButTexst) }}
+            </van-button>
+          </template>
+        </van-field>
       </van-cell-group>
+
       <div class="submit-button">
         <van-button
           type="primary"
           block
           color="linear-gradient(0deg,#ff947c 0%, #ffb98c 100%), #00a8ff"
           :round="true"
-          @click="popupShow = true"
-          >提交</van-button
+          @click="submit"
         >
+          提交
+        </van-button>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { bindBankCard, sendCode } from "@/api";
+import { Toast } from "vant";
+import { mapGetters } from "vuex";
+
 export default {
+  methods: {
+    async sendCode() {
+      if (this.codeButTexst !== "发送验证码") {
+        return;
+      }
+      if (this.userInfo.phone) {
+        const res = await sendCode({
+          phoneNumber: this.userInfo.phone,
+        });
+        if (res.status === 0) {
+          Toast(this.$t("验证码发送成功"));
+          this.codeButTexst = 60;
+          this.tiem = setInterval(() => {
+            this.codeButTexst = this.codeButTexst - 1;
+            if (this.codeButTexst === 0) {
+              this.codeButTexst = "发送验证码";
+              clearInterval(this.tiem);
+            }
+          }, 1000);
+        }
+      }
+    },
+    async submit() {
+      const res = await bindBankCard(this.form);
+      if (res.status === 0) {
+        Toast(this.$t("绑定银行卡成功"));
+      } else {
+        Toast(this.$t(res.data.msg));
+      }
+    },
+  },
+  computed: {
+    ...mapGetters(["userInfo"]),
+  },
+  beforeDestroy() {
+    if (this.tiem) {
+      clearInterval(this.tiem);
+      this.tiem = null;
+    }
+  },
   data() {
     return {
+      tiem: null,
+      codeButTexst: "发送验证码",
       form: {
-        xm: "",
-        sjh: "",
-        yhmc: "",
-        yhkh: "",
-        gjjrfwzx: "",
+        ifsc: "",
+        bankCard: "",
+        realName: "",
+        bankName: "",
+        code: "",
       },
     };
   },
@@ -98,7 +159,7 @@ export default {
   background-color: transparent;
 
   .van-cell {
-    height: 150px;
+    height: 130px;
     font-size: 36px;
     display: flex;
     align-items: center;

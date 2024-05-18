@@ -20,34 +20,58 @@
       </div>
     </div>
     <div class="content-warp">
-      <div class="content-item" v-for="(item, index) in data" :key="index">
-        <div class="img-box">
-          <p><span> VIP1 </span></p>
-          <img :src="item.img" alt="" />
-        </div>
-        <div class="item-text">
-          <div>{{ $t("产品基金代码：") }}{{ item.id }}</div>
-          <div class="text1">{{ $t("购买价格：") }}{{ item.price }}</div>
-          <div class="text2">
-            <div>
-              {{ $t("日收入：") }}
-              {{ item.dailyProductRevenue | _toLocaleString(false) }}
+      <van-pull-refresh
+        :pulling-text="$t('下拉即可刷新...')"
+        :loosing-text="$t('释放即可刷新...')"
+        :loading-text="$t('加载中...')"
+        v-model="refreshing"
+        @refresh="onRefresh"
+      >
+        <van-list
+          v-model="loading"
+          :finished="finished"
+          :finished-text="$t('没有更多了')"
+          :loading-text="$t('加载中...')"
+          @load="onLoad"
+        >
+          <van-cell v-for="item in data" :key="item.id">
+            <div class="content-item">
+              <div class="img-box">
+                <p><span> VIP1 </span></p>
+                <img :src="item.img" alt="" />
+              </div>
+              <div class="item-text">
+                <div>{{ $t("产品基金代码：") }}{{ item.id }}</div>
+                <div class="text1">{{ $t("购买价格：") }}{{ item.price }}</div>
+                <div class="text2">
+                  <div>
+                    {{ $t("日收入：") }}
+                    {{ item.dailyProductRevenue | _toLocaleString(false) }}
+                  </div>
+                  <div>
+                    {{ $t("累计收入：") }}
+                    {{
+                      (item.dailyProductRevenue * item.cycle)
+                        | _toLocaleString(false)
+                    }}
+                  </div>
+                </div>
+              </div>
+              <div
+                v-if="token"
+                class="goumai-but"
+                @click="purchaseShowClick(item)"
+              >
+                {{ $t("购买") }}
+              </div>
+              <div v-else class="goumai-but" @click="$router.push('/login')">
+                {{ $t("登录") }}
+              </div>
             </div>
-            <div>
-              {{ $t("累计收入：") }}
-              {{
-                (item.dailyProductRevenue * item.cycle) | _toLocaleString(false)
-              }}
-            </div>
-          </div>
-        </div>
-        <div v-if="token" class="goumai-but" @click="purchaseShowClick(item)">
-          {{ $t("购买") }}
-        </div>
-        <div v-else class="goumai-but" @click="$router.push('/login')">
-          {{ $t("登录") }}
-        </div>
-      </div>
+          </van-cell>
+          <!-- <div slot="finished"></div> -->
+        </van-list>
+      </van-pull-refresh>
     </div>
     <!-- 购买弹窗 -->
     <van-overlay :show="purchaseShow" class="purchase">
@@ -126,8 +150,11 @@
 import { buyProduct, productqueryProductClassify } from "@/api";
 import { Toast } from "vant";
 import { mapGetters } from "vuex";
+import refresh from "@/mixins/refresh";
 
 export default {
+  mixins: [refresh],
+
   computed: {
     ...mapGetters(["token", "userInfo"]),
     tabs() {
@@ -149,7 +176,7 @@ export default {
     };
   },
   mounted() {
-    this.getlist();
+    // this.getlist();
   },
   methods: {
     async ljizhifu() {
@@ -168,22 +195,48 @@ export default {
         this.purchaseShow = false;
       }
     },
-
-    async getlist() {
-      this.data = [];
-      let id = this.tabsAcitve;
-      const res = await productqueryProductClassify({ id: this.tabsAcitve });
-      if (res.status === 0 && this.tabsAcitve === id) {
-        this.data = res.data;
+    async getList(isRefreshing) {
+      let pageNum = this.pageNum;
+      const res = await productqueryProductClassify({
+        id: this.tabsAcitve,
+        pageSize: this.pageSize,
+        pageNum: this.pageNum,
+      });
+      if (isRefreshing) {
+        this.refreshing = false;
+      }
+      this.loading = false;
+      try {
+        if (res?.status === 0) {
+          if (pageNum !== 1) {
+            this.data = [...this.data, ...res.data];
+          } else {
+            this.data = res.data;
+          }
+        }
+        // if (this.data.length >= res.data.total) {
+        this.finished = true;
+        // }
+      } catch (error) {
+        this.finished = true;
       }
     },
+    // async getlist() {
+    //   this.data = [];
+    //   let id = this.tabsAcitve;
+    //   const res = await productqueryProductClassify({ id: this.tabsAcitve });
+    //   if (res.status === 0 && this.tabsAcitve === id) {
+    //     this.data = res.data;
+    //   }
+    // },
     async purchaseShowClick(item) {
       this.purchaseShow = true;
       this.purchaseShowData = item;
     },
     tabsClick(item) {
+      this.pageNum = 1;
       this.tabsAcitve = item;
-      this.getlist();
+      this.getList();
     },
   },
 };
@@ -282,7 +335,7 @@ export default {
   padding-bottom: 300px;
 
   .content-item {
-    width: 710px;
+    // width: 710px;
     height: 254px;
     background: #ffffff;
     border-radius: 40px;

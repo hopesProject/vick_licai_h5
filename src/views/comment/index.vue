@@ -12,87 +12,127 @@
     />
 
     <main>
-      <div class="item-box">
-        <van-row>
-          <van-col span="12">
-            <div class="avaimg">
-              <van-image
-                round
-                width="1rem"
-                height="1rem"
-                src="https://img01.yzcdn.cn/vant/cat.jpeg"
-              />
-              <div>
-                <div class="name">老王</div>
-                <div class="phone">387···38</div>
-              </div>
+      <van-pull-refresh
+        :pulling-text="$t('下拉即可刷新...')"
+        :loosing-text="$t('释放即可刷新...')"
+        :loading-text="$t('加载中...')"
+        v-model="refreshing"
+        @refresh="onRefresh"
+      >
+        <van-list
+          v-model="loading"
+          :finished="finished"
+          :finished-text="$t('没有更多了')"
+          :loading-text="$t('加载中...')"
+          @load="onLoad"
+        >
+          <van-cell v-for="item in data" :key="item.id">
+            <div class="item-box">
+              <van-row>
+                <van-col span="12">
+                  <div class="avaimg">
+                    <van-image
+                      round
+                      width="1rem"
+                      height="1rem"
+                      :src="
+                        item.icon
+                          ? item.icon
+                          : 'https://img01.yzcdn.cn/vant/cat.jpeg'
+                      "
+                    />
+                    <div>
+                      <div class="name">{{ item.userName }}</div>
+                      <div class="phone">{{ item.phone }}</div>
+                    </div>
+                  </div>
+                </van-col>
+                <van-col span="12">
+                  <svg-icon
+                    style="float: right"
+                    class="svg-fb"
+                    icon-class="qqq"
+                  ></svg-icon>
+                </van-col>
+              </van-row>
+              <van-row>
+                <van-col span="24" class="content-item">
+                  {{ $t(item.comment) }}
+                </van-col>
+              </van-row>
+              <van-row gutter="10">
+                <van-col span="8">
+                  <van-image radius="8" class="item-img" :src="item.img" />
+                </van-col>
+              </van-row>
+              <van-row>
+                <van-col span="12">
+                  <van-rate
+                    allow-half
+                    void-icon="star"
+                    void-color="#eee"
+                    v-model="item.start"
+                    disabled
+                    :count="5"
+                  />
+                </van-col>
+                <van-col
+                  span="12"
+                  style="display: flex; justify-content: flex-end"
+                >
+                  <p>{{ item.createTime }}</p>
+                </van-col>
+              </van-row>
             </div>
-          </van-col>
-          <van-col span="12">
-            <svg-icon
-              style="float: right"
-              class="svg-fb"
-              icon-class="qqq"
-            ></svg-icon>
-          </van-col>
-        </van-row>
-        <van-row>
-          <van-col span="24" class="content-item">
-            你怎么就敢肯定今年是喷子经济年呢？只有我一个人觉得粉丝经济赛高？
-          </van-col>
-        </van-row>
-        <van-row gutter="10">
-          <van-col span="8">
-            <van-image
-              radius="8"
-              class="item-img"
-              src="https://img01.yzcdn.cn/vant/cat.jpeg"
-            />
-          </van-col>
-          <van-col span="8">
-            <van-image
-              radius="8"
-              class="item-img"
-              src="https://img01.yzcdn.cn/vant/cat.jpeg"
-            />
-          </van-col>
-          <van-col span="8">
-            <van-image
-              radius="8"
-              class="item-img"
-              src="https://img01.yzcdn.cn/vant/cat.jpeg"
-            />
-          </van-col>
-          <van-col span="8">
-            <van-image
-              radius="8"
-              class="item-img"
-              src="https://img01.yzcdn.cn/vant/cat.jpeg"
-            />
-          </van-col>
-          <van-col span="8">
-            <van-image
-              radius="8"
-              class="item-img"
-              src="https://img01.yzcdn.cn/vant/cat.jpeg"
-            />
-          </van-col>
-          <van-col span="8">
-            <van-image
-              radius="8"
-              class="item-img"
-              src="https://img01.yzcdn.cn/vant/cat.jpeg"
-            />
-          </van-col>
-        </van-row>
-      </div>
+          </van-cell>
+          <!-- <div slot="finished"></div> -->
+        </van-list>
+      </van-pull-refresh>
     </main>
   </div>
 </template>
 
 <script>
+import { querycomment } from "@/api";
+import refresh from "@/mixins/refresh";
+
 export default {
+  mixins: [refresh],
+  mounted() {
+    this.getList();
+  },
+  data() {
+    return {
+      data: [],
+    };
+  },
   methods: {
+    async getList(isRefreshing) {
+      let pageNum = this.pageNum;
+      const res = await querycomment({
+        level: this.active,
+        pageSize: this.pageSize,
+        pageNum: this.pageNum,
+      });
+      if (isRefreshing) {
+        this.refreshing = false;
+      }
+      this.loading = false;
+      try {
+        if (res?.status === 0) {
+          if (pageNum !== 1) {
+            this.data = [...this.data, ...res.data.list];
+          } else {
+            this.data = res.data.list;
+          }
+        }
+        if (this.data.length >= res.data.total) {
+          this.finished = true;
+        }
+      } catch (error) {
+        this.finished = true;
+      }
+    },
     onClickRight() {
       this.$router.push("/release");
     },

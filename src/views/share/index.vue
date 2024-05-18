@@ -12,11 +12,11 @@
         <van-col span="8">{{ $t("佣金比例") }}</van-col>
       </van-row>
       <van-row type="flex" justify="space-between" class="income-txt">
-        <van-col span="12">直属会员（1级）</van-col>
+        <van-col span="12">{{ $t("直属会员（1级）") }}</van-col>
         <van-col span="8">30%</van-col>
-        <van-col span="12">直属会员（2级）</van-col>
+        <van-col span="12">{{ $t("直属会员（2级）") }}</van-col>
         <van-col span="8">6%</van-col>
-        <van-col span="12">直属会员（3级）</van-col>
+        <van-col span="12">{{ $t("直属会员（3级）") }}</van-col>
         <van-col span="8">3%</van-col>
       </van-row>
     </div>
@@ -97,10 +97,10 @@ export default {
 .title {
   width: 360px;
   height: 177px;
-  font-size: 80px;
+  font-size: 50px;
   font-weight: 400;
   color: #ffffff;
-  line-height: 95px;
+  line-height: 60px;
   text-shadow: 0.77px 10.97px 65px 11px #ff320a, -9px 0px 0px 9px #f96b51;
   margin: auto;
 }

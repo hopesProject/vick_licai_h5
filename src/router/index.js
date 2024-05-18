@@ -7,6 +7,7 @@ import store from "@/store";
 import Home from "@/views/Home";
 import About from "@/views/About.vue";
 import information from "@/views/information";
+import itemInformation from "@/views/information/itemInformation";
 import vipList from "@/views/vip-list";
 import recharge from "@/views/recharge";
 import login from "@/views/login";
@@ -27,6 +28,7 @@ import lang from "@/views/lang";
 import produc from "@/components/ProductList";
 import Comment from "@/views/comment";
 import Release from "@/views/comment/release";
+import rule from "@/views/comment/rule";
 
 Vue.use(VueRouter);
 
@@ -59,10 +61,24 @@ const routes = [
       show: false,
     },
   },
+  {
+    path: "/rule",
+    component: rule,
+    meta: {
+      show: false,
+    },
+  },
   // 消息列表
   {
     path: "/information",
     component: information,
+    meta: {
+      show: false,
+    },
+  },
+  {
+    path: "/itemInformation",
+    component: itemInformation,
     meta: {
       show: false,
     },
@@ -120,7 +136,7 @@ const routes = [
     path: "/earnings-record",
     component: EarningsRecord,
     meta: {
-      show: true,
+      show: false,
     },
   },
   // 下载

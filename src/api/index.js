@@ -92,6 +92,62 @@ export function getLevelSetting(params) {
     params,
   });
 }
+export function queryNoteice(params) {
+  return request({
+    url: "/api/notice/queryNoteice", // 假地址 自行替换
+    method: "get",
+    params,
+  });
+}
+export function taskPage(params) {
+  return request({
+    url: "/api/userinfo/taskPage", // 假地址 自行替换
+    method: "get",
+    params,
+  });
+}
+export function querycomment(params) {
+  return request({
+    url: "/api/comment/querycomment", // 假地址 自行替换
+    method: "get",
+    params,
+  });
+}
+export function queryProductisHot(params) {
+  return request({
+    url: "/api/product/queryProductisHot", // 假地址 自行替换
+    method: "get",
+    params,
+  });
+}
+export function queryPaySetting(params) {
+  return request({
+    url: "/api/paySetting/queryPaySetting", // 假地址 自行替换
+    method: "get",
+    params,
+  });
+}
+export function noticedetail(params) {
+  return request({
+    url: "/api/notice/detail", // 假地址 自行替换
+    method: "get",
+    params,
+  });
+}
+export function bindBankCard(data) {
+  return request({
+    url: "/api/userinfo/bindBankCard", // 假地址 自行替换
+    method: "post",
+    data,
+  });
+}
+export function sendComment(data) {
+  return request({
+    url: "/api/comment/sendComment", // 假地址 自行替换
+    method: "post",
+    data,
+  });
+}
 
 // this.actionUrl = process.env.VUE_APP_BASE_APIS + "/file/upload";
 // 上传图片
@@ -99,9 +155,6 @@ export function fileUpload(data) {
   return request({
     url: "/file/upload", // 假地址 自行替换
     method: "post",
-    data: qs.stringify(data),
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
+    data,
   });
 }

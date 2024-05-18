@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar :title="$t('收益记录')" />
+    <van-nav-bar left-arrow @click-left="onClickLeft" :title="$t('收益记录')" />
     <header>
       <div class="bg-header"></div>
       <img
@@ -8,15 +8,11 @@
         alt=""
       />
       <div class="id-img">
-        <div class="phone">{{ $t("昨日收益：") }}</div>
-        <div>{{ $t("预期收益：") }}</div>
+        <div class="phone">{{ $t("昨日收益：") }}{{ userInfo.toDayBound }}</div>
+        <div>{{ $t("预期收益：") }}{{ userInfo.expectedReturn }}</div>
       </div>
     </header>
     <main>
-      <van-tabs v-model="active" class="box-tabs" line-height="0">
-        <van-tab :title="$t('进行中')" :name="1"></van-tab>
-        <van-tab :title="$t('已完成')" :name="2"></van-tab>
-      </van-tabs>
       <van-pull-refresh
         :pulling-text="$t('下拉即可刷新...')"
         :loosing-text="$t('释放即可刷新...')"
@@ -77,7 +73,7 @@
 
 <script>
 import { transactionRecord } from "@/api";
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import refresh from "@/mixins/refresh";
 
 export default {
@@ -86,6 +82,7 @@ export default {
   computed: {
     ...mapGetters(["userInfo"]),
   },
+
   data() {
     return {
       active: 1,
@@ -94,8 +91,13 @@ export default {
   },
   mounted() {
     this.getList();
+    this.getUserInfo();
   },
   methods: {
+    ...mapActions(["getUserInfo"]),
+    onClickLeft() {
+      this.$router.go(-1);
+    },
     async getList(isRefreshing) {
       let pageNum = this.pageNum;
       const res = await transactionRecord({
@@ -252,6 +254,7 @@ header {
     background-image: url("@/assets/波浪 拷贝.png");
     background-repeat: no-repeat;
     background-position: bottom left;
+    background-size: 100% 100%;
   }
   .id-img {
     font-size: 24px;

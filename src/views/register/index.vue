@@ -106,6 +106,7 @@ export default {
         pwd: "", //密码
         passwordNew: "", //确认密码
         inviteCode: "", //邀请码
+        userName: "", //用户名
       },
     };
   },
@@ -149,6 +150,10 @@ export default {
       console.log(res);
     },
     async registerApi() {
+      if (this.form.userName === "") {
+        Toast(this.$t("用户名不能为空"));
+        return false;
+      }
       if (this.form.phone === "") {
         Toast(this.$t("手机号码不能为空"));
         return false;
@@ -176,8 +181,11 @@ export default {
       }
 
       const res = await register(this.form);
-      if (res.code === 0) {
-        this.$router.push("/login");
+      if (res.status === 0) {
+        Toast(this.$t("注册成功，请登录"));
+        setTimeout(() => {
+          this.$router.push("/login");
+        }, 1500);
       }
     },
   },

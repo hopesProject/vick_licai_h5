@@ -18,12 +18,12 @@
       <!-- <img src="@/assets/invite-icon3.png" alt=""> -->
       <div class="bonus-title">奖金</div>
       <div class="bonus-num">
-        <div>₹ 12345.00</div>
+        <div>₹ {{ taskPageData.accumulatedBonus }}</div>
         <div>累计奖金</div>
       </div>
       <div class="bonus-income">
         <div>奖金收益</div>
-        <div>₹ 1237.00</div>
+        <div>₹ {{ taskPageData.bounds }}</div>
       </div>
       <div class="bonus-button">
         <van-button type="primary" block color="#FF5148" :round="true"
@@ -60,33 +60,41 @@
       </div>
     </div>
     <div class="grade">
-      <div class="grade-title">收益等级</div>
+      <div class="grade-title">
+        收益等级
+
+        <svg-icon
+          @click="$router.push('/share')"
+          iconClass="a"
+          class="grade-cion"
+        ></svg-icon>
+      </div>
       <van-row type="flex" justify="space-between" class="grade-row">
         <van-col span="8">等级</van-col>
         <van-col span="8">成员规模</van-col>
         <van-col span="8">有效人数</van-col>
       </van-row>
-      <div class="grade-list">
+      <div class="grade-list" @click="$router.push('/team')">
         <div class="grade-list-img">1</div>
-        <div>1000</div>
+        <div>{{ taskPageData.fristCount }}</div>
         <div>
-          <span>1000</span>
+          <span>{{ taskPageData.fristVipCount }}</span>
           <van-icon name="search" />
         </div>
       </div>
-      <div class="grade-list">
+      <div class="grade-list" @click="$router.push('/team')">
         <div class="grade-list-img">2</div>
-        <div>1000</div>
+        <div>{{ taskPageData.twoCount }}</div>
         <div>
-          <span>1000</span>
+          <span>{{ taskPageData.twoVipCount }}</span>
           <van-icon name="search" />
         </div>
       </div>
-      <div class="grade-list">
+      <div class="grade-list" @click="$router.push('/team')">
         <div class="grade-list-img">3</div>
-        <div>1000</div>
+        <div>{{ taskPageData.thereCount }}</div>
         <div>
-          <span>1000</span>
+          <span>{{ taskPageData.thereVipCount }}</span>
           <van-icon name="search" />
         </div>
       </div>
@@ -97,7 +105,7 @@
         <van-col span="8">
           <div class="revenue-text">
             <div>
-              <span>100</span>
+              <span>{{ taskPageData.dayRegCount }}</span>
               <span>+</span>
             </div>
             <div>成员规模</div>
@@ -107,7 +115,7 @@
         <van-col span="8">
           <div class="revenue-text">
             <div>
-              <span>100</span>
+              <span>{{ taskPageData.dayRegActiveCount }}</span>
               <span>+</span>
             </div>
             <div>有效人群</div>
@@ -117,7 +125,7 @@
         <van-col span="8">
           <div class="revenue-text">
             <div>
-              <span>200</span>
+              <span>{{ taskPageData.dayTeamBound }}</span>
               <span>w</span>
             </div>
             <div>团队收益</div>
@@ -135,13 +143,25 @@
   </div>
 </template>
 <script>
+import { taskPage } from "@/api";
+
 export default {
   data() {
     return {
       fanhui: require("@/assets/fanhui.png"),
+      taskPageData: {},
     };
   },
+  mounted() {
+    this.getData();
+  },
   methods: {
+    async getData() {
+      const res = await taskPage();
+      if (res.status === 0) {
+        this.taskPageData = res.data.data;
+      }
+    },
     onClickLeft() {
       this.$router.go(-1);
     },
@@ -257,16 +277,17 @@ export default {
 
 .grade {
   width: 703px;
-  height: 470px;
+  // height: 470px;
   background-image: url("@/assets/invite-icon4.png");
-  background-size: 100%;
+  background-size: 100% 100%;
   margin: 0 auto;
-  padding: 30px 20px 10px 20px;
+  padding: 30px 20px 60px 20px;
   text-align: center;
 
   .grade-title {
     color: #4d2101;
     font-size: 36px;
+    position: relative;
   }
 
   .grade-row {
@@ -305,7 +326,7 @@ export default {
   padding-top: 40px;
 
   > div:nth-child(1) {
-    font-size: 79px;
+    font-size: 40px;
 
     > span:nth-child(2) {
       font-size: 29px;
@@ -330,7 +351,7 @@ export default {
   justify-content: flex-end;
 
   .prompt-txt {
-    width: 721px;
+    // width: 721px;
     height: 160px;
     background: rgba(255, 255, 255, 0.8);
     border: 2.08px solid #f3bc9d;
@@ -339,9 +360,17 @@ export default {
     font-size: 22px;
     color: #a64f10;
     padding: 20px 50px;
+    margin: 0 20px;
   }
 }
 :deep(.van-swipe__indicators--vertical) {
   display: none;
+}
+
+.grade-cion {
+  position: absolute;
+  right: 20px;
+  bottom: 50%;
+  transform: translateY(50%);
 }
 </style>

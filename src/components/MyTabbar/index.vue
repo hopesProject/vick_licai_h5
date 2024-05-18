@@ -48,7 +48,7 @@ export default {
           },
         },
         {
-          name: this.$t("收益"),
+          name: this.$t("评论"),
           // to: "/earnings-record",
           to: "/comment",
           icon: {
