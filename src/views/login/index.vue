@@ -128,7 +128,7 @@ export default {
   width: 100vw;
   min-height: 100vh;
   background-image: url("@/assets/login-bg.png");
-  background-size: 100%;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
   position: relative;
 }

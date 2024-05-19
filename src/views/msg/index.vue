@@ -1,6 +1,6 @@
 <template>
   <div class="xxiao">
-    <van-nav-bar :title="$t('公告')" left-arrow @click-left="onClickLeft" />
+    <van-nav-bar :title="$t('消息')" left-arrow @click-left="onClickLeft" />
 
     <div class="content-list">
       <van-pull-refresh
@@ -20,20 +20,22 @@
           <van-cell
             v-for="item in data"
             :key="item.id"
-            @click="$router.push(`/itemInformation?id=${item.id}`)"
+            @click="$router.push(`/itemMsg?id=${item.id}`)"
           >
-            <div class="list-item">
-              <div class="right-box">
-                <div class="flex justify-between">
-                  <p>{{ item.title }}</p>
-                  <p class="time">{{ item.createTime }}</p>
-                </div>
-                <div class="flex justify-between ddhb">
-                  <p class="text-container" v-html="item.descText"></p>
-                  <!-- <div class="hb">9</div> -->
+            <van-badge :content="item.isRead == 0 && 'Hot'">
+              <div class="list-item">
+                <div class="right-box">
+                  <div class="flex justify-between">
+                    <p>{{ item.title }}</p>
+                    <p class="time">{{ item.createTime }}</p>
+                  </div>
+                  <div class="flex justify-between ddhb">
+                    <p class="text-container" v-html="item.descText"></p>
+                    <!-- <div class="hb">9</div> -->
+                  </div>
                 </div>
               </div>
-            </div>
+            </van-badge>
           </van-cell>
           <!-- <div slot="finished"></div> -->
         </van-list>
@@ -43,7 +45,7 @@
 </template>
 
 <script>
-import { queryNoteice } from "@/api";
+import { queryMsg } from "@/api";
 import refresh from "@/mixins/refresh";
 
 export default {
@@ -57,7 +59,7 @@ export default {
   methods: {
     async getList(isRefreshing) {
       let pageNum = this.pageNum;
-      const res = await queryNoteice({
+      const res = await queryMsg({
         pageSize: this.pageSize,
         pageNum: this.pageNum,
       });
@@ -127,5 +129,12 @@ export default {
       margin-right: 18px;
     }
   }
+}
+
+:deep(.van-badge__wrapper) {
+  width: 100%;
+}
+:deep(.van-cell__value) {
+  overflow: initial;
 }
 </style>

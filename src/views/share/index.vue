@@ -46,8 +46,17 @@
     </div>
     <div class="invitation">
       <div class="invitation-code">
-        <img src="" alt="" />
-        <div>{{ $t("我的邀请码：") }}{{ userInfo.invitationCode }}</div>
+        <canvas class="qr-canvas" ref="qrCanvas"></canvas>
+        <div>
+          {{ $t("我的邀请码：") }}{{ userInfo.invitationCode }}
+          <span
+            style="text-decoration: underline"
+            class="fz"
+            v-clipboard:copy="invitationCode"
+            v-clipboard:success="onCopy"
+            >{{ $t("复制") }}</span
+          >
+        </div>
       </div>
     </div>
     <div class="send">{{ $t("发送邀请") }}</div>
@@ -55,10 +64,16 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-
+import QRCode from "qrcode";
+import clipboard2 from "@/mixins/clipboard2";
 export default {
+  mixins: [clipboard2],
+
   computed: {
     ...mapGetters(["userInfo"]),
+    invitationCode() {
+      return `${window.location.origin}/#/register?code=${this.userInfo.invitationCode}`;
+    },
   },
   data() {
     return {
@@ -67,9 +82,21 @@ export default {
   },
   mounted() {
     this.getUserInfo();
+    this.generateQRCode();
   },
   methods: {
     ...mapActions(["getUserInfo"]),
+    generateQRCode() {
+      const canvas = this.$refs.qrCanvas;
+
+      QRCode.toCanvas(
+        canvas,
+        `${window.location.origin}/#/register?code=${this.userInfo.invitationCode}`,
+        (error) => {
+          if (error) console.error(error);
+        }
+      );
+    },
     onClickLeft() {
       this.$router.go(-1);
     },
@@ -202,11 +229,6 @@ export default {
     justify-content: center;
     padding-top: 40px;
 
-    > img {
-      width: 120px;
-      height: 110px;
-    }
-
     > div {
       margin-left: 16px;
       font-size: 33px;
@@ -223,5 +245,10 @@ export default {
   background-size: 100%;
   text-align: center;
   color: #ff8143;
+}
+
+.qr-canvas {
+  width: 120px !important;
+  height: 110px !important;
 }
 </style>

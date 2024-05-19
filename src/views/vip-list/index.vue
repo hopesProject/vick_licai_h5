@@ -44,10 +44,13 @@
     <div class="illustrate">
       <div class="header-box">{{ $t("等级说明") }}</div>
       <div class="text">
-        <p>1.等级说明等级说明等级说明等级说明等级说明等级说明。</p>
-        <p>2.等级说明等级说明等级说明等级说明等级说明等级说明。</p>
-        <p>3.等级说明等级说明等级说明等级说明等级说明等级说明。</p>
-        <p>4.等级说明等级说明等级说明等级说明等级说明等级说明。</p>
+        <p>
+          Upgrade to VIP and enjoy unparalleled benefits! The higher your VIP
+          level, the more rewards and privileges you will receive. Priority
+          service, exclusive offers, and generous rewards make your experience
+          even more outstanding. Take action now and embark on a VIP exclusive
+          journey!
+        </p>
       </div>
     </div>
   </div>

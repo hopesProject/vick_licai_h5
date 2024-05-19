@@ -86,4 +86,7 @@ export default {
 main {
   padding: 20px;
 }
+.explain {
+  font-size: 30px;
+}
 </style>

@@ -62,6 +62,7 @@
         <van-field
           class="border-box"
           v-model="form.inviteCode"
+          :disabled="isinviteCode"
           :placeholder="$t('邀请码')"
           input-align="left"
         />
@@ -100,6 +101,7 @@ export default {
     return {
       codeButTexst: "发送验证码",
       tiem: null,
+      isinviteCode: false,
       form: {
         phone: "", //手机号码
         code: "", //验证码
@@ -109,6 +111,13 @@ export default {
         userName: "", //用户名
       },
     };
+  },
+  mounted() {
+    if (this.$route.query.code) {
+      this.form.inviteCode = this.$route.query.code;
+      this.isinviteCode = true;
+    }
+    console.log(this.$route.query.code);
   },
   beforeDestroy() {
     if (this.tiem) {
@@ -196,7 +205,7 @@ export default {
   width: 100vw;
   min-height: 100vh;
   background-image: url("@/assets/login-bg.png");
-  background-size: 100%;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
   position: relative;
 }
@@ -218,7 +227,7 @@ export default {
     background-color: transparent;
 
     .van-cell {
-      // line-height: 80px;
+      line-height: 80px;
       background-color: transparent;
       font-size: 36px;
       // border-bottom: 4px solid #fff;

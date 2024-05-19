@@ -25,6 +25,44 @@ export function queryProductClassify(params) {
     params,
   });
 }
+// 产品分类
+export function getCustomerService(params) {
+  return request({
+    url: "/api/user/getCustomerService", // 假地址 自行替换
+    method: "get",
+    params,
+  });
+}
+export function detail(params) {
+  return request({
+    url: "/api/msg/detail", // 假地址 自行替换
+    method: "get",
+    params,
+  });
+}
+// 产品分类
+export function queryMsgCount(params) {
+  return request({
+    url: "/api/msg/queryMsgCount", // 假地址 自行替换
+    method: "get",
+    params,
+  });
+}
+// 产品分类
+export function refreshMsgRed(params) {
+  return request({
+    url: "/api/msg/refreshMsgRed", // 假地址 自行替换
+    method: "get",
+    params,
+  });
+}
+export function queryMsg(params) {
+  return request({
+    url: "/api/msg/queryMsg", // 假地址 自行替换
+    method: "get",
+    params,
+  });
+}
 // 获取产品列表
 export function productqueryProductClassify(params) {
   return request({

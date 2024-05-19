@@ -8,6 +8,8 @@ import Home from "@/views/Home";
 import About from "@/views/About.vue";
 import information from "@/views/information";
 import itemInformation from "@/views/information/itemInformation";
+import msg from "@/views/msg";
+import itemMsg from "@/views/msg/itemInformation";
 import vipList from "@/views/vip-list";
 import recharge from "@/views/recharge";
 import login from "@/views/login";
@@ -79,6 +81,21 @@ const routes = [
   {
     path: "/itemInformation",
     component: itemInformation,
+    meta: {
+      show: false,
+    },
+  },
+  // 消息列表
+  {
+    path: "/msg",
+    component: msg,
+    meta: {
+      show: false,
+    },
+  },
+  {
+    path: "/itemMsg",
+    component: itemMsg,
     meta: {
       show: false,
     },
@@ -177,7 +194,7 @@ const routes = [
     path: "/team",
     component: Team,
     meta: {
-      show: true,
+      show: false,
     },
   },
   // 忘记密码
@@ -209,7 +226,7 @@ const routes = [
     path: "/invite",
     component: invite,
     meta: {
-      show: false,
+      show: true,
     },
   },
   // 邀请好友

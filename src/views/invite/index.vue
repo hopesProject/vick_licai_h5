@@ -4,6 +4,7 @@
     <div class="title">
       <div>{{ $t("邀请好友") }}</div>
       <div>{{ $t("收益多多益善") }}</div>
+      <canvas class="qr-canvas" ref="qrCanvas"></canvas>
     </div>
     <div class="invite-bg" style="height: 150px">
       <img style="height: 200px" src="@/assets/invite-icon1.png" alt="" />
@@ -16,19 +17,19 @@
     </div>
     <div class="bonus">
       <!-- <img src="@/assets/invite-icon3.png" alt=""> -->
-      <div class="bonus-title">奖金</div>
+      <div class="bonus-title">{{ $t("奖金") }}</div>
       <div class="bonus-num">
         <div>₹ {{ taskPageData.accumulatedBonus }}</div>
-        <div>累计奖金</div>
+        <div>{{ $t("累计奖金") }}</div>
       </div>
       <div class="bonus-income">
-        <div>奖金收益</div>
+        <div>{{ $t("奖金收益") }}</div>
         <div>₹ {{ taskPageData.bounds }}</div>
       </div>
       <div class="bonus-button">
-        <van-button type="primary" block color="#FF5148" :round="true"
-          >立即领取</van-button
-        >
+        <van-button type="primary" block color="#FF5148" :round="true">{{
+          $t("立即领取")
+        }}</van-button>
 
         <van-swipe
           style="height: 20px"
@@ -61,7 +62,7 @@
     </div>
     <div class="grade">
       <div class="grade-title">
-        收益等级
+        {{ $t("收益等级") }}
 
         <svg-icon
           @click="$router.push('/share')"
@@ -70,9 +71,9 @@
         ></svg-icon>
       </div>
       <van-row type="flex" justify="space-between" class="grade-row">
-        <van-col span="8">等级</van-col>
-        <van-col span="8">成员规模</van-col>
-        <van-col span="8">有效人数</van-col>
+        <van-col span="8">{{ $t("等级") }}</van-col>
+        <van-col span="8">{{ $t("成员规模") }}</van-col>
+        <van-col span="8">{{ $t("有效人数") }}</van-col>
       </van-row>
       <div class="grade-list" @click="$router.push('/team')">
         <div class="grade-list-img">1</div>
@@ -100,7 +101,7 @@
       </div>
     </div>
     <div class="grade">
-      <div class="grade-title">当前邀请</div>
+      <div class="grade-title">{{ $t("当前邀请") }}</div>
       <van-row type="flex" justify="space-between">
         <van-col span="8">
           <div class="revenue-text">
@@ -108,7 +109,7 @@
               <span>{{ taskPageData.dayRegCount }}</span>
               <span>+</span>
             </div>
-            <div>成员规模</div>
+            <div>{{ $t("成员规模") }}</div>
             <img class="invite-bg-img" src="@/assets/invite-icon6.png" alt="" />
           </div>
         </van-col>
@@ -118,7 +119,7 @@
               <span>{{ taskPageData.dayRegActiveCount }}</span>
               <span>+</span>
             </div>
-            <div>有效人群</div>
+            <div>{{ $t("有效人群") }}</div>
             <img class="invite-bg-img" src="@/assets/invite-icon6.png" alt="" />
           </div>
         </van-col>
@@ -128,7 +129,7 @@
               <span>{{ taskPageData.dayTeamBound }}</span>
               <span>w</span>
             </div>
-            <div>团队收益</div>
+            <div>{{ $t("团队收益") }}</div>
             <img class="invite-bg-img" src="@/assets/invite-icon6.png" alt="" />
           </div>
         </van-col>
@@ -136,16 +137,21 @@
     </div>
     <div class="prompt">
       <div class="prompt-txt">
-        lorem ipsum dolor slt amet,consecectetur adipiscing elit,seddoeiusmod
-        tempor incididunt ut labore magna allqua.
+        Invite friends to join in not only to share profits but also to grow
+        together, creating more opportunities!
       </div>
     </div>
   </div>
 </template>
 <script>
 import { taskPage } from "@/api";
+import QRCode from "qrcode";
+import { mapGetters } from "vuex";
 
 export default {
+  computed: {
+    ...mapGetters(["userInfo"]),
+  },
   data() {
     return {
       fanhui: require("@/assets/fanhui.png"),
@@ -154,8 +160,20 @@ export default {
   },
   mounted() {
     this.getData();
+    this.generateQRCode();
   },
   methods: {
+    generateQRCode() {
+      const canvas = this.$refs.qrCanvas;
+
+      QRCode.toCanvas(
+        canvas,
+        `${window.location.origin}/#/register?code=${this.userInfo.invitationCode}`,
+        (error) => {
+          if (error) console.error(error);
+        }
+      );
+    },
     async getData() {
       const res = await taskPage();
       if (res.status === 0) {
@@ -187,7 +205,8 @@ export default {
 
 .title {
   width: 640px;
-  height: 148px;
+  // height: 148px;
+  padding: 20px 0;
   background: rgba(255, 255, 255, 0.32);
   border-radius: 26px;
   box-shadow: -1px 0px 1px 1px #ffffff inset;
@@ -372,5 +391,9 @@ export default {
   right: 20px;
   bottom: 50%;
   transform: translateY(50%);
+}
+.qr-canvas {
+  width: 120px !important;
+  height: 110px !important;
 }
 </style>

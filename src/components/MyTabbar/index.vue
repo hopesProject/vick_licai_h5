@@ -33,7 +33,7 @@ export default {
         },
         {
           name: this.$t("团队"),
-          to: "/team",
+          to: "/invite",
           icon: {
             active: require("@/assets/team1.png"),
             inactive: require("@/assets/team.png"),

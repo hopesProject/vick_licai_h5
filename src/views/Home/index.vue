@@ -65,7 +65,7 @@
           <svg-icon iconClass="gywm" style="font-size: 30px"></svg-icon>
           <span>{{ $t("关于我们") }}</span>
         </van-col>
-        <van-col span="6" class="flex-clo" @click="$router.push('/share')">
+        <van-col span="6" class="flex-clo" @click="kefutz">
           <svg-icon iconClass="kh" style="font-size: 30px"></svg-icon>
           <span> {{ $t("客服支持") }}</span>
         </van-col>
@@ -73,13 +73,12 @@
           <svg-icon iconClass="VIP" style="font-size: 30px"></svg-icon>
           <span> VIP</span>
         </van-col>
-        <van-col
-          span="6"
-          class="flex-clo"
-          @click="$router.push('/information')"
-        >
-          <svg-icon iconClass="gg" style="font-size: 30px"></svg-icon>
-          <span> {{ $t("消息") }}</span>
+        <van-col span="6" class="flex-clo" @click="$router.push('/msg')">
+          <!-- msgCount -->
+          <van-badge :content="msgCount" max="99">
+            <svg-icon iconClass="gg" style="font-size: 30px"></svg-icon>
+            <span> {{ $t("消息") }}</span>
+          </van-badge>
         </van-col>
       </van-row>
     </div>
@@ -251,7 +250,9 @@
 <script>
 import {
   buyProduct,
+  getCustomerService,
   productqueryProductClassify,
+  queryMsgCount,
   queryNoteice,
   queryPaySetting,
   queryProductClassify,
@@ -268,16 +269,34 @@ export default {
   },
   mounted() {
     this.getfenlei();
+    this.getCustomerService();
     this.getQueryNoteice();
     // this.getlist();
     this.getqueryProductisHot();
     this.queryPaySetting();
     if (this.token) {
+      this.queryMsgCount();
       this.getUserInfo();
     }
   },
   methods: {
     ...mapActions(["getUserInfo"]),
+    kefutz() {
+      window.location.href = this.servicedata;
+    },
+    async queryMsgCount() {
+      const res = await queryMsgCount();
+      if (res.status === 0) {
+        this.msgCount = res.data;
+      }
+    },
+    async getCustomerService() {
+      const res = await getCustomerService();
+      if (res.status === 0) {
+        localStorage.setItem("servicedata", res.data);
+        this.servicedata = res.data;
+      }
+    },
     async getqueryProductisHot() {
       const res = await queryProductisHot();
       if (res.status === 0) {
@@ -344,6 +363,8 @@ export default {
   },
   data() {
     return {
+      msgCount: 0,
+      servicedata: localStorage.getItem("servicedata") || "",
       noteic: [],
       queryPaySettingData: [],
       isHotData: [],

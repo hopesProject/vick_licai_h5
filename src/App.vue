@@ -7,17 +7,22 @@
 
 <script>
 import MyTabbar from "@/components/MyTabbar/index.vue";
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 // import SvgIcon from "@/components/SvgIcon"; // svg component
 
 export default {
   methods: {
     ...mapActions(["getUserInfo"]),
+    ...mapMutations(["SET_TOKEN"]),
   },
   computed: {
     ...mapGetters(["token"]),
   },
   created() {
+    console.log();
+    if (this.$route.query.token) {
+      this.SET_TOKEN(JSON.parse(this.$route.query.token));
+    }
     if (this.token) {
       // this.getUserInfo();
     }

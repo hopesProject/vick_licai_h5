@@ -42,17 +42,28 @@
                       "
                     />
                     <div>
-                      <div class="name">{{ item.userName }}</div>
+                      <div class="name name-box-s">{{ item.userName }}</div>
                       <div class="phone">{{ item.phone }}</div>
                     </div>
                   </div>
                 </van-col>
                 <van-col span="12">
-                  <svg-icon
-                    style="float: right"
-                    class="svg-fb"
-                    icon-class="qqq"
-                  ></svg-icon>
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: flex-end;
+                      flex-direction: column;
+                      align-items: flex-end;
+                    "
+                  >
+                    <svg-icon
+                      style="float: right"
+                      class="svg-fbs"
+                      icon-class="qqq"
+                    >
+                    </svg-icon>
+                    <p class="start-box">{{ item.start }}</p>
+                  </div>
                 </van-col>
               </van-row>
               <van-row>
@@ -70,9 +81,9 @@
                   <van-rate
                     allow-half
                     void-icon="star"
+                    readonly
                     void-color="#eee"
                     v-model="item.start"
-                    disabled
                     :count="5"
                   />
                 </van-col>
@@ -99,7 +110,7 @@ import refresh from "@/mixins/refresh";
 export default {
   mixins: [refresh],
   mounted() {
-    this.getList();
+    // this.getList();
   },
   data() {
     return {
@@ -146,6 +157,9 @@ export default {
 }
 
 .svg-fb {
+  font-size: 66px;
+}
+.svg-fbs {
   font-size: 44px;
 }
 .bancolo-img {
@@ -192,5 +206,15 @@ main {
       height: 220px;
     }
   }
+}
+.start-box {
+  margin-right: 16px;
+}
+
+.name-box-s {
+  width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 </style>

@@ -1,13 +1,13 @@
 <template>
   <div>
-    <van-nav-bar :title="$t('公告详情')" left-arrow @click-left="onClickLeft" />
+    <van-nav-bar :title="$t('消息详情')" left-arrow @click-left="onClickLeft" />
     <h1 v-html="data.title"></h1>
-    <main v-html="data.descText"></main>
+    <main v-html="data.msg"></main>
   </div>
 </template>
 
 <script>
-import { noticedetail } from "@/api";
+import { detail, refreshMsgRed } from "@/api";
 export default {
   data() {
     return {
@@ -19,15 +19,17 @@ export default {
       return this.$route.query.id;
     },
   },
-
   mounted() {
     console.log(this.$route.query.id);
     this.getList();
-    // this.refreshMsgRed();
+    this.refreshMsgRed();
   },
   methods: {
+    async refreshMsgRed() {
+      await refreshMsgRed({ ids: this.id });
+    },
     async getList() {
-      const res = await noticedetail({ id: this.id });
+      const res = await detail({ id: this.id });
       if (res.status === 0) {
         this.data = res.data;
       }

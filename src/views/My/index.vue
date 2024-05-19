@@ -9,12 +9,12 @@
             </div>
             <div class="vip">VIP{{ userInfo.vip }}</div>
           </div>
-          <!-- <div class="Id">{{ $t("ID账号：") }}{{ userInfo.code }}</div> -->
+          <div class="Id">{{ $t("ID账号：") }}{{ userInfo.code }}</div>
           <div>
             {{ $t("邀请码：") }}{{ userInfo.invitationCode }}
             <span
               class="fz"
-              v-clipboard:copy="userInfo.invitationCode"
+              v-clipboard:copy="invitationCode"
               v-clipboard:success="onCopy"
               >{{ $t("复制") }}</span
             >
@@ -23,7 +23,7 @@
         <van-col span="6" class="flex flex-col items-end">
           <div class="img">
             <van-uploader
-              upload-icon="https://img01.yzcdn.cn/vant/sand.jpg"
+              :upload-icon="userInfo.img || require('@/assets/morentupian.png')"
               preview-size="40px"
               :after-read="afterRead"
             />
@@ -190,6 +190,10 @@ export default {
         },
       ];
     },
+    invitationCode() {
+      return `${window.location.origin}/#/register?code=${this.userInfo.invitationCode}`;
+    },
+    // `${window.location.origin}/#/register?code=${this.userInfo.invitationCode}`
   },
   data() {
     return {
