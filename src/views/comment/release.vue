@@ -33,6 +33,7 @@
             allow-half
             void-icon="star"
             void-color="#eee"
+            color="#F4B94A"
           />
         </div>
         <div class="but-box">

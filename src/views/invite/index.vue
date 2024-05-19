@@ -1,19 +1,61 @@
 <template>
   <div class="wrapper">
     <img @click="$router.go(-1)" :src="fanhui" alt="" class="fanhui" />
-    <div class="title">
+    <!-- <div class="title">
       <div>{{ $t("邀请好友") }}</div>
       <div>{{ $t("收益多多益善") }}</div>
-      <canvas class="qr-canvas" ref="qrCanvas"></canvas>
-    </div>
-    <div class="invite-bg" style="height: 150px">
-      <img style="height: 200px" src="@/assets/invite-icon1.png" alt="" />
+    
+    </div> -->
+    <div class="invite-bg">
       <img
-        style="height: 200px"
+        class="invite-bg-imgs"
+        style="height: 150px"
+        src="@/assets/invite-icon1.png"
+        alt=""
+      />
+      <img
+        style="height: 150px"
         class="invite-bg-img"
         src="@/assets/invite-icon2.png"
         alt=""
       />
+    </div>
+    <div class="psoi-box">
+      <div
+        class="psoi"
+        style="border-bottom: 1px dashed rgba(255, 255, 255, 0.6)"
+      >
+        <div class="dispasdj">
+          <span class="text-posi">{{ $t("邀请码：") }}</span>
+          <span class="underlines">
+            {{ userInfo.invitationCode }}
+          </span>
+        </div>
+
+        <span
+          style="margin-left: 20px"
+          class="fz"
+          v-clipboard:copy="userInfo.invitationCode"
+          v-clipboard:success="onCopy"
+          >{{ $t("点击复制") }}</span
+        >
+      </div>
+      <div class="psoi">
+        <div class="dispasdj">
+          <span class="text-posi">{{ $t("邀请链接：") }}</span>
+          <span class="underlines">
+            {{ invitationCode }}
+          </span>
+        </div>
+
+        <span
+          style="margin-left: 20px"
+          class="fz"
+          v-clipboard:copy="invitationCode"
+          v-clipboard:success="onCopy"
+          >{{ $t("点击复制") }}</span
+        >
+      </div>
     </div>
     <div class="bonus">
       <!-- <img src="@/assets/invite-icon3.png" alt=""> -->
@@ -147,10 +189,16 @@
 import { taskPage } from "@/api";
 import QRCode from "qrcode";
 import { mapGetters } from "vuex";
+import clipboard2 from "@/mixins/clipboard2";
 
 export default {
+  mixins: [clipboard2],
+
   computed: {
     ...mapGetters(["userInfo"]),
+    invitationCode() {
+      return `${window.location.origin}/#/register?code=${this.userInfo.invitationCode}`;
+    },
   },
   data() {
     return {
@@ -166,13 +214,9 @@ export default {
     generateQRCode() {
       const canvas = this.$refs.qrCanvas;
 
-      QRCode.toCanvas(
-        canvas,
-        `${window.location.origin}/#/register?code=${this.userInfo.invitationCode}`,
-        (error) => {
-          if (error) console.error(error);
-        }
-      );
+      QRCode.toCanvas(canvas, this.invitationCode, (error) => {
+        if (error) console.error(error);
+      });
     },
     async getData() {
       const res = await taskPage();
@@ -187,11 +231,15 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.invite-bg-imgs {
+  position: absolute;
+  top: 100px;
+}
 .wrapper {
   width: 100vw;
   min-height: 100vh;
   background: linear-gradient(0deg, #ee4900 0%, #fcb173 100%);
-  padding: 200px 0 20px 0;
+  padding: 400px 0 20px 0;
 }
 
 .fanhui {
@@ -203,15 +251,51 @@ export default {
   z-index: 99;
 }
 
+.psoi-box {
+  // background: rgba(205, 85, 51, 0.12);
+
+  background: #f65537;
+  text-align: center;
+  border-radius: 10px;
+  width: 80%;
+  // position: absolute;
+  // top: 390px;
+  font-size: 30px;
+  // left: 50%;
+  // transform: translateX(-50%);
+  color: #fff;
+  padding: 10px 20px;
+  margin: 0 auto;
+}
+.psoi {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  padding: 10px 0;
+  .text-posi {
+    width: 150px;
+    font-size: 26px;
+  }
+  .fz {
+    text-align: center;
+    width: 100px;
+    font-size: 18px;
+    background: #faa061;
+    padding: 10px;
+    border-radius: 22px;
+    height: 50px;
+  }
+}
 .title {
   width: 640px;
-  // height: 148px;
   padding: 20px 0;
   background: rgba(255, 255, 255, 0.32);
   border-radius: 26px;
   box-shadow: -1px 0px 1px 1px #ffffff inset;
   position: absolute;
   top: 90px;
+
   left: 50%;
   transform: translateX(-50%);
   z-index: 9;
@@ -220,7 +304,7 @@ export default {
   align-items: center;
   justify-content: center;
   > div {
-    color: #ffffff;
+    color: #fff;
     text-shadow: 0.33px 0.95px 0px 0.55px #eb6941 inset;
     font-size: 45px;
     text-align: center;
@@ -233,7 +317,7 @@ export default {
 
   .invite-bg-img {
     position: absolute;
-    top: 200px;
+    top: 100px;
     left: 50%;
     transform: translateX(-50%);
   }
@@ -241,11 +325,15 @@ export default {
 
 .bonus {
   width: 703px;
-  height: 652px;
+
+  // height: 652px;
   background-image: url("@/assets/invite-icon3.png");
   background-size: 100%;
+  background-position: 0px -160px;
+  background-repeat: no-repeat;
   margin: 0 auto;
-  padding-top: 155px;
+  margin-top: 30px;
+  // padding-top: 155px;
 
   .bonus-title {
     text-align: center;
@@ -306,13 +394,16 @@ export default {
   .grade-title {
     color: #4d2101;
     font-size: 36px;
+    height: 66px;
     position: relative;
   }
 
   .grade-row {
-    font-size: 36px;
+    font-size: 24px;
     color: #4d2101;
     padding: 20px 0 0 0;
+    display: flex;
+    align-items: center;
   }
 
   .grade-list {
@@ -393,7 +484,20 @@ export default {
   transform: translateY(50%);
 }
 .qr-canvas {
-  width: 120px !important;
-  height: 110px !important;
+  width: 60px !important;
+  height: 60px !important;
+}
+.dispasdj {
+  display: flex;
+  align-items: center;
+}
+.underlines {
+  display: inline-block;
+  width: 250px;
+  text-decoration: underline;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 26px;
 }
 </style>

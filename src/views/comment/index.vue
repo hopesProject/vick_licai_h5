@@ -52,7 +52,6 @@
                     style="
                       display: flex;
                       justify-content: flex-end;
-                      flex-direction: column;
                       align-items: flex-end;
                     "
                   >
@@ -62,7 +61,7 @@
                       icon-class="qqq"
                     >
                     </svg-icon>
-                    <p class="start-box">{{ item.start }}</p>
+                    <!-- <p class="start-box">{{ item.start.toFixed(1) }}</p> -->
                   </div>
                 </van-col>
               </van-row>
@@ -73,7 +72,12 @@
               </van-row>
               <van-row gutter="10">
                 <van-col span="8">
-                  <van-image radius="8" class="item-img" :src="item.img" />
+                  <van-image
+                    v-if="item.img"
+                    radius="8"
+                    class="item-img"
+                    :src="item.img"
+                  />
                 </van-col>
               </van-row>
               <van-row>
@@ -82,10 +86,15 @@
                     allow-half
                     void-icon="star"
                     readonly
+                    color="#F4B94A"
                     void-color="#eee"
                     v-model="item.start"
                     :count="5"
                   />
+
+                  <!-- <span style="color: #ee0b25; margin-left: 5px">{{
+                    item.start
+                  }}</span> -->
                 </van-col>
                 <van-col
                   span="12"
@@ -208,7 +217,14 @@ main {
   }
 }
 .start-box {
-  margin-right: 16px;
+  font-size: 28px;
+  font-weight: 900;
+
+  letter-spacing: 0px;
+
+  font-variation-settings: "opsz" auto;
+  color: #efa23e;
+  margin-left: 16px;
 }
 
 .name-box-s {
@@ -216,5 +232,9 @@ main {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+:deep(.van-cell::after) {
+  border: none;
 }
 </style>
