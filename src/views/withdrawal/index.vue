@@ -14,7 +14,7 @@
     <div class="box">
       <div class="box-title" @click="BankShow = true">选择银行卡</div>
       <div class="box-mode">
-        <div class="box-mode-title">选择充值方式</div>
+        <div class="box-mode-title">选择提现方式</div>
         <van-radio-group
           v-model="radio"
           class="box-mode-radio"

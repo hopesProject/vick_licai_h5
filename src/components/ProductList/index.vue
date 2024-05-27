@@ -37,11 +37,13 @@
           <van-cell v-for="item in data" :key="item.id">
             <div class="content-item">
               <div class="img-box">
-                <p><span> VIP1 </span></p>
+                <p v-if="item.vipRequest">
+                  <span>VIP {{ item.vipRequest }} </span>
+                </p>
                 <img :src="item.img" alt="" />
               </div>
               <div class="item-text">
-                <div>{{ $t("产品基金代码：") }}{{ item.id }}</div>
+                <div>{{ item.productTitle }}</div>
                 <div class="text1">{{ $t("购买价格：") }}{{ item.price }}</div>
                 <div class="text2">
                   <div>
@@ -115,10 +117,7 @@
           </van-row>
         </div>
         <div class="purchase-bottom">
-          <img
-            src="https://copyright.bdstatic.com/vcg/creative/cc9c744cf9f7c864889c563cbdeddce6.jpg@h_1280"
-            alt=""
-          />
+          <img :src="purchaseShowData.img" alt="" />
           <div class="purchase-commodity">
             <div>{{ purchaseShowData.productTitle }}</div>
             <div>
@@ -424,8 +423,8 @@ export default {
       }
 
       img {
-        width: 169px;
-        height: 159px;
+        width: 130px;
+        height: 130px;
         border-radius: 8px;
       }
     }
@@ -440,7 +439,7 @@ export default {
 
   .purchase-box {
     width: 586px;
-    height: 503px;
+    // height: 503px;
     background-image: url("@/assets/purchase.png");
     background-size: 100% 100%;
     padding: 40px 55px 55px 55px;
@@ -459,10 +458,13 @@ export default {
       font-size: 18px;
       .purchase-income {
         .van-col {
+          padding: 20px 10px;
+          border-radius: 8px;
+          border: 1px solid #ffebcd;
+          display: flex;
+          align-items: center;
           > div {
-            line-height: 72px;
-            border: 1px solid #ffebcd;
-            border-radius: 8px;
+            // line-height: 72px;
             text-align: center;
             color: #ffefd1;
           }
@@ -484,8 +486,8 @@ export default {
       display: flex;
 
       > img {
-        width: 150px;
-        height: 150px;
+        width: 130px;
+        height: 130px;
         border-radius: 8px;
       }
 
@@ -529,5 +531,9 @@ export default {
       }
     }
   }
+}
+
+:deep(.van-cell__value) {
+  overflow: initial;
 }
 </style>

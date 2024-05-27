@@ -2,6 +2,7 @@
   <div>
     <div class="banner-box">
       <div class="information">
+        <!-- <van-swipe class="my-swipe" :autoplay="5000" indicator-color="white"> -->
         <van-swipe class="my-swipe" :autoplay="5000" indicator-color="white">
           <van-swipe-item
             v-for="item in noteic"
@@ -93,11 +94,13 @@
         <van-swipe-item v-for="(item, index) in isHotData" :key="index">
           <div class="content-item">
             <div class="img-box">
-              <p><span> VIP1 </span></p>
+              <p v-if="item.vipRequest">
+                <span> VIP {{ item.vipRequest }} </span>
+              </p>
               <img :src="item.img" alt="" />
             </div>
             <div class="item-text">
-              <div>{{ $t("产品基金代码：") }}{{ item.id }}</div>
+              <div>{{ item.productTitle }}</div>
               <div class="text1">{{ $t("购买价格：") }}{{ item.price }}</div>
               <div class="text2">
                 <div>
@@ -216,10 +219,7 @@
           </van-row>
         </div>
         <div class="purchase-bottom">
-          <img
-            src="https://copyright.bdstatic.com/vcg/creative/cc9c744cf9f7c864889c563cbdeddce6.jpg@h_1280"
-            alt=""
-          />
+          <img :src="purchaseShowData.img" alt="" />
           <div class="purchase-commodity">
             <div>{{ purchaseShowData.productTitle }}</div>
             <div>
@@ -391,6 +391,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+:deep(.van-cell__value) {
+  overflow: hidden;
+  margin-right: 10px;
+}
+:deep(.van-swipe) {
+  overflow: hidden;
+  padding: 30px;
+  .van-swipe-item {
+    margin-right: 30px;
+  }
+  .van-swipe__indicators {
+    display: none;
+  }
+}
 .item-main {
   width: 100%;
   height: 200px;
@@ -446,6 +460,7 @@ export default {
   box-shadow: -0.28px 3.99px 30px 4px rgba(165, 188, 251, 0.4);
 
   .information {
+    // width: calc(100% - 70px);
     width: 100%;
     position: absolute;
     bottom: 15px;
@@ -651,20 +666,24 @@ export default {
   font-size: 30px;
   width: 80px;
 }
+.my-swipe {
+  margin-top: 30px;
+  padding: 0 !important;
+}
+.my-swipe .van-swipe-item {
+  height: 35px;
+  border-radius: 0.53333rem;
+  font-size: 20px;
+  // line-height: 300px;
+  // text-align: center;
+  // background-color: t;
+  .text-container {
+    color: rgb(153, 153, 153);
+  }
+}
 main {
   margin: 20px;
   width: calc(100% - 40px);
-  .my-swipe {
-    margin-top: 30px;
-  }
-  .my-swipe .van-swipe-item {
-    border-radius: 0.53333rem;
-    color: #fff;
-    font-size: 20px;
-    line-height: 300px;
-    text-align: center;
-    background-color: #39a9ed;
-  }
 }
 
 .content-item {
@@ -757,8 +776,8 @@ main {
     }
 
     img {
-      width: 100px;
-      height: 100px;
+      width: 130px;
+      height: 130px;
       border-radius: 8px;
     }
   }
@@ -772,7 +791,7 @@ main {
 
   .purchase-box {
     width: 586px;
-    height: 503px;
+    // height: 503px;
     background-image: url("@/assets/purchase.png");
     background-size: 100% 100%;
     padding: 40px 55px 55px 55px;
@@ -791,10 +810,13 @@ main {
       font-size: 18px;
       .purchase-income {
         .van-col {
+          padding: 20px 10px;
+          border-radius: 8px;
+          border: 1px solid #ffebcd;
+          display: flex;
+          align-items: center;
           > div {
-            line-height: 72px;
-            border: 1px solid #ffebcd;
-            border-radius: 8px;
+            // line-height: 72px;
             text-align: center;
             color: #ffefd1;
           }
@@ -816,8 +838,8 @@ main {
       display: flex;
 
       > img {
-        width: 150px;
-        height: 150px;
+        width: 130px;
+        height: 130px;
         border-radius: 8px;
       }
 
