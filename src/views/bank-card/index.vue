@@ -1,10 +1,6 @@
 <template>
   <div>
-    <van-nav-bar
-      :title="$t('银行卡管理')"
-      left-arrow
-      @click-left="onClickLeft"
-    />
+    <van-nav-bar :title="$t('银行卡')" left-arrow @click-left="onClickLeft" />
 
     <div class="box">
       <div v-if="userInfo.bankCard" class="item-box">
