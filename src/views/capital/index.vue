@@ -1,50 +1,15 @@
 <template>
   <div class="wrapper">
-    <div class="header">
-      <come-back :title="$t('资金详情')" />
-      <div class="capital-bg"></div>
-      <!-- <img src="@/assets/capital-bg.png" alt="" /> -->
-      <div class="money">
-        <van-row type="flex" justify="space-between" class="money-row">
-          <van-col span="12">
-            <div class="money-num">
-              <img src="@/assets/capital-icon1.png" alt="" />
-              <div>
-                <span>
-                  {{
-                    userInfo.cumulativeRechargeAmount | _toLocaleString(false)
-                  }}</span
-                >
-                <span>{{ $t("充值") }}</span>
-              </div>
-            </div>
-          </van-col>
-          <van-col span="12">
-            <div class="money-num">
-              <img src="@/assets/capital-icon2.png" alt="" />
-              <div>
-                <span>
-                  {{
-                    userInfo.cumulativeWithdrawalAmount | _toLocaleString(false)
-                  }}</span
-                >
-                <span>{{ $t("提现") }}</span>
-              </div>
-            </div>
-          </van-col>
-        </van-row>
+    <van-nav-bar :title="$t('资金详情')" left-arrow @click-left="onClickLeft" />
+    <div class="header-box">
+      <div class="dropdown-box">
+        <van-dropdown-menu>
+          <van-dropdown-item v-model="value" :options="option" />
+        </van-dropdown-menu>
       </div>
     </div>
-    <div class="box">
-      <van-tabs v-model="active" class="box-tabs" line-height="0">
-        <van-tab :title="$t('全部')" :name="0"></van-tab>
-        <van-tab :title="$t('充值')" :name="1"></van-tab>
-        <van-tab :title="$t('提现')" :name="2"></van-tab>
-        <van-tab :title="$t('购买')" :name="3"></van-tab>
-        <van-tab :title="$t('奖励')" :name="4"></van-tab>
-        <van-tab :title="$t('分润')" :name="5"></van-tab>
-        <van-tab :title="$t('收益')" :name="6"></van-tab>
-      </van-tabs>
+
+    <main>
       <van-pull-refresh
         :pulling-text="$t('下拉即可刷新...')"
         :loosing-text="$t('释放即可刷新...')"
@@ -59,30 +24,36 @@
           :loading-text="$t('加载中...')"
           @load="onLoad"
         >
-          <van-cell v-for="item in data" :key="item.id">
-            <div class="box-content">
-              <div class="content-txt">
-                <img src="@/assets/capital-icon3.png" alt="" />
+          <van-cell v-for="(item, index) in data" :key="item.id">
+            <div class="item-box">
+              <div class="flex items-center">
+                <svg-icon
+                  class="font-svg"
+                  style="margin-left: 10px"
+                  :iconClass="index === 0 ? 'arrowdown' : 'arrowdown1'"
+                />
                 <div>
-                  <div>{{ item.mDesc }}</div>
-                  <div>{{ item.amount }}</div>
+                  <p :class="`${index === 0 ? 'arrowdown' : 'arrowdown1'}`">
+                    ₹ 12.35
+                  </p>
+                  <p class="p-time">02 / 02 / 2040</p>
                 </div>
               </div>
-              <div>{{ item.createTime | _timeFormat("YYYY-MM-DD") }}</div>
+              <div :class="`${index === 0 ? 'arrowdown tx' : 'arrowdown1 tx'}`">
+                提现
+              </div>
             </div>
           </van-cell>
           <!-- <div slot="finished"></div> -->
         </van-list>
       </van-pull-refresh>
-    </div>
+    </main>
   </div>
 </template>
 <script>
 import { transactionRecord } from "@/api";
-import { Toast } from "vant";
 import refresh from "@/mixins/refresh";
 import { mapGetters } from "vuex";
-
 export default {
   mixins: [refresh],
   computed: {
@@ -90,9 +61,15 @@ export default {
   },
   data() {
     return {
-      fanhui: require("@/assets/fanhui.png"),
-      // 1 充值 2 体现 3 购买 4 奖励 5分润 6 收益
-      active: 0,
+      data: [{}, {}, {}],
+      value: 0,
+      option: [
+        { text: "全部", value: 0 },
+        { text: "分润", value: 1 },
+        { text: "购买", value: 2 },
+        { text: "奖励", value: 2 },
+        { text: "提现", value: 2 },
+      ],
     };
   },
   watch: {
@@ -116,9 +93,9 @@ export default {
       try {
         if (res.status === 0) {
           if (pageNum !== 1) {
-            this.data = [...this.data, ...res.data];
+            // this.data = [...this.data, ...res.data];
           } else {
-            this.data = res.data;
+            // this.data = res.data;
           }
         }
         // if (this.data.length >= res.data.total) {
@@ -145,161 +122,80 @@ export default {
   display: flex;
   flex-direction: column;
 }
-.capital-bg {
-  width: 100vw;
-  height: 400px;
-  background-image: url("@/assets/capital-bg.png");
-  background-size: 488px 336px;
-  background-repeat: no-repeat;
-  background-position: 50% 130px;
+.header-box {
+  width: 100%;
+  background-color: #fff;
+  .dropdown-box {
+    width: 50%;
+  }
 }
-.header {
-  position: relative;
-  width: 750px;
-  background: linear-gradient(0deg, #ff947c 0%, #ffb98c 100%), #ffff00;
-
-  .fanhui {
-    color: #fff;
-    display: flex;
-    align-items: center;
-    padding: 20px 72px 0 54px;
+:deep(.van-dropdown-menu__bar) {
+  box-shadow: none;
+  .van-dropdown-menu__title {
+    padding: 0 37px;
+  }
+  .van-dropdown-menu__item {
+    justify-content: flex-start;
+  }
+}
+:deep(.van-dropdown-menu) {
+  .van-cell {
     font-size: 36px;
+    font-weight: 600;
+    line-height: normal;
 
-    > img {
-      width: 18px;
-      height: 32px;
-    }
-
-    > div {
-      flex: 1;
-      text-align: center;
-    }
+    letter-spacing: 2px;
+    font-variation-settings: "opsz" auto;
+    color: #666666;
   }
 }
 
-.money {
-  padding: 0 20px;
-  height: 135px;
-  position: absolute;
-  bottom: -12%;
-  left: 50%;
-  width: 100%;
-  transform: translateX(-50%);
-
-  .money-row {
-    background: linear-gradient(to bottom, #f7c8bf, #ffffff);
-    border-radius: 12px;
-    height: 100%;
-
-    .money-num {
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      > img {
-        width: 84px;
-        height: 84px;
-        border-radius: 50%;
-      }
-
-      > div {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding-left: 16px;
-
-        > span:nth-child(1) {
-          font-size: 34px;
-          color: #333333;
-        }
-
-        > span:nth-child(2) {
-          font-size: 26px;
-          color: #ff977c;
-          text-decoration: underline;
-        }
-      }
-    }
-  }
-}
-
-.box {
-  flex: 1;
-  // overflow-y: auto;
-  background: linear-gradient(to bottom, #ffffff, #f9d9d2);
-}
-
-.box-tabs {
-  padding: 100px 40px 0 40px;
-  width: 100%;
-
-  :deep(.van-tabs__wrap) {
-    height: 88px;
-
-    .van-tabs__nav {
-      background-color: transparent;
-    }
-
-    .van-tab {
-      font-size: 30px;
-      color: #000;
-
-      .van-tab__text {
-        height: 80px;
-        line-height: 80px;
-      }
-    }
-
-    .van-tab--active {
-      margin: 4px;
-      background: linear-gradient(0deg, #ff957c 0%, #ffba8b 100%), #ffffff;
-      border-radius: 40px;
-      color: #ffffff;
-    }
-  }
-}
-
-.box-content {
+.item-box {
+  font-size: 36px;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.76px;
+  font-variation-settings: "opsz" auto;
   display: flex;
   justify-content: space-between;
-  color: #cccccc;
-  font-size: 30px;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 23px;
-  padding: 20px;
-  margin: 10px 20px;
+  align-items: flex-start;
+  color: #3bb64f;
+  .font-svg {
+    font-size: 48px;
+    margin-right: 24px;
+  }
+  .p-time {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 32px;
+    margin-top: 8px;
+    letter-spacing: 0.6px;
 
-  .content-txt {
-    display: flex;
-    align-items: center;
+    font-variation-settings: "opsz" auto;
+    color: #666666;
+  }
 
-    > img {
-      width: 55px;
-      height: 63px;
-    }
-
-    > div {
-      padding-left: 20px;
-
-      > div:nth-child(1) {
-        color: #323232;
-      }
-
-      > div:nth-child(2) {
-        color: #ff977c;
-      }
-    }
+  .arrowdown {
+    color: #3bb64f;
+  }
+  .arrowdown1 {
+    color: #ff752f;
+  }
+  .tx {
+    font-size: 36px;
+    font-weight: 600;
+    line-height: normal;
   }
 }
-
-::v-deep .van-cell {
-  padding: 0;
+main {
+  background: #f6f6f6;
 }
-::v-deep .van-list__error-text,
-::v-deep .van-list__finished-text,
-::v-deep .van-list__loading {
-  background-color: #fff;
+:deep(main) {
+  .van-cell {
+    background-color: #f6f6f6;
+  }
+  .van-cell::after {
+    border-color: #d8d8d8;
+  }
 }
 </style>

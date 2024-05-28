@@ -1,23 +1,23 @@
 <template>
   <div>
-    <van-nav-bar :title="$t('语言切换')" left-arrow @click-left="onClickLeft" />
+    <van-nav-bar :title="$t('语言')" left-arrow @click-left="onClickLeft" />
 
     <main>
-      <van-radio-group v-model="lang">
-        <van-cell-group>
-          <van-cell
-            v-for="item in list"
-            :key="item.value"
-            :title="item.label"
-            clickable
-            @click="handleSetSize(item.value)"
-          >
-            <template #right-icon>
-              <van-radio :name="item.value" />
-            </template>
-          </van-cell>
-        </van-cell-group>
-      </van-radio-group>
+      <van-cell
+        v-for="item in list"
+        :key="item.value"
+        :title="item.label"
+        clickable
+        @click="handleSetSize(item.value)"
+      >
+        <template #right-icon>
+          <svg-icon
+            class="font-svg"
+            style="margin-left: 10px"
+            iconClass="xyjt"
+          />
+        </template>
+      </van-cell>
     </main>
   </div>
 </template>
@@ -40,9 +40,9 @@ export default {
   },
   methods: {
     handleSetSize(lang) {
-      console.log(lang);
       this.$store.dispatch("setLang", lang);
       this.$i18n.locale = lang;
+      this.$router.go(-1);
     },
     onClickLeft() {
       this.$router.go(-1);
@@ -51,5 +51,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+:deep([class*="van-hairline"]::after) {
+  border: none;
+}
 </style>

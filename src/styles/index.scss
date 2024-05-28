@@ -59,5 +59,16 @@ body {
 }
 
 #app {
-  background-color: #f5eceb;
+  background-color: #f6f6f6;
+}
+
+.van-nav-bar__content .van-nav-bar__title {
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 42px;
+  text-align: center;
+  letter-spacing: 0em;
+
+  font-variation-settings: "opsz" auto;
+  color: #3d3d3d;
 }
