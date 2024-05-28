@@ -1,896 +1,762 @@
 <template>
-  <div>
-    <div class="banner-box">
-      <div class="information">
-        <!-- <van-swipe class="my-swipe" :autoplay="5000" indicator-color="white"> -->
-        <van-swipe class="my-swipe" :autoplay="5000" indicator-color="white">
-          <van-swipe-item
-            v-for="item in noteic"
-            :key="item.id"
-            @click="$router.push(`/itemInformation?id=${item.id}`)"
-          >
-            <div class="text-container">{{ item.title }}</div>
-          </van-swipe-item>
-        </van-swipe>
-
-        <img @click="$router.push('/information')" :src="laba" alt="" />
-      </div>
-      <div class="banner-left">
-        <div>
-          <p>PROFESSION</p>
-          <p>becomes value</p>
-        </div>
-        <span>Invest to create wealth</span>
-      </div>
-      <div class="banner-right">
-        <img :src="bannerRight" alt="" class="" />
-      </div>
-    </div>
-    <div class="yue">
-      <div class="yue-item yue-left" @click="$router.push('/recharge')">
-        <div class="flex">
-          <div class="box-img">
-            <img :src="topUp" alt="" />
-          </div>
-          <div>
-            <p class="p-yue">
-              {{ userInfo.cumulativeRechargeAmount | _toLocaleString(false) }}
-            </p>
-            <p class="p-ba">{{ $t("充值金额") }}</p>
-          </div>
-        </div>
-        <div class="flex justify-end text w-full">
-          <div>{{ $t("充值") }}</div>
-        </div>
-      </div>
-      <div class="yue-item" @click="$router.push('/withdrawal')">
-        <div class="flex">
-          <div class="box-img">
-            <img :src="topUp" alt="" />
-          </div>
-          <div>
-            <p class="p-yue">
-              {{ userInfo.cumulativeWithdrawalAmount | _toLocaleString(false) }}
-            </p>
-            <p class="p-ba">{{ $t("提现金额") }}</p>
-          </div>
-        </div>
-        <div class="flex justify-end text w-full">
-          <div>{{ $t("提现") }}</div>
-        </div>
-      </div>
-    </div>
-    <div class="yue icon-text">
-      <van-row gutter="10" class="w-full" type="flex" justify="space-between">
-        <van-col span="6" class="flex-clo">
-          <svg-icon iconClass="gywm" style="font-size: 30px"></svg-icon>
-          <span>{{ $t("关于我们") }}</span>
-        </van-col>
-        <van-col span="6" class="flex-clo" @click="kefutz">
-          <svg-icon iconClass="kh" style="font-size: 30px"></svg-icon>
-          <span> {{ $t("客服支持") }}</span>
-        </van-col>
-        <van-col span="6" class="flex-clo" @click="$router.push('/vip-list')">
-          <svg-icon iconClass="VIP" style="font-size: 30px"></svg-icon>
-          <span> VIP</span>
-        </van-col>
-        <van-col span="6" class="flex-clo" @click="$router.push('/msg')">
-          <!-- msgCount -->
-          <van-badge :content="msgCount" max="99">
-            <svg-icon iconClass="gg" style="font-size: 30px"></svg-icon>
-            <span> {{ $t("消息") }}</span>
-          </van-badge>
-        </van-col>
-      </van-row>
-    </div>
-    <main>
-      <div class="header-h1">{{ $t("热门产品") }}</div>
-      <van-swipe
-        :loop="false"
-        :width="300"
-        :autoplay="3000"
-        indicator-color="white"
-      >
-        <van-swipe-item v-for="(item, index) in isHotData" :key="index">
-          <div class="content-item">
-            <div class="img-box">
-              <p v-if="item.vipRequest">
-                <span> VIP {{ item.vipRequest }} </span>
-              </p>
-              <img :src="item.img" alt="" />
+    <div class="wrapper">
+        <div class="header">
+            <div class="header-alltech">
+                <img src="@/assets/img/alltech.png" alt="">
             </div>
-            <div class="item-text">
-              <div>{{ item.productTitle }}</div>
-              <div class="text1">{{ $t("购买价格：") }}{{ item.price }}</div>
-              <div class="text2">
+            <van-badge :content="msgCount" max="99">
+                <div class="header-news">
+                    <img src="@/assets/img/news.png" alt="">
+                </div>
+            </van-badge>
+        </div>
+        <div class="information">
+            <van-swipe class="my-swipe" :autoplay="5000" indicator-color="white">
+                <van-swipe-item v-for="(item, i) in noteic" :key="i">
+                    <div class="swipe-container"><img src="@/assets/banner-right.png" alt=""></div>
+                </van-swipe-item>
+            </van-swipe>
+            <div class="nav">
+                <div v-for="(item, i) in navList" :key="i">
+                    <img :src="item.img" alt="">
+                    <span>{{ item.title }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="bulletin">
+            <div class="bulletin-left">
+                <img src="@/assets/img/bulletin-bg.png" alt="">
                 <div>
-                  {{ $t("日收入：") }}
-                  {{ item.dailyProductRevenue | _toLocaleString(false) }}
+                    <span>快讯播报</span>
+                    <span>邀请好友获得丰富奖励</span>
+                </div>
+            </div>
+            <van-icon name="arrow" />
+        </div>
+        <div class="wallet">
+            <div class="wallet-money">
+                <div class="wallet-money-left">
+                    <span>总资金</span>
+                    <span>8.9</span>
+                </div>
+                <div class="wallet-money-right">
+                    <div @click="$router.push('/recharge')">充值</div>
+                    <div @click="$router.push('/withdrawal')">提现</div>
+                </div>
+            </div>
+            <div class="wallet-history">
+                <div>
+                    <span>充值金额</span>
+                    <span>8.9</span>
                 </div>
                 <div>
-                  {{ $t("累计收入：") }}
-                  {{
-                    (item.dailyProductRevenue * item.cycle)
-                      | _toLocaleString(false)
-                  }}
+                    <span>可提现金额</span>
+                    <span>1.9</span>
                 </div>
-              </div>
             </div>
-            <div
-              v-if="token"
-              class="goumai-but"
-              @click="purchaseShowClick(item)"
-            >
-              {{ $t("购买") }}
-            </div>
-            <div v-else class="goumai-but" @click="$router.push('/login')">
-              {{ $t("登录") }}
-            </div>
-          </div>
-        </van-swipe-item>
-      </van-swipe>
-
-      <div class="header-h1">{{ $t("邀请奖励") }}</div>
-      <div
-        class="item-main"
-        v-for="item in queryPaySettingData"
-        :key="item.id"
-        style="margin-bottom: 10px"
-      >
-        <!-- huobidanwei -->
-        <svg-icon iconClass="huobidanwei" style="font-size: 60px"></svg-icon>
-        <div style="flex: 1" class="box-yqjj">
-          <p class="header-box">{{ $t("邀请激活") }}</p>
-          <div>
-            <div class="flex item-text">
-              <p>
-                {{
-                  userInfo.oneCount >= item.directThrustCount
-                    ? item.directThrustCount
-                    : userInfo.oneCount
-                }}/{{ item.directThrustCount }}
-              </p>
-              <p>{{ item.payAmount }}</p>
-            </div>
-            <div class="flex item-text">
-              <p class="text">{{ $t("推荐人数") }}</p>
-              <p class="text">{{ $t("奖励金额") }}</p>
-            </div>
-          </div>
         </div>
-      </div>
-    </main>
 
-    <!-- 活动通知 -->
-    <van-popup
-      v-model="noticeShow"
-      class="notice"
-      :closeable="true"
-      :close-on-click-overlay="false"
-    >
-      <div class="notice-box">
-        <div class="notice-title">{{ $t("活动通知") }}</div>
-        <pre class="notice-txt">
+        <div class="popular">
+            <div class="header-h1">{{ $t("热门产品") }}</div>
+            <van-swipe :loop="false" :autoplay="3000" indicator-color="white">
+                <van-swipe-item v-for="(item, index) in isHotData" :key="index">
+                    <div class="popular-content">
+                        <div class="img-box">
+                            <img :src="item.img" alt="" />
+                        </div>
+                        <div class="popular-right">
+                            <div class="popular-product">
+                                <div>
+                                    <span>产品价格</span>
+                                    <span>{{ item.price }}</span>
+                                </div>
+                                <div v-if="token" class="goumai-but" @click="purchaseShowClick(item)">
+                                    {{ $t("购买") }}
+                                </div>
+                                <div v-else class="goumai-but" @click="$router.push('/login')">
+                                    {{ $t("登录") }}
+                                </div>
+                            </div>
+                            <div class="popular-income">
+                                <div>
+                                    <span>{{ $t("日收入") }}</span>
+                                    <span> {{ item.dailyProductRevenue | _toLocaleString(false) }}</span>
+                                </div>
+                                <div>
+                                    <span>{{ $t("累计收入") }}</span>
+                                    <span>{{ (item.dailyProductRevenue * item.cycle) | _toLocaleString(false) }}</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </van-swipe-item>
+            </van-swipe>
+        </div>
+        <div class="journalism">
+            <div class="header-h1">{{ $t("新闻快讯") }}</div>
+            <div class="journalism-box" v-for="(item, i) in journalismList" :key="i">
+                <div class="journalism-box-img"><img src="" alt=""></div>
+                <div class="journalism-box-txt">
+                    <span>{{ item.title }}</span>
+                    <span>{{ item.text }}</span>
+                    <span>{{ item.tiem }}</span>
+                </div>
+            </div>
+        </div>
+        <!-- 活动通知 -->
+        <van-popup v-model="noticeShow" class="notice" :closeable="true" :close-on-click-overlay="false">
+            <div class="notice-box">
+                <div class="notice-title">{{ $t("活动通知") }}</div>
+                <pre class="notice-txt">
           1.最新优惠活动没法及时告诉你哦开通后消息及时推送，不错过任何消息.
           2.最新优惠活动没法及时告诉你哦开通后消息及时推送，不错过任何消息.
           3.最新优惠活动没法及时告诉你哦开通后消息及时推送，不错过任何消息.
         </pre>
-      </div>
-    </van-popup>
-
-    <van-overlay :show="purchaseShow" class="purchase">
-      <div class="purchase-box">
-        <van-icon
-          name="close"
-          class="purchase-close"
-          color="#fff"
-          @click="purchaseShow = false"
-        />
-
-        <div class="purchase-top">
-          <van-row type="flex" justify="space-between" class="purchase-income">
-            <van-col span="11">
-              <div>
-                {{ $t("每日收入：")
-                }}{{
-                  (purchaseShowData.dailyProductRevenue * stepperValue)
-                    | _toLocaleString(false)
-                }}
-              </div>
-            </van-col>
-            <van-col span="11">
-              <div>
-                {{ $t("总收益：") }}
-
-                {{
-                  (purchaseShowData.dailyProductRevenue *
-                    purchaseShowData.cycle *
-                    stepperValue)
-                    | _toLocaleString(false)
-                }}
-              </div>
-            </van-col>
-          </van-row>
-          <van-row type="flex" justify="space-between" class="purchase-num">
-            <van-col span="6">{{ $t("购买数量") }}</van-col>
-            <van-col span="12">
-              <van-stepper v-model="stepperValue" button-size="28px"
-            /></van-col>
-          </van-row>
-        </div>
-        <div class="purchase-bottom">
-          <img :src="purchaseShowData.img" alt="" />
-          <div class="purchase-commodity">
-            <div>{{ purchaseShowData.productTitle }}</div>
-            <div>
-              <span>{{ $t("购买价格：") }}</span
-              ><span>{{ purchaseShowData.price }}</span>
             </div>
-            <div>
-              <span>{{ $t("总价格：") }}</span
-              ><span>{{ purchaseShowData.price * stepperValue }}</span>
+        </van-popup>
+        <van-overlay :show="purchaseShow" class="purchase">
+            <div class="purchase-box">
+                <van-icon name="close" class="purchase-close" color="#fff" @click="purchaseShow = false" />
+
+                <div class="purchase-top">
+                    <van-row type="flex" justify="space-between" class="purchase-income">
+                        <van-col span="11">
+                            <div>
+                                {{ $t("每日收入：")
+                                }}{{
+                                    (purchaseShowData.dailyProductRevenue * stepperValue)
+                                    | _toLocaleString(false)
+                                }}
+                            </div>
+                        </van-col>
+                        <van-col span="11">
+                            <div>
+                                {{ $t("总收益：") }}
+
+                                {{
+                                    (purchaseShowData.dailyProductRevenue *
+                                        purchaseShowData.cycle *
+                                        stepperValue)
+                                    | _toLocaleString(false)
+                                }}
+                            </div>
+                        </van-col>
+                    </van-row>
+                    <van-row type="flex" justify="space-between" class="purchase-num">
+                        <van-col span="6">{{ $t("购买数量") }}</van-col>
+                        <van-col span="12">
+                            <van-stepper v-model="stepperValue" button-size="28px" /></van-col>
+                    </van-row>
+                </div>
+                <div class="purchase-bottom">
+                    <img :src="purchaseShowData.img" alt="" />
+                    <div class="purchase-commodity">
+                        <div>{{ purchaseShowData.productTitle }}</div>
+                        <div>
+                            <span>{{ $t("购买价格：") }}</span><span>{{ purchaseShowData.price }}</span>
+                        </div>
+                        <div>
+                            <span>{{ $t("总价格：") }}</span><span>{{ purchaseShowData.price * stepperValue }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="purchase-but">
+                    <van-button type="primary" block
+                        color="linear-gradient(0deg,#ff947c 0%, #ffb98c 100%), linear-gradient(0deg,#e11b31 1%, #f3354e 100%)"
+                        :round="true" @click="ljizhifu">{{ $t("立即支付") }}</van-button>
+                </div>
             </div>
-          </div>
-        </div>
-        <div class="purchase-but">
-          <van-button
-            type="primary"
-            block
-            color="linear-gradient(0deg,#ff947c 0%, #ffb98c 100%), linear-gradient(0deg,#e11b31 1%, #f3354e 100%)"
-            :round="true"
-            @click="ljizhifu"
-            >{{ $t("立即支付") }}</van-button
-          >
-        </div>
-      </div>
-    </van-overlay>
-  </div>
+        </van-overlay>
+    </div>
 </template>
-
 <script>
 import {
-  buyProduct,
-  getCustomerService,
-  productqueryProductClassify,
-  queryMsgCount,
-  queryNoteice,
-  queryPaySetting,
-  queryProductClassify,
-  queryProductisHot,
+    buyProduct,
+    getCustomerService,
+    productqueryProductClassify,
+    queryMsgCount,
+    queryNoteice,
+    queryPaySetting,
+    queryProductClassify,
+    queryProductisHot,
 } from "@/api";
 import { Toast } from "vant";
 import { mapActions, mapGetters } from "vuex";
 export default {
-  computed: {
-    ...mapGetters(["token", "userInfo"]),
-    tabs() {
-      return this.fenleiData;
-    },
-  },
-  mounted() {
-    this.getfenlei();
-    this.getCustomerService();
-    this.getQueryNoteice();
-    // this.getlist();
-    this.getqueryProductisHot();
-    this.queryPaySetting();
-    if (this.token) {
-      this.queryMsgCount();
-      this.getUserInfo();
-    }
-  },
-  methods: {
-    ...mapActions(["getUserInfo"]),
-    kefutz() {
-      window.location.href = this.servicedata;
-    },
-    async queryMsgCount() {
-      const res = await queryMsgCount();
-      if (res.status === 0) {
-        this.msgCount = res.data;
-      }
-    },
-    async getCustomerService() {
-      const res = await getCustomerService();
-      if (res.status === 0) {
-        localStorage.setItem("servicedata", res.data);
-        this.servicedata = res.data;
-      }
-    },
-    async getqueryProductisHot() {
-      const res = await queryProductisHot();
-      if (res.status === 0) {
-        this.isHotData = res.data;
-      }
-    },
-    async queryPaySetting() {
-      const res = await queryPaySetting();
-      if (res.status === 0) {
-        this.queryPaySettingData = res.data;
-      }
-    },
-    async purchaseShowClick(item) {
-      this.purchaseShow = true;
-      this.purchaseShowData = item;
-    },
-    async getQueryNoteice() {
-      const res = await queryNoteice({
-        pageSize: 10,
-        pageNum: 1,
-      });
-      if (res.status === 0) {
-        this.noteic = res.data.list;
-      }
-    },
-    tabsClick(item) {
-      this.tabsAcitve = item;
-      this.getlist();
-    },
-    async getfenlei() {
-      const res = await queryProductClassify();
-      if (res.status === 0) {
-        localStorage.setItem("fenleiData", JSON.stringify(res.data));
-        localStorage.setItem("tabsAcitve", JSON.stringify(res.data[0].id));
-        this.fenleiData = res.data;
-        this.tabsAcitve = res.data[0].id;
-        this.getlist();
-      }
-    },
-    async getlist() {
-      this.data = [];
-      let id = this.tabsAcitve;
-      const res = await productqueryProductClassify({ id: 3 });
-      if (res.status === 0 && this.tabsAcitve === id) {
-        this.data = res.data;
-      }
-    },
-    async ljizhifu() {
-      const res = await buyProduct({
-        pid: this.purchaseShowData.id,
-        num: this.stepperValue,
-      });
+    data() {
+        return {
+            noteic: [
+                {
+                    title: '1'
+                },
+                {
+                    title: '2'
+                },
+                {
+                    title: '3'
+                },
+                {
+                    title: '4'
+                },
+            ],
+            navList: [
+                {
+                    title: '我们',
+                    img: require('@/assets/img/my.png')
+                },
+                {
+                    title: '客服',
+                    img: require('@/assets/img/service.png')
+                },
+                {
+                    title: 'VIP',
+                    img: require('@/assets/img/vip-icon.png')
+                },
+            ],
+            msgCount: 0,
+            servicedata: localStorage.getItem("servicedata") || "",
 
-      if (res.status === 0) {
-        this.purchaseShow = false;
-        Toast.success(this.$t(`购买成功`));
-        setTimeout(() => {
-          this.$router.push("/purchase-history");
-        }, 1000);
-      } else {
-        this.purchaseShow = false;
-      }
+            queryPaySettingData: [],
+            data: [],
+            fenleiData: localStorage.getItem("fenleiData")
+                ? JSON.parse(localStorage.getItem("fenleiData"))
+                : [],
+            tabsAcitve: localStorage.getItem("tabsAcitve")
+                ? JSON.parse(localStorage.getItem("tabsAcitve"))
+                : 2,
+            isHotData: [],
+            noticeShow: false,
+            purchaseShow: false,
+            purchaseShowData: {},
+            stepperValue: 1,
+            journalismList: [
+                {
+                    img: require('@/assets/img/bulletin-bg.png'),
+                    title: '今天去了趟云南大理也去了',
+                    text: '今天去了一趟云南大理也去了今天去了一趟云南大理也去了今天去了一趟云南大理也去了',
+                    time: '18:80 26/5/2024'
+                },
+                {
+                    img: require('@/assets/img/bulletin-bg.png'),
+                    title: '今天去了趟云南大理也去了',
+                    text: '今天去了一趟云南大理也去了今天去了一趟云南大理也去了今天去了一趟云南大理也去了',
+                    time: '18:80 26/5/2024'
+                },
+            ]
+        }
     },
-  },
-  data() {
-    return {
-      msgCount: 0,
-      servicedata: localStorage.getItem("servicedata") || "",
-      noteic: [],
-      queryPaySettingData: [],
-      isHotData: [],
-      purchaseShowData: {},
-      fenleiData: localStorage.getItem("fenleiData")
-        ? JSON.parse(localStorage.getItem("fenleiData"))
-        : [],
-      data: [],
-      bannerRight: require("@/assets/banner-right.png"),
-      laba: require("@/assets/laba.png"),
-      topUp: require("@/assets/top-up.png"),
-      Withdrawal: require("@/assets/Withdrawal.png"),
+    computed: {
+        ...mapGetters(["token", "userInfo"]),
+        tabs() {
+            return this.fenleiData;
+        },
+    },
+    mounted() {
+        this.getfenlei();
+        this.getCustomerService();
+        this.getQueryNoteice();
+        // this.getlist();
+        this.getqueryProductisHot();
+        // this.queryPaySetting();
+        if (this.token) {
+            this.queryMsgCount();
+            this.getUserInfo();
+        }
+    },
+    methods: {
+        ...mapActions(["getUserInfo"]),
+        kefutz() {
+            window.location.href = this.servicedata;
+        },
+        async queryMsgCount() {
+            const res = await queryMsgCount();
+            if (res.status === 0) {
+                this.msgCount = res.data;
+            }
+        },
+        async getCustomerService() {
+            const res = await getCustomerService();
+            if (res.status === 0) {
+                localStorage.setItem("servicedata", res.data);
+                this.servicedata = res.data;
+            }
+        },
+        async getqueryProductisHot() {
+            const res = await queryProductisHot();
+            if (res.status === 0) {
+                this.isHotData = res.data;
+            }
+        },
+        async queryPaySetting() {
+            const res = await queryPaySetting();
+            if (res.status === 0) {
+                this.queryPaySettingData = res.data;
+            }
+        },
+        async purchaseShowClick(item) {
+            this.purchaseShow = true;
+            this.purchaseShowData = item;
+        },
+        async getQueryNoteice() {
+            const res = await queryNoteice({
+                pageSize: 10,
+                pageNum: 1,
+            });
+            if (res.status === 0) {
+                this.noteic = res.data.list;
+            }
+        },
+        tabsClick(item) {
+            this.tabsAcitve = item;
+            this.getlist();
+        },
+        async getfenlei() {
+            const res = await queryProductClassify();
+            if (res.status === 0) {
+                localStorage.setItem("fenleiData", JSON.stringify(res.data));
+                localStorage.setItem("tabsAcitve", JSON.stringify(res.data[0].id));
+                this.fenleiData = res.data;
+                this.tabsAcitve = res.data[0].id;
+                this.getlist();
+            }
+        },
+        async getlist() {
+            this.data = [];
+            let id = this.tabsAcitve;
+            const res = await productqueryProductClassify({ id: 3 });
+            if (res.status === 0 && this.tabsAcitve === id) {
+                this.data = res.data;
+            }
+        },
+        async ljizhifu() {
+            const res = await buyProduct({
+                pid: this.purchaseShowData.id,
+                num: this.stepperValue,
+            });
 
-      homeJe: require("@/assets/home-je.png"),
-      tabsAcitve: localStorage.getItem("tabsAcitve")
-        ? JSON.parse(localStorage.getItem("tabsAcitve"))
-        : 2,
-      noticeShow: false,
-      purchaseShow: false,
-      stepperValue: 1,
-    };
-  },
-};
+            if (res.status === 0) {
+                this.purchaseShow = false;
+                Toast.success(this.$t(`购买成功`));
+                setTimeout(() => {
+                    this.$router.push("/purchase-history");
+                }, 1000);
+            } else {
+                this.purchaseShow = false;
+            }
+        },
+    },
+}
 </script>
-
 <style lang="scss" scoped>
-:deep(.van-cell__value) {
-  overflow: hidden;
-  margin-right: 10px;
+.wrapper {
+    padding: 18px 36px;
+    position: relative;
+    background-color: #f6f6f6;
 }
-:deep(.van-swipe) {
-  overflow: hidden;
-  padding: 30px;
-  .van-swipe-item {
-    margin-right: 30px;
-  }
-  .van-swipe__indicators {
-    display: none;
-  }
-}
-.item-main {
-  width: 100%;
-  height: 200px;
-  border-radius: 12px;
-  background-image: url("@/assets/bg-yqjl.png");
-  background-size: 100% 100%;
-  display: flex;
-  // justify-content: space-between;
-  align-items: center;
-  padding: 0 30px;
-  color: #ffffff;
-  .box-yqjj {
-    margin-left: 30px;
-  }
-  .header-box {
-    font-size: 26px;
-    font-weight: 500;
-    line-height: 32px;
-    text-align: left;
-    letter-spacing: 0px;
-    margin-bottom: 14px;
-  }
-  .item-text {
+
+.header {
     display: flex;
     justify-content: space-between;
-    font-size: 36px;
-    font-weight: 600;
-    line-height: 44px;
-    letter-spacing: 0px;
-    color: #ffffff;
-  }
-  .text {
-    font-size: 26px;
-    font-weight: 500;
-    line-height: 32px;
-    text-align: right;
-    letter-spacing: 0px;
 
-    color: rgba($color: #ffffff, $alpha: 0.5);
-  }
-}
-.banner-box {
-  position: relative;
-  width: 750px;
-  height: 515px;
-  background-color: #fff;
-  border-bottom-left-radius: 60px;
-  background-image: url("@/assets/banner-bg.png");
-  background-size: cover;
-  /* 背景图片覆盖整个元素 */
-  display: flex;
-  justify-content: space-between;
-  box-shadow: -0.28px 3.99px 30px 4px rgba(165, 188, 251, 0.4);
+    .header-alltech {
+        height: 60px;
+        width: 168px;
+    }
 
-  .information {
-    // width: calc(100% - 70px);
-    width: 100%;
-    position: absolute;
-    bottom: 15px;
-    padding-left: 70px;
-    font-size: 24px;
-    font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+    .header-news {
+        width: 54px;
+        height: 54px;
+    }
 
-    font-weight: 400;
-    text-align: left;
-    color: #999999;
+    :deep(.van-badge--dot) {
+        width: 16px;
+        height: 16px;
+    }
 
     img {
-      width: 55px;
-      height: 54px;
-      position: absolute;
-      right: 70px;
-      bottom: 0;
+        width: 100%;
+        height: 100%;
     }
-  }
-
-  .banner-left {
-    padding-left: 50px;
-    margin-top: 100px;
-
-    div {
-      font-size: 45px;
-      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
-
-      font-weight: normal;
-      text-align: left;
-      color: #f2f5fc;
-      line-height: 62px;
-    }
-
-    span {
-      font-size: 22px;
-      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
-
-      font-weight: normal;
-      text-align: left;
-      color: #f2f5fc;
-      line-height: 62px;
-    }
-  }
-
-  .banner-right {
-    img {
-      margin-top: 100px;
-      width: 385px;
-      height: 398px;
-    }
-  }
 }
 
-.yue {
-  width: 710px;
-
-  background: #ffffff;
-  border-radius: 40px;
-  box-shadow: -0.28px 3.99px 30px 4px rgba(165, 188, 251, 0.4);
-  margin: 18px 20px 0;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 10px;
-
-  .yue-item {
-    flex: 1;
-    margin: 33px 0;
-    background-image: url("@/assets/bg-top.png");
-    background-size: 100% 100%;
-    /* 背景图片覆盖整个元素 */
-    padding: 20px;
-
-    .box-img {
-      width: 75px;
-      height: 75px;
-      background: linear-gradient(22deg, #ff947c 0%, #ffb98c 100%), #fce0d3;
-      border-radius: 50%;
-      justify-content: center;
-      display: flex;
-      margin-right: 20px;
-
-      img {
-        margin: auto;
-        width: 33px;
-        height: 33px;
-      }
-    }
-
-    .p-ba {
-      font-size: 20px;
-      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
-      font-weight: 400;
-      text-align: left;
-      color: #fcae99;
-      line-height: 40px;
-      letter-spacing: -0.52px;
-      white-space: pre;
-    }
-
-    .p-yue {
-      font-size: 28px;
-      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
-
-      font-weight: bold;
-      text-align: left;
-      color: #ff977c;
-      line-height: 49px;
-      letter-spacing: -2.93px;
-    }
-
-    .text {
-      font-size: 22px;
-      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
-
-      font-weight: 400;
-      color: #fcae99;
-
-      div {
-        min-width: 194px;
-        line-height: 62px;
-        background: #fbe5db;
-        border: 4px solid #fcefec;
-        border-radius: 140px;
-        text-align: center;
-        // margin-right: 24px;
-      }
-    }
-  }
-
-  .yue-left {
-    margin-right: 30px;
-  }
-}
-
-.icon-text {
-  font-size: 26px;
-  font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
-
-  font-weight: 400;
-  text-align: left;
-  color: #333333;
-  line-height: 34px;
-  letter-spacing: -0.52px;
-  display: flex;
-  padding: 30px 0 10px;
-
-  .flex-clo {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  span {
-    margin-top: 15px;
-    display: inline-block;
-    height: 60px;
-  }
-
-  img {
-    width: 105px;
-    height: 110px;
-  }
-}
-
-.notice {
-  background-color: transparent;
-
-  :deep(.van-popup__close-icon) {
-    font-size: 50px;
-  }
-
-  .notice-box {
-    width: 663px;
-    height: 759px;
-    padding: 20% 17% 20% 15%;
-    background-image: url("@/assets/notice-bg.png");
-    background-size: 100% 100%;
-    display: flex;
-    flex-direction: column;
-    color: #fff;
-    align-items: center;
-    font-weight: 400;
-
-    .notice-title {
-      font-size: 44px;
-    }
-
-    .notice-txt {
-      flex: 1;
-      overflow-y: auto;
-      white-space: pre-line;
-      line-height: 40px;
-      font-size: 28px;
-      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
-    }
-  }
-}
-
-::v-deep .van-stepper__input {
-  font-size: 30px;
-  width: 80px;
-}
-.my-swipe {
-  margin-top: 30px;
-  padding: 0 !important;
-}
-.my-swipe .van-swipe-item {
-  height: 35px;
-  border-radius: 0.53333rem;
-  font-size: 20px;
-  // line-height: 300px;
-  // text-align: center;
-  // background-color: t;
-  .text-container {
-    color: rgb(153, 153, 153);
-  }
-}
-main {
-  margin: 20px;
-  width: calc(100% - 40px);
-}
-
-.content-item {
-  // width: 710px;
-  height: 254px;
-  background: #ffffff;
-  border-radius: 40px;
-  box-shadow: -0.28px 3.99px 30px 4px rgba(165, 188, 251, 0.4);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 25px;
-  margin-bottom: 10px;
-
-  .item-text {
-    font-size: 25px;
-    font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
-    margin-left: 20px;
-    font-weight: 400;
-    text-align: left;
-    color: #333333;
-
-    .text1 {
-      font-size: 21px;
-      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
-
-      font-weight: 400;
-      text-align: left;
-      color: #999999;
-      margin-top: 14px;
-    }
-
-    .text2 {
-      margin-top: 18px;
-      font-size: 18px;
-      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
-
-      font-weight: 400;
-      text-align: left;
-      color: #fc755b;
-    }
-  }
-
-  .goumai-but {
-    width: 130px;
-    line-height: 130px;
-    border: 2px solid #ff947c;
-    border-radius: 50%;
-    font-size: 36px;
-    font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
-
-    font-weight: 400;
-    text-align: center;
-    color: #fc755b;
-  }
-
-  .img-box {
+.information {
+    margin: 38px 0 170px 0;
     position: relative;
 
-    p {
-      font-size: 24px;
-      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
+    .swipe-container {
+        height: 320px;
+        border-radius: 16px;
 
-      font-weight: bold;
-      text-align: left;
-      text-align: center;
-      color: #f4f4f4;
-      line-height: 39px;
-      line-height: 38px;
-      width: 112px;
-      display: block;
-      background: #f4f4f4;
-      border-radius: 19px;
-      position: absolute;
-      top: -20px;
-      left: 50%;
-
-      span {
-        background: linear-gradient(0deg, #ff947c 0%, #ffb98c 100%);
-        -webkit-background-clip: text;
-        /* Chrome, Safari */
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-        /* Chrome, Safari */
-        color: transparent;
-        /* 兼容不支持background-clip的浏览器 */
-      }
-
-      transform: translateX(-50%);
+        img {
+            width: 100%;
+            height: 100%;
+        }
     }
 
-    img {
-      width: 130px;
-      height: 130px;
-      border-radius: 8px;
+    .nav {
+        width: 100%;
+        border-radius: 16px;
+        background: #fff;
+        box-shadow: 0px -16px 20px 0px rgba(0, 0, 0, 0.0386);
+        padding: 33px 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: absolute;
+        left: 0;
+        bottom: -40%;
+
+        >div {
+            font-size: 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            >img {
+                width: 64px;
+                height: 64px;
+                margin-bottom: 16px;
+            }
+        }
     }
-  }
+}
+
+.bulletin {
+    border-radius: 16px;
+    background: #fff;
+    border: 1px dashed #EDEDED;
+    box-shadow: 0px -16px 20px 0px rgba(0, 0, 0, 0.0386);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 29px;
+
+    .bulletin-left {
+        display: flex;
+        align-items: center;
+
+        >img {
+            width: 90px;
+            height: 85px;
+        }
+
+        >div {
+            margin-left: 16px;
+            display: flex;
+            flex-direction: column;
+            font-size: 28px;
+        }
+    }
+}
+
+.wallet {
+    width: 100%;
+    padding: 40px;
+    border-radius: 16px;
+    background: linear-gradient(92deg, #D25815 0%, #DD824F 98%);
+    margin-top: 36px;
+
+    .wallet-money {
+        width: 100%;
+        display: flex;
+
+        >div {
+            width: 50%;
+        }
+
+        .wallet-money-left {
+            display: flex;
+            flex-direction: column;
+            color: #F6F6F6;
+
+            >span:nth-child(1) {
+                font-size: 28px;
+                margin-bottom: 18px;
+            }
+
+            >span:nth-child(2) {
+                font-weight: 600;
+                font-size: 34px;
+            }
+        }
+
+        .wallet-money-right {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+
+            >div {
+                background: #F6F6F6;
+                width: 140px;
+                height: 60px;
+                line-height: 60px;
+                text-align: center;
+                border-radius: 30px;
+                font-size: 32px;
+                color: #333333;
+            }
+
+            >div:nth-child(1) {
+                color: #B80000;
+            }
+        }
+    }
+
+    .wallet-history {
+        display: flex;
+        margin-top: 32px;
+
+        >div {
+            width: 50%;
+            font-size: 28px;
+            color: #F6F6F6;
+            display: flex;
+            flex-direction: column;
+
+            >span:nth-child(2) {
+                font-weight: 600;
+            }
+        }
+    }
+}
+
+.header-h1 {
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 44px;
+    letter-spacing: 0px;
+    color: #333333;
+    margin: 38px 0;
+}
+
+.popular {
+
+    .popular-content {
+        display: flex;
+        border-radius: 18px;
+        background: #fff;
+        padding: 32px 24px;
+
+        .img-box {
+            width: 226px;
+            height: 226px;
+
+            >img {
+                width: 226px;
+                height: 226px;
+                border-radius: 18px;
+            }
+        }
+
+        .popular-right {
+            flex: 1;
+            padding: 0 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+
+            .popular-product {
+                display: flex;
+                justify-content: space-between;
+
+                >div:nth-child(1) {
+                    font-size: 24px;
+                    color: #666666;
+                    font-weight: 600;
+                    display: flex;
+                    flex-direction: column;
+
+                    >span:nth-child(2) {
+                        font-size: 24px;
+                        color: #333333;
+                        font-weight: normal;
+                    }
+                }
+
+                .goumai-but {
+                    width: 168px;
+                    height: 68px;
+                    line-height: 68px;
+                    text-align: center;
+                    border-radius: 16px;
+                    color: #F6F6F6;
+                    font-size: 24px;
+                    font-weight: 600;
+                    background: #D25815;
+                }
+            }
+
+            .popular-income {
+                display: flex;
+                justify-content: space-between;
+
+                >div {
+                    display: flex;
+                    flex-direction: column;
+                    font-size: 24px;
+                    font-weight: 600;
+                    color: #666666;
+
+                    >span:nth-child(2) {
+                        font-size: 24px;
+                        font-weight: normal;
+                        color: #FF6E00;
+                    }
+                }
+            }
+        }
+    }
 }
 
 .purchase {
-  z-index: 9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    z-index: 9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-  .purchase-box {
-    width: 586px;
-    // height: 503px;
-    background-image: url("@/assets/purchase.png");
-    background-size: 100% 100%;
-    padding: 40px 55px 55px 55px;
-    font-size: 24px;
-    position: relative;
+    .purchase-box {
+        width: 586px;
+        // height: 503px;
+        background-image: url("@/assets/purchase.png");
+        background-size: 100% 100%;
+        padding: 40px 55px 55px 55px;
+        font-size: 24px;
+        position: relative;
 
-    .purchase-close {
-      position: absolute;
-      bottom: -20%;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 60px;
+        .purchase-close {
+            position: absolute;
+            bottom: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 60px;
+        }
+
+        .purchase-top {
+            font-size: 18px;
+
+            .purchase-income {
+                .van-col {
+                    padding: 20px 10px;
+                    border-radius: 8px;
+                    border: 1px solid #ffebcd;
+                    display: flex;
+                    align-items: center;
+
+                    >div {
+                        // line-height: 72px;
+                        text-align: center;
+                        color: #ffefd1;
+                    }
+                }
+            }
+
+            .purchase-num {
+                margin-top: 20px;
+                text-align: center;
+
+                .van-col {
+                    color: #ffefd1;
+                }
+            }
+        }
+
+        .purchase-bottom {
+            margin: 40px 10px 10px 10px;
+            display: flex;
+
+            >img {
+                width: 130px;
+                height: 130px;
+                border-radius: 8px;
+            }
+
+            .purchase-commodity {
+                flex: 1;
+                font-weight: normal;
+                padding-left: 16px;
+
+                >div {
+                    font-size: 24px;
+                    display: flex;
+
+                    >span:nth-child(1) {
+                        color: #676767;
+                    }
+
+                    >span:nth-child(2) {
+                        color: #000000;
+                    }
+                }
+
+                >div:nth-child(1) {
+                    font-size: 30px;
+                    text-align: left;
+                    color: #cc1127;
+                }
+            }
+        }
+
+        .purchase-but {
+            margin-top: 50px;
+            padding: 0 50px;
+
+            .van-button {
+                height: 70px;
+                font-size: 32px;
+
+                .van-button__text {
+                    color: #f4e1c5;
+                }
+            }
+        }
+    }
+}
+
+.journalism-box {
+    display: flex;
+    margin-bottom: 24px;
+    background-color: #fff;
+    padding: 32px 24px;
+    border-radius: 18px;
+
+    .journalism-box-img {
+        width: 220px;
+        height: 220px;
+
+        >img {
+            width: 220px;
+            height: 220px;
+            border-radius: 16px;
+        }
     }
 
-    .purchase-top {
-      font-size: 18px;
-      .purchase-income {
-        .van-col {
-          padding: 20px 10px;
-          border-radius: 8px;
-          border: 1px solid #ffebcd;
-          display: flex;
-          align-items: center;
-          > div {
-            // line-height: 72px;
-            text-align: center;
-            color: #ffefd1;
-          }
-        }
-      }
-
-      .purchase-num {
-        margin-top: 20px;
-        text-align: center;
-
-        .van-col {
-          color: #ffefd1;
-        }
-      }
-    }
-
-    .purchase-bottom {
-      margin: 40px 10px 10px 10px;
-      display: flex;
-
-      > img {
-        width: 130px;
-        height: 130px;
-        border-radius: 8px;
-      }
-
-      .purchase-commodity {
-        flex: 1;
-        font-weight: normal;
+    .journalism-box-txt {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        color: #333333;
+        font-size: 24px;
         padding-left: 16px;
 
-        > div {
-          font-size: 24px;
-          display: flex;
-
-          > span:nth-child(1) {
-            color: #676767;
-          }
-
-          > span:nth-child(2) {
-            color: #000000;
-          }
+        >span:nth-child(1) {
+            font-size: 32px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-weight: 600;
         }
 
-        > div:nth-child(1) {
-          font-size: 30px;
-          text-align: left;
-          color: #cc1127;
+        >span:nth-child(2) {
+            font-size: 24px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
         }
-      }
     }
-
-    .purchase-but {
-      margin-top: 50px;
-      padding: 0 50px;
-
-      .van-button {
-        height: 70px;
-        font-size: 32px;
-
-        .van-button__text {
-          color: #f4e1c5;
-        }
-      }
-    }
-  }
-}
-.header-h1 {
-  font-weight: bold;
-  font-size: 36px;
-
-  line-height: 44px;
-  letter-spacing: 0px;
-  color: #333333;
-  margin: 38px 0;
 }
 </style>
