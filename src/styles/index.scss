@@ -40,4 +40,35 @@ body {
   text-overflow: ellipsis; /* 使用省略号表示溢出的文本 */
 }
 
+.van-nav-bar__content {
+  height: 88px;
+  .van-nav-bar__title {
+    font-size: 36px;
+    font-weight: 500;
+    line-height: 42px;
+    text-align: center;
+    letter-spacing: 0em;
 
+    font-variation-settings: "opsz" auto;
+    color: #3d3d3d;
+  }
+}
+.van-nav-bar .van-icon {
+  color: #595757;
+  font-size: 44px;
+}
+
+#app {
+  background-color: #f6f6f6;
+}
+
+.van-nav-bar__content .van-nav-bar__title {
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 42px;
+  text-align: center;
+  letter-spacing: 0em;
+
+  font-variation-settings: "opsz" auto;
+  color: #3d3d3d;
+}
