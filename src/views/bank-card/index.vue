@@ -5,17 +5,27 @@
     <div class="box">
       <div v-if="userInfo.bankCard" class="item-box">
         <div class="card-box">
-          <p>{{ $t("银行卡号：") }}{{ userInfo.bankCard }}</p>
-          <p>{{ $t("IFSC：") }}{{ userInfo.ifsc }}</p>
-          <p>{{ $t("银行卡名称：") }}{{ userInfo.bankName }}</p>
+          <div>
+            <svg-icon
+              class="font-svg"
+              style="margin-left: 10px"
+              iconClass="xinpian"
+            />
+          </div>
+          <p style="color: #fff" class="bank-text">**** **** **** 2345</p>
+          <div class="flex justify-between yinhangname">
+            <div class="left">XXX银行</div>
+            <div class="right">
+              <div>Expiry Date</div>
+              <div class="riqi">02/30</div>
+            </div>
+          </div>
         </div>
       </div>
-      <img
-        v-else
-        src="@/assets/addbank.png"
-        alt=""
-        @click="$router.push('/add-bank-card')"
-      />
+
+      <div v-else class="addCard" @click="$router.push('/add-bank-card')">
+        <div>添加银行卡</div>
+      </div>
     </div>
   </div>
 </template>
@@ -43,47 +53,69 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.item-box {
-  margin: 0 auto;
-  width: 662px;
-  height: 238px;
-  border-radius: 20px 20px 0 0;
-  background: linear-gradient(0deg, #ff947c 0%, #ffb98c 100%), #ffba8c;
-  margin-bottom: 35px;
-  background-image: url("@/assets/visa.png");
-  background-size: 84px 29px;
-  background-repeat: no-repeat;
-  background-position: left 38px bottom 63px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  font-size: 30px;
-  // font-family: SourceHanSansSC, SourceHanSansSC-Normal;
-  font-weight: normal;
-  text-align: left;
-  color: #ffffff;
-  padding-right: 50px;
-}
-
-.item-box1 {
-  background: linear-gradient(-32deg, #74ae8b 0%, #81c29a 99%);
-}
-
-.item-box2 {
-  background: linear-gradient(-32deg, #5c81c1 0%, #89b4e6 99%);
-}
-
 .box {
-  position: relative;
-  height: calc(100vh - 1.33333rem);
-
-  > img {
-    width: 118px;
-    height: 118px;
-    position: absolute;
-    bottom: 50px;
-    left: 50%;
-    transform: translateX(-50%);
+  margin: 0 30px;
+  .font-svg {
+    font-size: 68px;
+  }
+  .item-box {
+    margin-top: 36px;
+    width: 690px;
+    height: 436.77px;
+    opacity: 1;
+    border-radius: 40px;
+    background: linear-gradient(21deg, #93278f -2%, #29abe2 67%);
+    padding: 60px 50px;
+    .yinhangname {
+      font-size: 36px;
+      font-weight: normal;
+      line-height: 36px;
+      letter-spacing: 0px;
+      margin-top: 40px;
+      font-variation-settings: "opsz" auto;
+      color: #ffffff;
+      align-items: center;
+      .right {
+        font-size: 24px;
+        .riqi {
+          margin-top: 10px;
+          font-size: 36px;
+        }
+      }
+    }
+    .bank-text {
+      color: #fff;
+      margin-top: 60px;
+      font-size: 50px;
+    }
+  }
+  .addCard {
+    margin-top: 36px;
+    position: relative;
+    width: 690px;
+    height: 436px;
+    background-image: url("@/assets/addCard.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    div {
+      width: 280px;
+      height: 88px;
+      border-radius: 119px;
+      opacity: 1;
+      text-align: center;
+      box-sizing: border-box;
+      border: 2px solid #d8d8d8;
+      font-size: 36px;
+      font-weight: 900;
+      line-height: 88px;
+      letter-spacing: 1.35px;
+      font-variation-settings: "opsz" auto;
+      font-feature-settings: "kern" on;
+      color: #ffffff;
+    }
   }
 }
 </style>
