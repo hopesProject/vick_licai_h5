@@ -33,6 +33,8 @@ import produc from "@/components/ProductList";
 import Comment from "@/views/comment";
 import Release from "@/views/comment/release";
 import rule from "@/views/comment/rule";
+import commission from "@/views/commission";
+import service from "@/views/service";
 
 Vue.use(VueRouter);
 
@@ -258,6 +260,22 @@ const routes = [
   {
     path: "/produc",
     component: produc,
+    meta: {
+      show: true,
+    },
+  },
+  // 佣金比例
+  {
+    path: "/commission",
+    component: commission,
+    meta: {
+      show: true,
+    },
+  },
+  // 客服
+  {
+    path: "/service",
+    component: service,
     meta: {
       show: true,
     },

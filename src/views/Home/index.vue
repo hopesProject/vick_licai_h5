@@ -11,7 +11,7 @@
           </van-swipe-item>
         </van-swipe>
         <div class="nav">
-          <div v-for="(item, i) in navList" :key="i">
+          <div v-for="(item, i) in navList" :key="i" @click="onSkip(item.key)">
             <img :src="item.img" alt="" />
             <span>{{ item.title }}</span>
           </div>
@@ -239,14 +239,17 @@ export default {
         {
           title: "我们",
           img: require("@/assets/img/my.png"),
+          key:'/my'
         },
         {
           title: "客服",
           img: require("@/assets/img/service.png"),
+          key:'/service'
         },
         {
           title: "VIP",
           img: require("@/assets/img/vip-icon.png"),
+          key:'/vip-list'
         },
       ],
       msgCount: 0,
@@ -380,6 +383,9 @@ export default {
         this.purchaseShow = false;
       }
     },
+    onSkip(key){
+      this.$router.push(key)
+    }
   },
 };
 </script>

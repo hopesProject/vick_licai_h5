@@ -1,14 +1,16 @@
 <template>
   <div class="wrapper">
-    <HeaderBox />
-    <header>
-      <van-image
-        round
-        class="image-img"
-        src="https://img01.yzcdn.cn/vant/cat.jpeg"
-      />
-      <div class="name">用户名</div>
-    </header>
+    <div class="titile">
+      <HeaderBox />
+      <header>
+        <van-image
+          round
+          class="image-img"
+          src="https://img01.yzcdn.cn/vant/cat.jpeg"
+        />
+        <div class="name">用户名</div>
+      </header>
+    </div>
     <main>
       <div class="psoi-box">
         <div
@@ -211,6 +213,14 @@ export default {
 .wrapper {
   width: 100vw;
   min-height: 100vh;
+  .titile{
+        background-image: url('@/assets/img/invite-bg.png');
+      background-size: 100%;
+      .header{
+        background-color: transparent !important;
+      }
+      padding-bottom: 70px;
+  }
   header {
     width: 100%;
     display: flex;
@@ -232,7 +242,8 @@ export default {
     }
   }
   main {
-    padding: 70px 0;
+    margin-top: -16px;
+    padding:0 0 70px 0;
     background: #f6f6f6;
 
     min-height: 200px;
