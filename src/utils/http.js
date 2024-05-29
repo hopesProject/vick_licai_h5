@@ -46,10 +46,10 @@ service.interceptors.response.use(
     switch (res.status / 1) {
       case 0:
         return res;
-      case 403:
+      case 401:
         // OUT_TOKEN
         store.commit("OUT_TOKEN"); //
-        Toast.fail('');
+
         return res;
       default:
         break;

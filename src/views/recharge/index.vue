@@ -24,8 +24,9 @@
             :class="moneyKey == item.num ? 'active' : ''"
             v-for="(item, i) in moneyList"
             :key="i"
-            @click="moneyKey = item.num"
+            @click="setMone(item.num)"
           >
+            <!-- moneyKey = item.num -->
             <div class="box-money">{{ RMB(item.num) }}</div>
           </van-col>
         </van-row>
@@ -104,6 +105,9 @@ export default {
     };
   },
   methods: {
+    setMone(num) {
+      this.moneyInput = num;
+    },
     RMB(value) {
       value = value ?? 0;
       return currency(value, { precision: 2, symbol: "$" }).format();

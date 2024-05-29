@@ -26,10 +26,7 @@
               <div class="right-box">
                 <div class="flex justify-between">
                   <div class="flex header-box">
-                    <van-image
-                      class="img-box"
-                      src="https://img01.yzcdn.cn/vant/cat.jpeg"
-                    />
+                    <van-image class="img-box" :src="item.img" />
                     <p>{{ item.title }}</p>
                   </div>
                 </div>
@@ -58,6 +55,9 @@ export default {
     return {
       xiaoxi1: require("@/assets/xiaoxi1.png"),
     };
+  },
+  mounted() {
+    this.getList();
   },
   methods: {
     async getList(isRefreshing) {

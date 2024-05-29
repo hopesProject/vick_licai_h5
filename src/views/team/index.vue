@@ -28,25 +28,22 @@
           :loading-text="$t('加载中...')"
           @load="onLoad"
         >
-          <van-cell v-for="(item, index) in data" :key="item.id">
+          <van-cell v-for="(item) in data" :key="item.id">
             <div class="item-box">
               <div class="left">
                 <div>
-                  <van-image
-                    class="img"
-                    src="https://img01.yzcdn.cn/vant/cat.jpeg"
-                  />
+                  <van-image class="img" :src="item.img" />
                 </div>
                 <div>
-                  <div class="name">Alexandra N</div>
-                  <div class="id">ID 93847239</div>
+                  <div class="name">{{ item.userName }}</div>
+                  <div class="id">ID {{ item.code }}</div>
                 </div>
               </div>
               <div class="right">
                 <svg-icon
                   class="font-svg"
                   style="margin-left: 10px"
-                  :iconClass="index === 0 ? 'vipYoux1' : 'vipYoux'"
+                  :iconClass="item.isActivity == 0 ? 'vipYoux1' : 'vipYoux'"
                 />
               </div>
             </div>
@@ -110,9 +107,9 @@ export default {
       try {
         if (res?.status === 0) {
           if (pageNum !== 1) {
-            // this.data = [...this.data, ...res.data.list];
+            this.data = [...this.data, ...res.data.list];
           } else {
-            // this.data = res.data.list;
+            this.data = res.data.list;
           }
         }
         if (this.data.length >= res.data.total) {

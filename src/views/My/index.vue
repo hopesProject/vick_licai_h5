@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <HeaderBox />
+    <HeaderBox background="#F6F6F6" />
 
     <div class="name-box">
       <div class="img">
@@ -24,19 +24,25 @@
         <van-row type="flex" style="width: 100%">
           <van-col span="8">
             <div class="item-box">
-              <div class="name">333</div>
+              <div class="name">
+                {{ userInfo.cumulativeEarnings | _toLocaleString() }}
+              </div>
               <div class="labe">{{ $t("累计收益") }}</div>
             </div>
           </van-col>
           <van-col span="8">
             <div class="item-box">
-              <div class="name">333</div>
+              <div class="name">
+                {{ userInfo.cumulativeWithdrawalAmount | _toLocaleString() }}
+              </div>
               <div class="labe">{{ $t("累计提现") }}</div>
             </div>
           </van-col>
           <van-col span="8">
             <div class="item-box">
-              <div class="name">333</div>
+              <div class="name">
+                {{ userInfo.toDayBound | _toLocaleString() }}
+              </div>
               <div class="labe">{{ $t("今日收益") }}</div>
             </div>
           </van-col>
@@ -45,8 +51,8 @@
         <div class="border-box"></div>
 
         <div class="botton-box">
-          <div>邀请码：34235523</div>
-          <div>wewesd</div>
+          <div>{{ $t("邀请码：") }}{{ userInfo.invitationCode }}</div>
+          <div class="yqihaoyou">{{ $t("邀请好友") }}</div>
         </div>
       </div>
       <div class="my-shouyi">
@@ -62,7 +68,7 @@
             <div class="jifen">
               <svg-icon class="vips" icon-class="jfen1" />
             </div>
-            <div class="but">提现</div>
+            <div class="but" @click="$router.push('/withdrawal')">提现</div>
           </div>
           <div class="item-box item-box-right">
             <div class="text">
@@ -71,7 +77,7 @@
             <div class="jifen">
               <svg-icon class="vips" icon-class="jfen" />
             </div>
-            <div class="but">充值</div>
+            <div class="but" @click="$router.push('/recharge')">充值</div>
           </div>
         </div>
       </div>
@@ -83,7 +89,7 @@
             <van-col
               span="6"
               v-for="item in fuzhu"
-              :key="item.icon"
+              :key="item.router"
               @click="$router.push(item.router)"
             >
               <div class="item-box">
@@ -380,7 +386,7 @@ main {
     // height: 208px;
     border-radius: 21.71px;
     opacity: 1;
-    background: #292f45;
+
     margin: 0 auto;
     margin-top: 24px;
     overflow: hidden;
@@ -390,9 +396,12 @@ main {
     letter-spacing: 0em;
     text-align: center;
     color: #ffffff;
+    background-image: url("@/assets/my-box.png");
+    background-size: 100% 100%;
     .botton-box {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       padding: 0 38px 36px 28px;
       font-size: 24px;
       font-weight: normal;
@@ -423,6 +432,7 @@ main {
       }
       .name {
         margin-top: 50px;
+        // text-align: center;
       }
     }
   }
@@ -541,6 +551,9 @@ main {
         letter-spacing: 0em;
         color: #121836;
         margin-bottom: 27px;
+        .name {
+          text-align: center;
+        }
         .vips {
           font-size: 44px;
           margin-bottom: 16px;
@@ -899,5 +912,21 @@ header {
 
 :deep(.van-cell) {
   padding: 32px;
+}
+
+.yqihaoyou {
+  width: 144px;
+  height: 48px;
+  border-radius: 26.67px;
+  opacity: 1;
+
+  background: #f0f5fe;
+  font-size: 24px;
+  font-weight: normal;
+  line-height: 48px;
+  letter-spacing: 0em;
+
+  color: #d25815;
+  box-shadow: 2.67px 2.67px 10.67px 0px rgba(0, 11, 222, 0.24);
 }
 </style>

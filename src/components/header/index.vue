@@ -1,5 +1,5 @@
 <template>
-  <div class="header">
+  <div class="header" :style="`background-color: ${background}`">
     <div class="header-alltech">
       <img src="@/assets/img/alltech.png" alt="" />
     </div>
@@ -18,6 +18,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    background: {
+      type: String,
+      default: "#fff",
+    },
   },
 };
 </script>
@@ -29,7 +33,7 @@ export default {
   height: 88px;
   align-items: center;
   padding: 0 30px;
-  background-color: #fff;
+
   .header-alltech {
     height: 48px;
     width: 168px;

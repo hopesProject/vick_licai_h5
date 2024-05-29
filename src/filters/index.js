@@ -47,3 +47,7 @@ export function maskPhoneNumber(phoneNumber) {
 
   return masked;
 }
+
+export function defaultAmount(phoneNumber) {
+  return phoneNumber || "0.00";
+}

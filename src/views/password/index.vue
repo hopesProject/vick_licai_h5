@@ -21,7 +21,7 @@
           </template>
         </van-field>
         <van-field
-          v-model="form.code"
+          v-model="form.smsCode"
           :placeholder="$t('验证码')"
           input-align="left"
           center
@@ -68,7 +68,7 @@
   </div>
 </template>
 <script>
-import { register, sendCode } from "@/api";
+import { register, sendCode, updatePwd } from "@/api";
 import { Toast } from "vant";
 import PasswordInput from "@/components/PasswordInput/index.vue";
 
@@ -82,7 +82,7 @@ export default {
       loading: false,
       form: {
         phone: "", //手机号码
-        code: "", //验证码
+        smsCode: "", //验证码
         pwd: "", //密码
         passwordNew: "", //确认密码
       },
@@ -125,7 +125,24 @@ export default {
         Toast(this.$t("请先输入手机号"));
       }
     },
-    retrieve() {},
+    async retrieve() {
+      if (!this.form.phone) {
+        return Toast(this.$t("请输入手机号码"));
+      }
+      if (!this.form.smsCode) {
+        return Toast(this.$t("请输入验证码"));
+      }
+      if (this.form.pwd !== this.form.passwordNew) {
+        return Toast(this.$t("密码不一致且不能为空"));
+      }
+      try {
+        await updatePwd(this.form);
+        Toast(this.$t("密码修改成功"));
+        this.$router.push("/login");
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
 };
 </script>

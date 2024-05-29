@@ -9,6 +9,14 @@ export function login(data) {
     data: qs.stringify(data),
   });
 }
+// 登录
+export function updatePwd(data) {
+  return request({
+    url: "/api/user/updatePwd", // 假地址 自行替换
+    method: "post",
+    data,
+  });
+}
 // 注册
 export function register(data) {
   return request({
