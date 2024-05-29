@@ -15,6 +15,7 @@ import recharge from "@/views/recharge";
 import login from "@/views/login";
 import withdrawal from "@/views/withdrawal";
 import PurchaseHistory from "@/views/PurchaseHistory";
+import ProductDetails from "@/views/ProductDetails";
 import EarningsRecord from "@/views/Earnings-record";
 import bankCard from "@/views/bank-card";
 import My from "@/views/My";
@@ -23,6 +24,7 @@ import addBankCard from "@/views/add-bank-card";
 import Team from "@/views/team";
 import share from "@/views/share";
 import password from "@/views/password";
+import undapPassword from "@/views/undapPassword";
 import register from "@/views/register";
 import capital from "@/views/capital";
 import invite from "@/views/invite";
@@ -148,6 +150,14 @@ const routes = [
       show: false,
     },
   },
+  //产品详情
+  {
+    path: "/ProductDetails",
+    component: ProductDetails,
+    meta: {
+      show: false,
+    },
+  },
   // Purchase History收益记录
   {
     path: "/earnings-record",
@@ -201,6 +211,14 @@ const routes = [
   {
     path: "/password",
     component: password,
+    meta: {
+      show: false,
+    },
+  },
+  // 忘记密码
+  {
+    path: "/undapPassword",
+    component: undapPassword,
     meta: {
       show: false,
     },

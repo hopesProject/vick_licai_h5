@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="header">
       <div @click="onClickLeft"><img src="@/assets/img/go.png" alt="" /></div>
-      <div>找回密码</div>
+      <div>{{ $t("修改密码") }}</div>
       <div></div>
     </div>
     <div class="content">
@@ -15,11 +15,27 @@
         :show-error-message="false"
         label-width="60"
       >
-        <van-field v-model="form.phone" placeholder="手机号" input-align="left">
+        <!-- <van-field v-model="form.phone" placeholder="手机号" input-align="left">
           <template slot="label">
             <div class="quhao"><span>+91 </span> <van-icon name="arrow" /></div>
           </template>
-        </van-field>
+        </van-field> -->
+
+        <PasswordInput
+          :placeholder="$t('旧密码')"
+          name="pwd"
+          @change="iniput"
+        />
+        <PasswordInput
+          :placeholder="$t('新密码')"
+          name="passwordNew"
+          @change="iniput"
+        />
+        <PasswordInput
+          :placeholder="$t('确认密码')"
+          name="passwordNew"
+          @change="iniput"
+        />
         <van-field
           v-model="form.code"
           :placeholder="$t('验证码')"
@@ -39,13 +55,8 @@
             >
           </template>
         </van-field>
-        <PasswordInput :placeholder="$t('密码')" name="pwd" @change="iniput" />
-        <PasswordInput
-          :placeholder="$t('确认密码')"
-          name="passwordNew"
-          @change="iniput"
-        />
       </van-form>
+
       <div class="foot">
         <van-button
           @click="retrieve"
@@ -68,12 +79,16 @@
   </div>
 </template>
 <script>
-import { register, sendCode } from "@/api";
+import { sendCode } from "@/api";
 import { Toast } from "vant";
 import PasswordInput from "@/components/PasswordInput/index.vue";
+import { mapGetters } from "vuex";
 
 export default {
   components: { PasswordInput },
+  computed: {
+    ...mapGetters(["userInfo"]),
+  },
   data() {
     return {
       codeButTexst: "发送验证码",
@@ -106,9 +121,9 @@ export default {
       if (this.codeButTexst !== "发送验证码") {
         return;
       }
-      if (this.form.phone) {
+      if (this.userInfo.phone) {
         let res = await sendCode({
-          phoneNumber: this.form.phone,
+          phoneNumber: this.userInfo.phone,
         });
         if (res.status === 0) {
           Toast(this.$t("验证码发送成功"));
@@ -134,7 +149,6 @@ export default {
   line-height: 88px;
   display: flex;
   justify-content: space-between;
-
   align-items: center;
   padding: 14px 48px;
   position: relative;
@@ -148,9 +162,6 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    // position: absolute;
-    // left: 48px;
-    // top: 14px;
   }
 
   > div:nth-child(2) {

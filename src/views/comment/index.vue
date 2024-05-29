@@ -1,15 +1,12 @@
 <template>
-  <div>
-    <van-nav-bar :title="$t('')" @click-right="onClickRight">
+  <div class="page">
+    <HeaderBox />
+
+    <!-- <van-nav-bar :title="$t('')" @click-right="onClickRight">
       <template #right>
         <svg-icon class="svg-fb" icon-class="fb"></svg-icon>
       </template>
-    </van-nav-bar>
-    <van-image
-      width="100%"
-      class="bancolo-img"
-      :src="require('@/assets/bancolo.png')"
-    />
+    </van-nav-bar> -->
 
     <main>
       <van-pull-refresh
@@ -43,7 +40,9 @@
                     />
                     <div>
                       <div class="name name-box-s">{{ item.userName }}</div>
-                      <div class="phone">{{ item.phone }}</div>
+                      <div class="phone">
+                        {{ item.phone | maskPhoneNumber }}
+                      </div>
                     </div>
                   </div>
                 </van-col>
@@ -115,8 +114,9 @@
 <script>
 import { querycomment } from "@/api";
 import refresh from "@/mixins/refresh";
-
+import HeaderBox from "@/components/header";
 export default {
+  components: { HeaderBox },
   mixins: [refresh],
   mounted() {
     // this.getList();
@@ -161,6 +161,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.page {
+  background-color: #fff;
+}
 :deep(.van-hairline--bottom::after) {
   border: none;
 }
@@ -176,9 +179,9 @@ export default {
 }
 
 main {
+  padding-top: 35px;
   .item-box {
-    padding: 0 30px;
-    border-bottom: 10px solid #f0f3f6;
+    border-bottom: 2px solid #f0f3f6;
     .avaimg {
       display: flex;
       .name {
@@ -236,5 +239,8 @@ main {
 
 :deep(.van-cell::after) {
   border: none;
+}
+:deep(.van-cell) {
+  background: transparent;
 }
 </style>

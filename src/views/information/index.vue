@@ -25,8 +25,13 @@
             <div class="list-item">
               <div class="right-box">
                 <div class="flex justify-between">
-                  <p>{{ item.title }}</p>
-                  <p class="time">{{ item.createTime }}</p>
+                  <div class="flex header-box">
+                    <van-image
+                      class="img-box"
+                      src="https://img01.yzcdn.cn/vant/cat.jpeg"
+                    />
+                    <p>{{ item.title }}</p>
+                  </div>
                 </div>
                 <div class="flex justify-between ddhb">
                   <p class="text-container" v-html="item.descText"></p>
@@ -89,8 +94,9 @@ export default {
 
 <style lang="scss" scoped>
 .xxiao {
-  background-color: #f8f8f8;
+  background-color: #fff;
   height: 100vh;
+  width: 100%;
   .list-item {
     width: 100%;
     background-color: #fff;
@@ -126,6 +132,32 @@ export default {
       height: 90px;
       margin-right: 18px;
     }
+  }
+}
+:deep(.van-hairline--bottom::after) {
+  border: none;
+}
+
+.header-box {
+  align-items: center;
+  font-size: 30px;
+  font-weight: normal;
+  line-height: normal;
+  letter-spacing: 0px;
+
+  color: #333333;
+  .text-container {
+    color: #9aafbc;
+  }
+  .img-box {
+    width: 54px;
+    height: 54px;
+    border-radius: 8px;
+    // border-radius: ;
+    overflow: hidden;
+  }
+  p {
+    margin-left: 20px;
   }
 }
 </style>

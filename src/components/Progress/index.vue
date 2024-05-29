@@ -5,14 +5,20 @@
         class="progress-bar-current"
         :style="{ width: currentWidth + '%', backgroundColor: currentColor }"
       >
-        <span class="progress-text-left">{{ current }}</span>
+        <span class="progress-text-left" v-if="!text">{{ current }}</span>
+        <span class="progress-text-left" v-else>
+          {{ $t(text, { count: current }) }}
+        </span>
       </div>
       <div
         v-if="current < total"
         class="progress-bar-total"
         :style="{ width: totalWidth + '%', backgroundColor: totalColor }"
       >
-        <span class="progress-text-right">{{ total }}</span>
+        <span class="progress-text-right" v-if="!text">{{ total }}</span>
+        <span class="progress-text-right" v-else>
+          {{ $t(text, { count: total }) }}
+        </span>
       </div>
     </div>
   </div>
@@ -29,6 +35,10 @@ export default {
     total: {
       type: Number,
       default: 30,
+    },
+    text: {
+      type: String,
+      default: "",
     },
   },
   data() {
@@ -74,7 +84,6 @@ export default {
   height: 100%;
   font-size: 24px;
   font-weight: 600;
-
   padding-left: 30px; /* 左边内边距 */
   border-radius: 40px;
 }
@@ -87,15 +96,20 @@ export default {
   height: 100%;
   font-size: 24px;
   font-weight: 600;
-
   padding-right: 50px; /* 右边内边距 */
 }
 
 .progress-text-left {
-  margin-left: 10px; /* 左边文字的外边距 */
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .progress-text-right {
-  margin-right: 10px; /* 右边文字的外边距 */
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 </style>

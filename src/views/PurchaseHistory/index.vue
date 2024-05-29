@@ -38,7 +38,6 @@
       </div>
     </header>
     <main>
-      <!-- <Progress :current="49" :total="50"></Progress> -->
       <van-tabs v-model="active" class="box-tabs" line-height="0">
         <van-tab :title="$t('进行中', { count: 1 })" :name="0"></van-tab>
         <van-tab :title="$t('已完成', { count: 1 })" :name="1"></van-tab>

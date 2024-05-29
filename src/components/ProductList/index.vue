@@ -1,13 +1,6 @@
 <template>
   <div class="content-box">
-    <div class="content-bg">
-      <div class="Exclusive">
-        Exclusive for newcomers
-        <p>Click to receive benefits</p>
-      </div>
-      <div class="go" @click="$router.push('/invite')">GO</div>
-    </div>
-
+    <HeaderBox />
     <div class="tabs">
       <div
         class="tabs-item"
@@ -16,7 +9,12 @@
         :key="index"
         @click="tabsClick(item.id)"
       >
-        {{ item.productClassify }}
+        <div>
+          <svg-icon class="font-svg" :iconClass="'Group' + (index + 1)" />
+        </div>
+        <div>
+          {{ item.productClassify }}
+        </div>
       </div>
     </div>
     <div class="content-warp">
@@ -34,114 +32,48 @@
           :loading-text="$t('加载中...')"
           @load="onLoad"
         >
-          <van-cell v-for="item in data" :key="item.id">
+          <div
+            class="cell-list"
+            v-for="item in data"
+            :key="item.id"
+            @click="$router.push('/ProductDetails?id=' + item.id)"
+          >
             <div class="content-item">
+              <div class="goumai">购买</div>
+              <div class="zhuangtai">预售</div>
               <div class="img-box">
-                <p v-if="item.vipRequest">
-                  <span>VIP {{ item.vipRequest }} </span>
-                </p>
                 <img :src="item.img" alt="" />
               </div>
               <div class="item-text">
-                <div>{{ item.productTitle }}</div>
-                <div class="text1">{{ $t("购买价格：") }}{{ item.price }}</div>
-                <div class="text2">
-                  <div>
-                    {{ $t("日收入：") }}
-                    {{ item.dailyProductRevenue | _toLocaleString(false) }}
+                <div class="title">{{ item.productTitle }}</div>
+
+                <div class="flex justify-between">
+                  <div class="left">
+                    <div>{{ $t("购买价格") }}</div>
+                    <div class="text1">{{ item.price }}</div>
+                    <div class="top-m">{{ $t("成长周期") }}</div>
+                    <div class="text1">{{ item.price }}</div>
                   </div>
-                  <div>
-                    {{ $t("累计收入：") }}
-                    {{
-                      (item.dailyProductRevenue * item.cycle)
-                        | _toLocaleString(false)
-                    }}
+                  <div class="right">
+                    <div>{{ $t("每日收入") }}</div>
+                    <div class="text1">
+                      {{ item.dailyProductRevenue | _toLocaleString(false) }}
+                    </div>
+                    <div class="top-m">{{ $t("总收益") }}</div>
+                    <div class="text1">
+                      {{
+                        (item.dailyProductRevenue * item.cycle)
+                          | _toLocaleString(false)
+                      }}
+                    </div>
                   </div>
                 </div>
               </div>
-              <div
-                v-if="token"
-                class="goumai-but"
-                @click="purchaseShowClick(item)"
-              >
-                {{ $t("购买") }}
-              </div>
-              <div v-else class="goumai-but" @click="$router.push('/login')">
-                {{ $t("登录") }}
-              </div>
             </div>
-          </van-cell>
-          <!-- <div slot="finished"></div> -->
+          </div>
         </van-list>
       </van-pull-refresh>
     </div>
-    <!-- 购买弹窗 -->
-    <van-overlay :show="purchaseShow" class="purchase">
-      <div class="purchase-box">
-        <van-icon
-          name="close"
-          class="purchase-close"
-          color="#fff"
-          @click="purchaseShow = false"
-        />
-
-        <div class="purchase-top">
-          <van-row type="flex" justify="space-between" class="purchase-income">
-            <van-col span="11">
-              <div>
-                {{ $t("每日收入：")
-                }}{{
-                  (purchaseShowData.dailyProductRevenue * stepperValue)
-                    | _toLocaleString(false)
-                }}
-              </div>
-            </van-col>
-            <van-col span="11">
-              <div>
-                {{ $t("总收益：") }}
-
-                {{
-                  (purchaseShowData.dailyProductRevenue *
-                    purchaseShowData.cycle *
-                    stepperValue)
-                    | _toLocaleString(false)
-                }}
-              </div>
-            </van-col>
-          </van-row>
-          <van-row type="flex" justify="space-between" class="purchase-num">
-            <van-col span="6">{{ $t("购买数量") }}</van-col>
-            <van-col span="12">
-              <van-stepper v-model="stepperValue" button-size="28px"
-            /></van-col>
-          </van-row>
-        </div>
-        <div class="purchase-bottom">
-          <img :src="purchaseShowData.img" alt="" />
-          <div class="purchase-commodity">
-            <div>{{ purchaseShowData.productTitle }}</div>
-            <div>
-              <span>{{ $t("购买价格：") }}</span
-              ><span>{{ purchaseShowData.price }}</span>
-            </div>
-            <div>
-              <span>{{ $t("总价格：") }}</span
-              ><span>{{ purchaseShowData.price * stepperValue }}</span>
-            </div>
-          </div>
-        </div>
-        <div class="purchase-but">
-          <van-button
-            type="primary"
-            block
-            color="linear-gradient(0deg,#ff947c 0%, #ffb98c 100%), linear-gradient(0deg,#e11b31 1%, #f3354e 100%)"
-            :round="true"
-            @click="ljizhifu"
-            >{{ $t("立即支付") }}</van-button
-          >
-        </div>
-      </div>
-    </van-overlay>
   </div>
 </template>
 
@@ -150,10 +82,11 @@ import { buyProduct, productqueryProductClassify } from "@/api";
 import { Toast } from "vant";
 import { mapGetters } from "vuex";
 import refresh from "@/mixins/refresh";
+import HeaderBox from "@/components/header";
 
 export default {
   mixins: [refresh],
-
+  components: { HeaderBox },
   computed: {
     ...mapGetters(["token", "userInfo"]),
     tabs() {
@@ -243,10 +176,9 @@ export default {
 
 <style lang="scss" scoped>
 .content-box {
-  margin-top: 18px;
   width: 100%;
   height: 100%;
-
+  background-color: #fff;
   .content-bg {
     margin: 0 18px;
     width: 721px;
@@ -296,6 +228,7 @@ export default {
   }
 }
 .tabs {
+  margin-top: 100px;
   display: flex;
   justify-content: space-between;
   padding: 0 20px;
@@ -303,237 +236,140 @@ export default {
 
   .tabs-item {
     width: 231px;
-    height: 69px;
+
     border-radius: 35px;
     font-size: 23px;
     font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
-
     font-weight: 400;
     text-align: left;
     color: #999999;
     line-height: 27px;
     letter-spacing: -0.47px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-
-    img {
-      width: 37px;
-      height: 37px;
-      margin-right: 10px;
+    .font-svg {
+      font-size: 96px;
+      margin-bottom: 24px;
     }
   }
 
   .tabs-item-active {
-    background: linear-gradient(0deg, #ff947c 0%, #ffb98c 100%), #fb0389;
-    color: #fcfcfc;
-  }
-}
-.content-warp {
-  padding: 0 20px 20px;
-  padding-bottom: 300px;
-
-  .content-item {
-    // width: 710px;
-    height: 254px;
-    background: #ffffff;
-    border-radius: 40px;
-    box-shadow: -0.28px 3.99px 30px 4px rgba(165, 188, 251, 0.4);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 25px;
-    margin-bottom: 10px;
-
-    .item-text {
-      font-size: 25px;
-      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
-      margin-left: 20px;
-      font-weight: 400;
-      text-align: left;
-      color: #333333;
-
-      .text1 {
-        font-size: 21px;
-        font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
-
-        font-weight: 400;
-        text-align: left;
-        color: #999999;
-        margin-top: 14px;
-      }
-
-      .text2 {
-        margin-top: 18px;
-        font-size: 18px;
-        font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
-
-        font-weight: 400;
-        text-align: left;
-        color: #fc755b;
-      }
-    }
-
-    .goumai-but {
-      width: 130px;
-      line-height: 130px;
-      border: 2px solid #ff947c;
-      border-radius: 50%;
-      font-size: 36px;
-      font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
-
-      font-weight: 400;
-      text-align: center;
-      color: #fc755b;
-    }
-
-    .img-box {
-      position: relative;
-
-      p {
-        font-size: 24px;
-        font-family: "Varela Round", sans-serif, sans-serif, Georgia, serif !important;
-
-        font-weight: bold;
-        text-align: left;
-        text-align: center;
-        color: #f4f4f4;
-        line-height: 39px;
-        line-height: 38px;
-        width: 112px;
-        display: block;
-        background: #f4f4f4;
-        border-radius: 19px;
-        position: absolute;
-        top: -20px;
-        left: 50%;
-
-        span {
-          background: linear-gradient(0deg, #ff947c 0%, #ffb98c 100%);
-          -webkit-background-clip: text;
-          /* Chrome, Safari */
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-          /* Chrome, Safari */
-          color: transparent;
-          /* 兼容不支持background-clip的浏览器 */
-        }
-
-        transform: translateX(-50%);
-      }
-
-      img {
-        width: 130px;
-        height: 130px;
-        border-radius: 8px;
-      }
-    }
   }
 }
 
-.purchase {
-  z-index: 9;
+// :deep(.van-cell__value) {
+//   overflow: initial;
+// }
+
+.content-item {
+  position: relative;
+  width: 690px;
+  height: 220px;
+  opacity: 1;
+  background: #ffffff;
+  box-shadow: 0px 4px 18px 0px rgba(0, 0, 0, 0.1);
   display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 24px;
+  font-weight: normal;
+  line-height: 30px;
+  letter-spacing: 0.6px;
+  font-variation-settings: "opsz" auto;
+  color: #818197;
 
-  .purchase-box {
-    width: 586px;
-    // height: 503px;
-    background-image: url("@/assets/purchase.png");
-    background-size: 100% 100%;
-    padding: 40px 55px 55px 55px;
-    font-size: 24px;
-    position: relative;
+  border-radius: 16px;
+  box-shadow: 0px 4px 18px 0px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  .zhuangtai {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 220px;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    font-size: 32px;
+    font-weight: 600;
 
-    .purchase-close {
-      position: absolute;
-      bottom: -20%;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 60px;
+    letter-spacing: 0px;
+
+    color: #f6f6f6;
+    background: #d25815;
+  }
+  .right {
+    margin-right: 24px;
+    text-align: right;
+  }
+  .item-text {
+    flex: 1;
+    margin-top: 18px;
+    .top-m {
+      margin-top: 12px;
     }
+    .title {
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 32px;
+      letter-spacing: 0.6px;
 
-    .purchase-top {
-      font-size: 18px;
-      .purchase-income {
-        .van-col {
-          padding: 20px 10px;
-          border-radius: 8px;
-          border: 1px solid #ffebcd;
-          display: flex;
-          align-items: center;
-          > div {
-            // line-height: 72px;
-            text-align: center;
-            color: #ffefd1;
-          }
-        }
-      }
-
-      .purchase-num {
-        margin-top: 20px;
-        text-align: center;
-
-        .van-col {
-          color: #ffefd1;
-        }
-      }
+      font-variation-settings: "opsz" auto;
+      color: #3d3d3d;
+      margin-bottom: 22px;
     }
+    .text1 {
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 32px;
 
-    .purchase-bottom {
-      margin: 40px 10px 10px 10px;
-      display: flex;
+      letter-spacing: 0.6px;
 
-      > img {
-        width: 130px;
-        height: 130px;
-        border-radius: 8px;
-      }
-
-      .purchase-commodity {
-        flex: 1;
-        font-weight: normal;
-        padding-left: 16px;
-
-        > div {
-          font-size: 24px;
-          display: flex;
-
-          > span:nth-child(1) {
-            color: #676767;
-          }
-
-          > span:nth-child(2) {
-            color: #000000;
-          }
-        }
-
-        > div:nth-child(1) {
-          font-size: 30px;
-          text-align: left;
-          color: #cc1127;
-        }
-      }
+      font-variation-settings: "opsz" auto;
+      color: #d35a18;
     }
-
-    .purchase-but {
-      margin-top: 50px;
-      padding: 0 50px;
-
-      .van-button {
-        height: 70px;
-        font-size: 32px;
-
-        .van-button__text {
-          color: #f4e1c5;
-        }
-      }
+  }
+  .goumai {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 180px;
+    height: 60px;
+    opacity: 1;
+    background: #3bb64f;
+    text-align: center;
+    line-height: 60px;
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: 0px;
+    color: #f6f6f6;
+  }
+  .img-box {
+    width: 220px;
+    height: 220px;
+    border-radius: 16px;
+    opacity: 1;
+    overflow: hidden;
+    box-shadow: 0px 4px 18px 0px rgba(0, 0, 0, 0.1);
+    margin-right: 24px;
+    img {
+      width: 100%;
+      height: 100%;
     }
   }
 }
 
-:deep(.van-cell__value) {
-  overflow: initial;
+:deep(.van-cell) {
+  background-color: transparent;
+}
+:deep(.van-cell::after) {
+  border: none;
+}
+.cell-list {
+  width: 690px;
+  margin: 0 auto;
+  margin-bottom: 24px;
+}
+:deep(.van-tabbar__placeholder) {
+  background-color: #fff;
 }
 </style>

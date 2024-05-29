@@ -2,7 +2,6 @@
   <div>
     <div class="banner-box">
       <div class="information">
-        <!-- <van-swipe class="my-swipe" :autoplay="5000" indicator-color="white"> -->
         <van-swipe class="my-swipe" :autoplay="5000" indicator-color="white">
           <van-swipe-item
             v-for="item in noteic"
@@ -12,7 +11,6 @@
             <div class="text-container">{{ item.title }}</div>
           </van-swipe-item>
         </van-swipe>
-
         <img @click="$router.push('/information')" :src="laba" alt="" />
       </div>
       <div class="banner-left">

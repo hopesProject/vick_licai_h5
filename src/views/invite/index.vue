@@ -1,188 +1,141 @@
 <template>
   <div class="wrapper">
-    <img @click="$router.go(-1)" :src="fanhui" alt="" class="fanhui" />
-    <!-- <div class="title">
-      <div>{{ $t("邀请好友") }}</div>
-      <div>{{ $t("收益多多益善") }}</div>
-    
-    </div> -->
-    <div class="invite-bg">
-      <img
-        class="invite-bg-imgs"
-        style="height: 150px"
-        src="@/assets/invite-icon1.png"
-        alt=""
+    <HeaderBox />
+    <header>
+      <van-image
+        round
+        class="image-img"
+        src="https://img01.yzcdn.cn/vant/cat.jpeg"
       />
-      <img
-        style="height: 150px"
-        class="invite-bg-img"
-        src="@/assets/invite-icon2.png"
-        alt=""
-      />
-    </div>
-    <div class="psoi-box">
-      <div
-        class="psoi"
-        style="border-bottom: 1px dashed rgba(255, 255, 255, 0.6)"
-      >
-        <div class="dispasdj">
-          <span class="text-posi">{{ $t("邀请码：") }}</span>
-          <span class="underlines">
-            {{ userInfo.invitationCode }}
-          </span>
-        </div>
-
-        <span
-          style="margin-left: 20px"
-          class="fz"
-          v-clipboard:copy="userInfo.invitationCode"
-          v-clipboard:success="onCopy"
-          >{{ $t("点击复制") }}</span
+      <div class="name">用户名</div>
+    </header>
+    <main>
+      <div class="psoi-box">
+        <div
+          class="psoi"
+          style="border-bottom: 1px dashed rgba(255, 255, 255, 0.6)"
         >
+          <div class="dispasdj">
+            <span class="text-posi">{{ $t("邀请链接：") }}</span>
+            <span class="underlines">
+              {{ invitationCode }}
+            </span>
+          </div>
+
+          <span
+            style="margin-left: 20px"
+            class="fz"
+            v-clipboard:copy="userInfo.invitationCode"
+            v-clipboard:success="onCopy"
+            >{{ $t("复制") }}</span
+          >
+        </div>
+        <div class="psoi psoibottun">
+          <van-swipe
+            class="swipe-box"
+            vertical
+            :autoplay="3000"
+            indicator-color="white"
+          >
+            <van-swipe-item
+              ><div class="bonus-button-txt">
+                恭喜1235***985用户领取500.00奖金
+              </div></van-swipe-item
+            >
+            <van-swipe-item
+              ><div class="bonus-button-txt">
+                恭喜1235***985用户领取500.030奖金
+              </div></van-swipe-item
+            >
+            <van-swipe-item
+              ><div class="bonus-button-txt">
+                恭喜1235***985用户领取500.040奖金
+              </div></van-swipe-item
+            >
+            <van-swipe-item
+              ><div class="bonus-button-txt">
+                恭喜1235***985用户领取500.050奖金
+              </div></van-swipe-item
+            >
+          </van-swipe>
+        </div>
       </div>
-      <div class="psoi">
-        <div class="dispasdj">
-          <span class="text-posi">{{ $t("邀请链接：") }}</span>
-          <span class="underlines">
-            {{ invitationCode }}
-          </span>
+
+      <div class="bonus">
+        <div class="top-box">
+          <div class="bonus-title">{{ $t("累计奖金") }}</div>
+          <div class="bonus-num">
+            <div>₹ {{ taskPageData.accumulatedBonus }}</div>
+          </div>
         </div>
 
-        <span
-          style="margin-left: 20px"
-          class="fz"
-          v-clipboard:copy="invitationCode"
-          v-clipboard:success="onCopy"
-          >{{ $t("点击复制") }}</span
+        <div class="button-box">
+          <div class="bonus-income">
+            <div>{{ $t("可领取") }}</div>
+            <div>₹ {{ taskPageData.bounds }}</div>
+          </div>
+          <van-button class="bonus-button" type="primary" block color="#FF5148">
+            {{ $t("领取收益") }}
+          </van-button>
+        </div>
+      </div>
+      <div class="grade">
+        <div class="grade-title">
+          {{ $t("收益等级") }}
+        </div>
+
+        <div
+          v-for="item in leverList"
+          :key="item.laber"
+          class="grade-list"
+          @click="$router.push('/team')"
         >
-      </div>
-    </div>
-    <div class="bonus">
-      <!-- <img src="@/assets/invite-icon3.png" alt=""> -->
-      <div class="bonus-title">{{ $t("奖金") }}</div>
-      <div class="bonus-num">
-        <div>₹ {{ taskPageData.accumulatedBonus }}</div>
-        <div>{{ $t("累计奖金") }}</div>
-      </div>
-      <div class="bonus-income">
-        <div>{{ $t("奖金收益") }}</div>
-        <div>₹ {{ taskPageData.bounds }}</div>
-      </div>
-      <div class="bonus-button">
-        <van-button type="primary" block color="#FF5148" :round="true">{{
-          $t("立即领取")
-        }}</van-button>
+          <div class="grade-list-img">
+            <svg-icon
+              class="font-svg"
+              style="margin-left: 10px"
+              :iconClass="item.icon"
+            />
+            <p>
+              {{ item.laber }}
+            </p>
+          </div>
+          <div class="count-box">
+            <div class="count-text">成员规模</div>
+            <div class="count-num">
+              {{ item.count }}
+            </div>
+          </div>
+          <div class="count-box">
+            <div class="count-text">有效认输</div>
+            <div class="count-num">
+              {{ item.vipCount }}
+            </div>
+          </div>
 
-        <van-swipe
-          style="height: 20px"
-          vertical
-          :autoplay="3000"
-          indicator-color="white"
-        >
-          <van-swipe-item
-            ><div class="bonus-button-txt">
-              恭喜1235***985用户领取500.00奖金
-            </div></van-swipe-item
-          >
-          <van-swipe-item
-            ><div class="bonus-button-txt">
-              恭喜1235***985用户领取500.030奖金
-            </div></van-swipe-item
-          >
-          <van-swipe-item
-            ><div class="bonus-button-txt">
-              恭喜1235***985用户领取500.040奖金
-            </div></van-swipe-item
-          >
-          <van-swipe-item
-            ><div class="bonus-button-txt">
-              恭喜1235***985用户领取500.050奖金
-            </div></van-swipe-item
-          >
-        </van-swipe>
-      </div>
-    </div>
-    <div class="grade">
-      <div class="grade-title">
-        {{ $t("收益等级") }}
+          <div class="xq">查看详情</div>
+        </div>
 
-        <svg-icon
-          @click="$router.push('/share')"
-          iconClass="a"
-          class="grade-cion"
-        ></svg-icon>
+        <div class="sygz">收益规则</div>
       </div>
-      <van-row type="flex" justify="space-between" class="grade-row">
-        <van-col span="8">{{ $t("等级") }}</van-col>
-        <van-col span="8">{{ $t("成员规模") }}</van-col>
-        <van-col span="8">{{ $t("有效人数") }}</van-col>
-      </van-row>
-      <div class="grade-list" @click="$router.push('/team')">
-        <div class="grade-list-img">1</div>
-        <div>{{ taskPageData.fristCount }}</div>
-        <div>
-          <span>{{ taskPageData.fristVipCount }}</span>
-          <van-icon name="search" />
-        </div>
+      <div class="prompt">
+        <div class="prompt-header">今日数据</div>
+        <van-row>
+          <van-col span="8">
+            <div class="shul">7W+</div>
+            <div class="cygm">成员规模</div>
+          </van-col>
+          <van-col span="8">
+            <div class="shul">7W+</div>
+            <div class="cygm">有效人群</div>
+          </van-col>
+          <van-col span="8">
+            <div class="shul">7W+</div>
+            <div class="cygm">团队收益</div>
+          </van-col>
+        </van-row>
       </div>
-      <div class="grade-list" @click="$router.push('/team')">
-        <div class="grade-list-img">2</div>
-        <div>{{ taskPageData.twoCount }}</div>
-        <div>
-          <span>{{ taskPageData.twoVipCount }}</span>
-          <van-icon name="search" />
-        </div>
-      </div>
-      <div class="grade-list" @click="$router.push('/team')">
-        <div class="grade-list-img">3</div>
-        <div>{{ taskPageData.thereCount }}</div>
-        <div>
-          <span>{{ taskPageData.thereVipCount }}</span>
-          <van-icon name="search" />
-        </div>
-      </div>
-    </div>
-    <div class="grade">
-      <div class="grade-title">{{ $t("当前邀请") }}</div>
-      <van-row type="flex" justify="space-between">
-        <van-col span="8">
-          <div class="revenue-text">
-            <div>
-              <span>{{ taskPageData.dayRegCount }}</span>
-              <span>+</span>
-            </div>
-            <div>{{ $t("成员规模") }}</div>
-            <img class="invite-bg-img" src="@/assets/invite-icon6.png" alt="" />
-          </div>
-        </van-col>
-        <van-col span="8">
-          <div class="revenue-text">
-            <div>
-              <span>{{ taskPageData.dayRegActiveCount }}</span>
-              <span>+</span>
-            </div>
-            <div>{{ $t("有效人群") }}</div>
-            <img class="invite-bg-img" src="@/assets/invite-icon6.png" alt="" />
-          </div>
-        </van-col>
-        <van-col span="8">
-          <div class="revenue-text">
-            <div>
-              <span>{{ taskPageData.dayTeamBound }}</span>
-              <span>w</span>
-            </div>
-            <div>{{ $t("团队收益") }}</div>
-            <img class="invite-bg-img" src="@/assets/invite-icon6.png" alt="" />
-          </div>
-        </van-col>
-      </van-row>
-    </div>
-    <div class="prompt">
-      <div class="prompt-txt">
-        Invite friends to join in not only to share profits but also to grow
-        together, creating more opportunities!
-      </div>
-    </div>
+    </main>
   </div>
 </template>
 <script>
@@ -190,14 +143,38 @@ import { taskPage } from "@/api";
 import QRCode from "qrcode";
 import { mapGetters } from "vuex";
 import clipboard2 from "@/mixins/clipboard2";
+import HeaderBox from "@/components/header";
 
 export default {
   mixins: [clipboard2],
-
+  components: { HeaderBox },
   computed: {
     ...mapGetters(["userInfo"]),
     invitationCode() {
       return `${window.location.origin}/#/register?code=${this.userInfo.invitationCode}`;
+    },
+
+    leverList() {
+      return [
+        {
+          laber: "Top1",
+          count: this.taskPageData.fristCount,
+          vipCount: this.taskPageData.fristVipCount,
+          icon: "dj1",
+        },
+        {
+          laber: "Top2",
+          count: this.taskPageData.twoCount,
+          vipCount: this.taskPageData.twoVipCount,
+          icon: "dj2",
+        },
+        {
+          laber: "Top3",
+          count: this.taskPageData.thereCount,
+          vipCount: this.taskPageData.thereVipCount,
+          icon: "dj3",
+        },
+      ];
     },
   },
   data() {
@@ -231,15 +208,75 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.invite-bg-imgs {
-  position: absolute;
-  top: 100px;
-}
 .wrapper {
   width: 100vw;
   min-height: 100vh;
-  background: linear-gradient(0deg, #ee4900 0%, #fcb173 100%);
-  padding: 400px 0 20px 0;
+  header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 42px;
+    text-align: center;
+    letter-spacing: 0px;
+
+    font-variation-settings: "opsz" auto;
+    color: #ffffff;
+    .image-img {
+      width: 160px;
+      height: 160px;
+      margin-bottom: 12px;
+    }
+  }
+  main {
+    padding: 70px 0;
+    background: #f6f6f6;
+
+    min-height: 200px;
+    width: 100%;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+
+    .prompt {
+      width: 690px;
+      height: 278px;
+      border-radius: 16px;
+      opacity: 1;
+      font-size: 32px;
+      font-weight: 500;
+      line-height: 32px;
+      letter-spacing: 0.6px;
+      text-align: center;
+      color: #3d3d3d;
+      background: #ffffff;
+      margin: 24px auto;
+      overflow: hidden;
+      .prompt-header {
+        margin: 48px 0 38px;
+      }
+      .shul {
+        font-size: 64px;
+        font-weight: 600;
+        line-height: 72px;
+        text-align: center;
+        letter-spacing: 0.6px;
+
+        font-variation-settings: "opsz" auto;
+        color: #3d3d3d;
+      }
+      .cygm {
+        font-size: 32px;
+        font-weight: 500;
+        line-height: 32px;
+        letter-spacing: 0.6px;
+        margin-top: 18px;
+        color: #3d3d3d;
+      }
+    }
+  }
 }
 
 .fanhui {
@@ -253,40 +290,174 @@ export default {
 
 .psoi-box {
   // background: rgba(205, 85, 51, 0.12);
-
-  background: #f65537;
+  margin: 0 35px;
   text-align: center;
-  border-radius: 10px;
-  width: 80%;
-  // position: absolute;
-  // top: 390px;
-  font-size: 30px;
-  // left: 50%;
-  // transform: translateX(-50%);
-  color: #fff;
-  padding: 10px 20px;
-  margin: 0 auto;
+  border-radius: 32px;
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 42px;
+  text-align: center;
+  letter-spacing: 0px;
+  font-variation-settings: "opsz" auto;
+  color: #3d3d3d;
+  overflow: hidden;
+  box-shadow: 0px 4px 27px 0px rgba(0, 0, 0, 0.1);
 }
 .psoi {
   display: flex;
   justify-content: space-between;
   align-items: center;
   text-align: left;
-  padding: 10px 0;
+  padding: 0px 24px;
+  height: 112px;
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 42px;
+  letter-spacing: 0px;
+  font-variation-settings: "opsz" auto;
+  color: #d25815;
   .text-posi {
-    width: 150px;
-    font-size: 26px;
+    width: 180px;
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 42px;
+    text-align: center;
+    letter-spacing: 0px;
+
+    font-variation-settings: "opsz" auto;
+    color: #3d3d3d;
+  }
+  .underlines {
+    display: inline-block;
+    width: 250px;
+    text-decoration: underline;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 36px;
+    font-weight: 500;
+    line-height: 42px;
+    letter-spacing: 0px;
+    font-variation-settings: "opsz" auto;
+    color: #d25815;
   }
   .fz {
+    width: 108px;
+    height: 60px;
+    border-radius: 16px;
+    opacity: 1;
+
+    background: #d35a18;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 60px;
     text-align: center;
-    width: 100px;
-    font-size: 18px;
-    background: #faa061;
-    padding: 10px;
-    border-radius: 22px;
-    height: 50px;
+    letter-spacing: 0px;
+
+    font-variation-settings: "opsz" auto;
+    color: #ffffff;
   }
 }
+
+.psoibottun {
+  background: #ffbc96;
+  .swipe-box {
+    height: 112px;
+  }
+  .bonus-button-txt {
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 112px;
+    letter-spacing: 0.6px;
+    color: #3f3f65;
+  }
+}
+
+.bonus {
+  height: 667px;
+  background-image: url("@/assets/Rectangle@1x.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  margin-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  .top-box {
+    margin-top: 80px;
+    .bonus-title {
+      font-size: 40px;
+      font-weight: 500;
+      line-height: 40px;
+      letter-spacing: 0.6px;
+
+      font-variation-settings: "opsz" auto;
+      color: #2c2c63;
+    }
+
+    .bonus-num {
+      font-size: 64px;
+      font-weight: 600;
+      line-height: 72px;
+      text-align: center;
+      letter-spacing: 0.6px;
+      margin-top: 24px;
+      font-variation-settings: "opsz" auto;
+      color: #3d3d3d;
+    }
+  }
+
+  .button-box {
+    .bonus-income {
+      padding-top: 50px;
+      text-align: center;
+
+      > div:nth-child(1) {
+        font-size: 40px;
+        font-weight: 500;
+        line-height: 40px;
+        letter-spacing: 0.6px;
+
+        font-variation-settings: "opsz" auto;
+        color: #2c2c63;
+      }
+
+      > div:nth-child(2) {
+        margin-top: 24px;
+        font-size: 64px;
+        font-weight: 600;
+        line-height: 72px;
+        text-align: center;
+        letter-spacing: 0.6px;
+
+        font-variation-settings: "opsz" auto;
+        color: #3d3d3d;
+      }
+    }
+
+    .bonus-button {
+      width: 610px;
+      height: 100px;
+      border-radius: 30px;
+      opacity: 1;
+      margin-bottom: 80px;
+      background: #ffffff;
+      margin-top: 48px;
+      box-sizing: border-box;
+      border: 2px solid #e7e7f6;
+      color: #3d3d3d;
+
+      .bonus-button-txt {
+        font-size: 36px;
+        font-weight: 600;
+        line-height: 26px;
+        letter-spacing: 1px;
+      }
+    }
+  }
+}
+
 .title {
   width: 640px;
   padding: 20px 0;
@@ -323,79 +494,34 @@ export default {
   }
 }
 
-.bonus {
-  width: 703px;
-
-  // height: 652px;
-  background-image: url("@/assets/invite-icon3.png");
-  background-size: 100%;
-  background-position: 0px -160px;
-  background-repeat: no-repeat;
-  margin: 0 auto;
-  margin-top: 30px;
-  // padding-top: 155px;
-
-  .bonus-title {
-    text-align: center;
-    color: #ffffff;
-    font-size: 32px;
-  }
-
-  .bonus-num {
-    padding-top: 40px;
-    text-align: center;
-    font-size: 36px;
-    color: #ffffff;
-  }
-
-  .bonus-income {
-    padding-top: 50px;
-    text-align: center;
-
-    > div:nth-child(1) {
-      font-size: 25px;
-      color: #343434;
-    }
-
-    > div:nth-child(2) {
-      font-size: 33px;
-      color: #c6262d;
-    }
-  }
-
-  .bonus-button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    .van-button {
-      width: 325px;
-      height: 69px;
-      font-size: 31px;
-      margin: 20px 0;
-    }
-
-    .bonus-button-txt {
-      font-size: 20px;
-      color: #2b253c;
-    }
-  }
-}
-
 .grade {
-  width: 703px;
-  // height: 470px;
-  background-image: url("@/assets/invite-icon4.png");
-  background-size: 100% 100%;
+  width: 690px;
+  // height: 776px;
+  border-radius: 16px;
+  opacity: 1;
+  background: #ffffff;
+  box-shadow: 0px 4px 18px 0px rgba(0, 0, 0, 0.1);
   margin: 0 auto;
-  padding: 30px 20px 60px 20px;
-  text-align: center;
-
+  padding: 48px 30px 24px;
+  .sygz {
+    font-size: 24px;
+    font-weight: normal;
+    line-height: 32px;
+    letter-spacing: 0.6px;
+    font-variation-settings: "opsz" auto;
+    color: #3d3d3d;
+    text-align: center;
+    padding-top: 10px;
+  }
   .grade-title {
-    color: #4d2101;
-    font-size: 36px;
-    height: 66px;
-    position: relative;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 32px;
+    letter-spacing: 0.6px;
+    text-align: center;
+    color: #3d3d3d;
+
+    margin-bottom: 36px;
   }
 
   .grade-row {
@@ -410,94 +536,54 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 40px 0 60px;
-    font-size: 34px;
-    color: #4d2101;
-    background: #fde2cd;
-    border-radius: 49px;
-    margin-top: 10px;
+    padding: 0 24px;
+    width: 630px;
+    height: 168px;
+    border-radius: 40px;
+    opacity: 1;
+    margin-bottom: 32px;
+    border: 2px solid #ff8700;
 
-    .grade-list-img {
-      width: 64px;
-      height: 77px;
-      line-height: 77px;
-      background-image: url("@/assets/invite-icon5.png");
-      background-size: 100%;
+    .xq {
+      width: 50px;
+      font-size: 24px;
+      font-weight: normal;
+      line-height: 32px;
+      letter-spacing: 0.6px;
+
+      font-variation-settings: "opsz" auto;
+      color: #ff8700;
+    }
+    .count-box {
+      font-size: 24px;
+      font-weight: normal;
+      line-height: 32px;
+      letter-spacing: 0.6px;
       text-align: center;
+      font-variation-settings: "opsz" auto;
+      color: #3d3d3d;
+      .count-num {
+        font-weight: 500;
+      }
+    }
+    .grade-list-img {
+      display: flex;
+      align-items: center;
+      font-size: 32px;
+      font-weight: 500;
+      line-height: 32px;
+      letter-spacing: 0.6px;
+
+      color: #3d3d3d;
+      .font-svg {
+        font-size: 72px;
+        margin-right: 18px;
+      }
     }
   }
 }
 
-.revenue-text {
-  color: #4d2101;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 40px;
-
-  > div:nth-child(1) {
-    font-size: 40px;
-
-    > span:nth-child(2) {
-      font-size: 29px;
-      vertical-align: top;
-    }
-  }
-
-  > div:nth-child(2) {
-    font-size: 22px;
-  }
-
-  > img {
-    width: 104px;
-    height: 82px;
-  }
-}
-
-.prompt {
-  width: 100%;
-  margin-top: 20px;
-  display: flex;
-  justify-content: flex-end;
-
-  .prompt-txt {
-    // width: 721px;
-    height: 160px;
-    background: rgba(255, 255, 255, 0.8);
-    border: 2.08px solid #f3bc9d;
-    border-radius: 20px;
-    box-shadow: -4px 0px 11px 4px rgba(205, 85, 51, 0.12);
-    font-size: 22px;
-    color: #a64f10;
-    padding: 20px 50px;
-    margin: 0 20px;
-  }
-}
 :deep(.van-swipe__indicators--vertical) {
   display: none;
-}
-
-.grade-cion {
-  position: absolute;
-  right: 20px;
-  bottom: 50%;
-  transform: translateY(50%);
-}
-.qr-canvas {
-  width: 60px !important;
-  height: 60px !important;
-}
-.dispasdj {
-  display: flex;
-  align-items: center;
-}
-.underlines {
-  display: inline-block;
-  width: 250px;
-  text-decoration: underline;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  font-size: 26px;
 }
 </style>

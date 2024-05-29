@@ -1,6 +1,116 @@
 <template>
   <div class="page">
-    <header>
+    <HeaderBox />
+
+    <div class="name-box">
+      <div class="img">
+        <van-uploader
+          :upload-icon="userInfo.img || require('@/assets/morentupian.png')"
+          :after-read="afterRead"
+        />
+      </div>
+
+      <div>
+        <div class="flex">
+          <span> {{ userInfo.phone | _phoneSubstring }}</span>
+          <svg-icon style="margin-left: 9px" class="vips" icon-class="vips" />
+        </div>
+        <div class="idCode">ID:{{ userInfo.code }}</div>
+      </div>
+    </div>
+
+    <main>
+      <div class="my-ljsy">
+        <van-row type="flex" style="width: 100%">
+          <van-col span="8">
+            <div class="item-box">
+              <div class="name">333</div>
+              <div class="labe">{{ $t("累计收益") }}</div>
+            </div>
+          </van-col>
+          <van-col span="8">
+            <div class="item-box">
+              <div class="name">333</div>
+              <div class="labe">{{ $t("累计提现") }}</div>
+            </div>
+          </van-col>
+          <van-col span="8">
+            <div class="item-box">
+              <div class="name">333</div>
+              <div class="labe">{{ $t("今日收益") }}</div>
+            </div>
+          </van-col>
+        </van-row>
+
+        <div class="border-box"></div>
+
+        <div class="botton-box">
+          <div>邀请码：34235523</div>
+          <div>wewesd</div>
+        </div>
+      </div>
+      <div class="my-shouyi">
+        <div class="title-h1">
+          {{ $t("我的收益") }}
+        </div>
+
+        <div class="flex shouyi-item">
+          <div class="item-box">
+            <div class="text">
+              {{ userInfo.cumulativeWithdrawalAmount | _toLocaleString(false) }}
+            </div>
+            <div class="jifen">
+              <svg-icon class="vips" icon-class="jfen1" />
+            </div>
+            <div class="but">提现</div>
+          </div>
+          <div class="item-box item-box-right">
+            <div class="text">
+              {{ userInfo.cumulativeRechargeAmount | _toLocaleString(false) }}
+            </div>
+            <div class="jifen">
+              <svg-icon class="vips" icon-class="jfen" />
+            </div>
+            <div class="but">充值</div>
+          </div>
+        </div>
+      </div>
+      <div class="my-fuzhu">
+        <div class="title-h2">辅助功能</div>
+
+        <div class="fuzhugong-box">
+          <van-row type="flex" style="width: 100%">
+            <van-col
+              span="6"
+              v-for="item in fuzhu"
+              :key="item.icon"
+              @click="$router.push(item.router)"
+            >
+              <div class="item-box">
+                <svg-icon class="vips" :icon-class="item.icon" />
+                <div class="name">{{ item.name }}</div>
+              </div>
+            </van-col>
+          </van-row>
+        </div>
+      </div>
+
+      <div class="my-botton">
+        <van-cell @click="goRouter('/download')">
+          <div class="flex justify-between items-center">
+            <div class="title">{{ $t("下载APP") }}</div>
+            <svg-icon class="vips" icon-class="xiangyou" />
+          </div>
+        </van-cell>
+        <van-cell @click="goRouter('dc')">
+          <div class="flex justify-between items-center">
+            <div class="title">{{ $t("退出登陆") }}</div>
+            <svg-icon class="vips" icon-class="xiangyou" />
+          </div>
+        </van-cell>
+      </div>
+    </main>
+    <!-- <header>
       <van-row>
         <van-col span="16">
           <div class="phone">
@@ -30,8 +140,8 @@
           </div>
         </van-col>
       </van-row>
-    </header>
-    <main>
+    </header> -->
+    <!-- <main>
       <div class="main-haeder-item">
         <div class="trxt-box">
           <img :src="chzhiong" alt="" />
@@ -86,7 +196,7 @@
         </van-row>
       </div>
 
-      <!-- 图层 7.png -->
+    
       <div class="tuceng7" @click="$router.push('/share')">
         <div class="tuceng7text">{{ $t("邀请奖励") }}</div>
         <div class="tuceng7text1"></div>
@@ -110,7 +220,7 @@
           </van-col>
         </van-row>
       </div>
-    </main>
+    </main> -->
   </div>
 </template>
 
@@ -118,75 +228,51 @@
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import clipboard2 from "@/mixins/clipboard2";
 import { Dialog } from "vant";
-import { fileUpload } from "@/api";
 import axios from "axios";
+import HeaderBox from "@/components/header";
 
 export default {
   mixins: [clipboard2],
-
+  components: { HeaderBox },
   computed: {
     ...mapGetters(["userInfo"]),
     fuzhu() {
       return [
         {
-          img: require("@/assets/my-icon1.png"),
+          icon: "icon1",
           name: this.$t("团队"),
           router: "/team",
         },
         {
-          img: require("@/assets/my-icon2.png"),
+          icon: "icon3",
           name: this.$t("VIP等级"),
           router: "/vip-list",
         },
         {
-          img: require("@/assets/my-icon3.png"),
+          icon: "icon4",
           name: this.$t("购买记录"),
           router: "/purchase-history",
         },
         {
-          img: require("@/assets/my-icon4.png"),
+          icon: "icon4",
           name: this.$t("资金详情"),
           router: "/capital",
         },
         {
-          img: require("@/assets/my-icon5.png"),
-          name: this.$t("收益详情"),
-          router: "/earnings-record",
-        },
-        {
-          img: require("@/assets/my-icon6.png"),
-          name: this.$t("银行卡管理"),
+          icon: "icon6",
+          name: this.$t("银行卡"),
           router: "/bank-card",
         },
+
         {
-          img: require("@/assets/my-icon7.png"),
-          name: this.$t("分享"),
-          router: "/share",
-        },
-        {
-          img: require("@/assets/my-icon8.png"),
+          icon: "icon7",
           name: this.$t("语言"),
           router: "/lang",
         },
         {
-          img: require("@/assets/my-icon9.png"),
-          name: this.$t("下载"),
-          router: "/download",
-        },
-        {
-          img: require("@/assets/my-icon10.png"),
-          name: this.$t("关于"),
-          router: "",
-        },
-        {
-          img: require("@/assets/dc.png"),
-          name: this.$t("登出"),
-          router: "dc",
-        },
-        {
-          img: "",
-          name: this.$t(""),
-          router: "",
+          icon: "icon7",
+          name: this.$t("修改密码"),
+          router: "/undapPassword",
         },
       ];
     },
@@ -253,17 +339,243 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+:deep(.van-uploader__upload) {
+  width: 128px;
+  height: 128px;
+}
 .page {
   width: 100vw;
   min-height: 100vh;
-  background-image: url("@/assets/my-bg.png");
-  background-size: 100%;
-  background-repeat: no-repeat;
   overflow: hidden;
-  background-color: #fff5eb;
+  .name-box {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    font-size: 42.67px;
+    font-weight: normal;
+    line-height: normal;
+    letter-spacing: 0em;
+
+    color: #121836;
+    padding-left: 30px;
+    .idCode {
+      font-size: 22.67px;
+      font-weight: normal;
+      line-height: normal;
+      letter-spacing: 0em;
+
+      color: #aab0ba;
+      margin-top: 8px;
+    }
+    img {
+      width: 128px;
+      height: 128px;
+    }
+  }
 }
 
 main {
+  .my-ljsy {
+    width: 690px;
+    // height: 208px;
+    border-radius: 21.71px;
+    opacity: 1;
+    background: #292f45;
+    margin: 0 auto;
+    margin-top: 24px;
+    overflow: hidden;
+    font-size: 42.67px;
+    font-weight: bold;
+    line-height: normal;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #ffffff;
+    .botton-box {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 38px 36px 28px;
+      font-size: 24px;
+      font-weight: normal;
+      line-height: normal;
+      letter-spacing: 0em;
+
+      color: #f1f5fd;
+    }
+    .border-box {
+      border-bottom: 1px dashed #f0f5fd;
+      margin-top: 23px;
+      margin-bottom: 37px;
+    }
+    .item-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      .labe {
+        font-size: 24px;
+        font-weight: normal;
+        line-height: normal;
+        text-align: center;
+        letter-spacing: 0em;
+
+        color: #aab0ba;
+        margin-top: 8px;
+      }
+      .name {
+        margin-top: 50px;
+      }
+    }
+  }
+  .my-shouyi {
+    width: 690px;
+    // height: 356.62px;
+    border-radius: 21.71px;
+    opacity: 1;
+
+    background: #ffffff;
+    margin: 0 auto;
+    margin-top: 20px;
+    overflow: hidden;
+    .title-h1 {
+      font-size: 32px;
+      font-weight: 500;
+      line-height: normal;
+      letter-spacing: 0em;
+
+      color: #121836;
+      margin: 32px 28px 24px;
+    }
+    .shouyi-item {
+      justify-content: space-between;
+      padding: 0 28px;
+      margin-bottom: 34px;
+    }
+    .item-box {
+      width: 300px;
+      height: 160px;
+      border-radius: 21.33px;
+      opacity: 1;
+      /* 智学100/主色/背景色 */
+      background: #fafafe;
+      position: relative;
+      .text {
+        margin-top: 50px;
+        font-size: 42.67px;
+        font-weight: bold;
+        line-height: normal;
+        letter-spacing: 0em;
+
+        color: #121836;
+        margin-left: 44px;
+      }
+      .jifen {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        top: 0;
+        left: 0;
+        width: 68px;
+        height: 53.33px;
+        line-height: 53.33px;
+        text-align: center;
+        border-radius: 21.33px 0px 21.33px 10.67px;
+        opacity: 1;
+
+        background: linear-gradient(226deg, #86ff8c 16%, #3bb64f 74%);
+      }
+      .but {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 116px;
+        height: 45px;
+        border-radius: 21.33px 0px 21.33px 10.67px;
+        opacity: 1;
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 45px;
+        letter-spacing: 0em;
+
+        font-feature-settings: "kern" on;
+        color: #fafafe;
+        text-align: center;
+        background: linear-gradient(245deg, #86ff8c 16%, #3bb64f 69%);
+      }
+    }
+    .item-box-right {
+      .vips {
+        font-size: 28px;
+      }
+      .jifen {
+        background: linear-gradient(226deg, #ffae86 16%, #ff7d67 74%);
+      }
+      .but {
+        background: linear-gradient(245deg, #ffae86 14%, #ff7d67 69%);
+        color: #3d3d3d;
+      }
+    }
+  }
+
+  .my-fuzhu {
+    width: 690px;
+    height: 356.62px;
+    border-radius: 21.71px;
+    opacity: 1;
+    background: #ffffff;
+    padding: 28px;
+    margin: 0 auto;
+    margin-top: 24px;
+    .fuzhugong-box {
+      display: flex;
+      width: 100%;
+      margin-top: 37px;
+      .item-box {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        font-size: 24px;
+        font-weight: normal;
+        line-height: normal;
+        letter-spacing: 0em;
+        color: #121836;
+        margin-bottom: 27px;
+        .vips {
+          font-size: 44px;
+          margin-bottom: 16px;
+        }
+      }
+    }
+    .title-h2 {
+      font-size: 32px;
+      font-weight: normal;
+      line-height: normal;
+      letter-spacing: 0em;
+
+      color: #121836;
+    }
+  }
+
+  .my-botton {
+    width: 690px;
+    // height: 208px;
+    border-radius: 21.71px;
+    opacity: 1;
+    background: #ffffff;
+    margin: 0 auto;
+    margin-top: 24px;
+    overflow: hidden;
+    .title {
+      font-size: 28px;
+      font-weight: normal;
+      line-height: normal;
+      letter-spacing: 0em;
+
+      color: #121836;
+    }
+  }
+
   .accessibility {
     width: 685px;
     background: #ffffff;
@@ -581,7 +893,11 @@ header {
   border-radius: 50%;
   overflow: hidden;
   .van-uploader__upload-icon {
-    font-size: 88px;
+    font-size: 162px;
   }
+}
+
+:deep(.van-cell) {
+  padding: 32px;
 }
 </style>
