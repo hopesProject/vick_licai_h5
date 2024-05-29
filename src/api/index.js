@@ -41,6 +41,14 @@ export function getCustomerService(params) {
     params,
   });
 }
+// 产品详情
+export function queryProductDetail(params) {
+  return request({
+    url: "/api/product/queryProductDetail", // 假地址 自行替换
+    method: "get",
+    params,
+  });
+}
 export function detail(params) {
   return request({
     url: "/api/msg/detail", // 假地址 自行替换

@@ -1,33 +1,39 @@
 <template>
-  <div>
+  <div style="min-height: 100vh">
     <van-nav-bar :title="$t('产品详情')" left-arrow @click-left="onClickLeft" />
-
+    <van-image class="img-box" :src="dataDetail.img" />
     <div class="main">
       <!-- 两端对齐 -->
       <van-row type="flex" justify="space-between">
         <van-col span="12">
-          <div class="header">理财产品1</div>
+          <div class="header">{{ dataDetail.productTitle }}</div>
         </van-col>
         <van-col span="12" style="text-align: right"></van-col>
       </van-row>
       <van-row type="flex" justify="space-between">
         <van-col span="12">
-          <div class="title">Investment</div>
-          <div class="text">₹7834.23</div>
+          <div class="title">{{ $t("产品价格") }}</div>
+          <div class="text">
+            {{ dataDetail.price | _toLocaleString(false) }}
+          </div>
         </van-col>
         <van-col span="12" style="text-align: right">
-          <div class="title">Daily returns</div>
-          <div class="text">₹7834.23</div>
+          <div class="title">{{ $t("每日收益") }}</div>
+          <div class="text">
+            {{ dataDetail.dailyProductRevenue | _toLocaleString(false) }}
+          </div>
         </van-col>
       </van-row>
       <van-row type="flex" justify="space-between">
         <van-col span="12">
-          <div class="title">Growth period</div>
-          <div class="text">₹7834.23</div>
+          <div class="title">{{ $t("周期") }}</div>
+          <div class="text">{{ dataDetail.cycle }}</div>
         </van-col>
         <van-col span="12" style="text-align: right">
-          <div class="title">Total returns</div>
-          <div class="text">₹7834.23</div>
+          <div class="title">{{ $t("总收益") }}</div>
+          <div class="text">
+            {{ dataDetail.totalProductRevenue | _toLocaleString(false) }}
+          </div>
         </van-col>
       </van-row>
       <van-row type="flex" justify="space-between" class="fenke">
@@ -64,34 +70,53 @@
         <van-col span="12">
           <div class="text1">{{ $t("购买价格") }}</div>
         </van-col>
-        <van-col span="12" style="text-align: right"
-          ><div class="text">asdfasd</div>
+        <van-col span="12" style="text-align: right">
+          <div class="text">
+            {{ dataDetail.price | _toLocaleString(false) }}
+          </div>
         </van-col>
       </van-row>
       <van-row type="flex" justify="space-between">
         <van-col span="12" class="text1"> {{ $t("总价格") }} </van-col>
         <van-col span="12" style="text-align: right">
-          <div class="text">asdfasd</div>
+          <div class="text">
+            {{ (dataDetail.price * value) | _toLocaleString(false) }}
+          </div>
         </van-col>
       </van-row>
 
       <div class="ljzhf">{{ $t("立即支付") }}</div>
     </div>
     <div class="cpjj">产品简介</div>
+
+    <div v-html="dataDetail.content"></div>
   </div>
 </template>
 
 <script>
 import Progress from "@/components/Progress";
+import { queryProductDetail } from "@/api";
 
 export default {
   components: { Progress },
   data() {
     return {
       value: 1,
+      dataDetail: {},
     };
   },
+  mounted() {
+    this.queryProductDetail();
+  },
   methods: {
+    async queryProductDetail() {
+      try {
+        const res = await queryProductDetail({
+          id: this.$route.query.id,
+        });
+        this.dataDetail = res.data;
+      } catch (error) {}
+    },
     updateValue(newValue) {
       const parsedValue = parseInt(newValue, 10);
       if (!isNaN(parsedValue)) {
@@ -119,7 +144,7 @@ export default {
 <style lang="scss" scoped>
 .main {
   width: 690px;
-  height: 780px;
+
   opacity: 1;
   background: #ffffff;
   border-bottom-left-radius: 18px;
@@ -245,5 +270,10 @@ export default {
   margin-bottom: 20px;
   text-align: center;
   margin-top: 50px;
+}
+.img-box {
+  width: 690px;
+  height: 690px;
+  margin: 0 auto;
 }
 </style>
