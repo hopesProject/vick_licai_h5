@@ -36,14 +36,14 @@
           </div>
         </van-col>
       </van-row>
-      <van-row type="flex" justify="space-between" class="fenke">
+      <!-- <van-row type="flex" justify="space-between" class="fenke">
         <van-col span="12">
           <Progress :current="49" :total="50" text="已售%" />
         </van-col>
         <van-col span="12" class="flex justify-end">
           <svg-icon class="font-svg" iconClass="vipgm" />
         </van-col>
-      </van-row>
+      </van-row> -->
       <van-row type="flex" justify="space-between">
         <van-col span="12">
           <div class="header">{{ $t("购买") }}</div>
@@ -85,7 +85,14 @@
         </van-col>
       </van-row>
 
-      <div class="ljzhf">{{ $t("立即支付") }}</div>
+      <van-button
+        :loading="loading"
+        class="ljzhf"
+        @click="ljzf"
+        loading-text="购买中..."
+      >
+        {{ $t("立即支付") }}
+      </van-button>
     </div>
     <div class="cpjj">产品简介</div>
 
@@ -95,7 +102,7 @@
 
 <script>
 import Progress from "@/components/Progress";
-import { queryProductDetail } from "@/api";
+import { buyProduct, queryProductDetail } from "@/api";
 
 export default {
   components: { Progress },
@@ -103,12 +110,28 @@ export default {
     return {
       value: 1,
       dataDetail: {},
+      loading: false,
     };
   },
   mounted() {
     this.queryProductDetail();
   },
   methods: {
+    async ljzf() {
+      this.loading = true;
+      try {
+        await buyProduct({
+          pid: this.dataDetail.id,
+          num: this.value,
+        });
+        Toast.success(this.$t(`购买成功`));
+        setTimeout(() => {
+          this.$router.push("/purchase-history");
+        }, 1000);
+      } catch (error) {}
+
+      this.loading = false;
+    },
     async queryProductDetail() {
       try {
         const res = await queryProductDetail({
