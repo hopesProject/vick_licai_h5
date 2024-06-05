@@ -46,17 +46,18 @@
                 <img :src="item.img" alt="" />
 
                 <div>
-                  <div class="h3">基金编号：{{ item.id }}</div>
+                  <div class="h3">{{ $t("基金编号：") }}{{ item.id }}</div>
                   <div class="content-sdf">
                     <div class="content">
                       <div class="mb">
-                        买入价格：{{ item.amount | _toLocaleString(false) }}
+                        {{ $t(" 买入价格：")
+                        }}{{ item.amount | _toLocaleString(false) }}
                       </div>
-                      <div>总收入：$180.00</div>
+                      <div>{{ $t("总收入：") }}$180.00</div>
                     </div>
                     <div class="time">
-                      <div class="mb">每日收入：612.00</div>
-                      <div>积累收入：612.00</div>
+                      <div class="mb">{{ $t("每日收入：") }}612.00</div>
+                      <div>{{ $t("积累收入：") }}612.00</div>
                       <div></div>
                     </div>
                   </div>

@@ -94,15 +94,16 @@
         {{ $t("立即支付") }}
       </van-button>
     </div>
-    <div class="cpjj">产品简介</div>
+    <div class="cpjj">{{ $t("产品简介") }}</div>
 
-    <div v-html="dataDetail.content"></div>
+    <div v-html="dataDetail.content" class="html-box"></div>
   </div>
 </template>
 
 <script>
 import Progress from "@/components/Progress";
 import { buyProduct, queryProductDetail } from "@/api";
+import { Toast } from "vant";
 
 export default {
   components: { Progress },
@@ -120,14 +121,16 @@ export default {
     async ljzf() {
       this.loading = true;
       try {
-        await buyProduct({
+        const res = await buyProduct({
           pid: this.dataDetail.id,
           num: this.value,
         });
-        Toast.success(this.$t(`购买成功`));
-        setTimeout(() => {
-          this.$router.push("/purchase-history");
-        }, 1000);
+        if (res.status === 0) {
+          Toast.success(this.$t(`购买成功`));
+          setTimeout(() => {
+            this.$router.push("/purchase-history");
+          }, 1000);
+        }
       } catch (error) {}
 
       this.loading = false;
@@ -298,5 +301,15 @@ export default {
   width: 690px;
   height: 690px;
   margin: 0 auto;
+}
+.html-box {
+  width: 690px;
+  margin: 0 auto;
+  word-break: break-all;
+  overflow-wrap: break-word;
+  p {
+    word-break: break-all;
+    overflow-wrap: break-word;
+  }
 }
 </style>

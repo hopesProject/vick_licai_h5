@@ -21,8 +21,8 @@
         <div class="bulletin-left">
           <img src="@/assets/img/bulletin-bg.png" alt="" />
           <div>
-            <span>快讯播报</span>
-            <span>邀请好友获得丰富奖励</span>
+            <span>{{ $t("快讯播报") }}</span>
+            <span>{{ $t("邀请好友获得丰富奖励") }}</span>
           </div>
         </div>
         <van-icon name="arrow" />
@@ -30,22 +30,24 @@
       <div class="wallet">
         <div class="wallet-money">
           <div class="wallet-money-left">
-            <span>总资金</span>
-            <span>8.9</span>
+            <span>{{ $t("总资金") }}</span>
+            <span>{{ userInfo.amount | _toLocaleString() }}</span>
           </div>
           <div class="wallet-money-right">
-            <div @click="$router.push('/recharge')">充值</div>
-            <div @click="$router.push('/withdrawal')">提现</div>
+            <div @click="$router.push('/recharge')">{{ $t("充值") }}</div>
+            <div @click="$router.push('/withdrawal')">{{ $t("提现") }}</div>
           </div>
         </div>
         <div class="wallet-history">
           <div>
-            <span>充值金额</span>
-            <span>8.9</span>
+            <span>{{ $t("充值金额") }}</span>
+            <span>{{
+              userInfo.cumulativeRechargeAmount | _toLocaleString()
+            }}</span>
           </div>
           <div>
-            <span>可提现金额</span>
-            <span>1.9</span>
+            <span>{{ $t("可提现金额") }}</span>
+            <span>{{ userInfo.amount | _toLocaleString() }}</span>
           </div>
         </div>
       </div>
@@ -61,13 +63,13 @@
               <div class="popular-right">
                 <div class="popular-product">
                   <div>
-                    <span>产品价格</span>
+                    <span>{{ $t("产品价格") }}</span>
                     <span>{{ item.price }}</span>
                   </div>
                   <div
                     v-if="token"
                     class="goumai-but"
-                    @click="purchaseShowClick(item)"
+                    @click="$router.push('/ProductDetails?id=' + item.id)"
                   >
                     {{ $t("购买") }}
                   </div>
@@ -107,12 +109,15 @@
           class="journalism-box"
           v-for="(item, i) in journalismList"
           :key="i"
+          @click="getRouter(item)"
         >
-          <div class="journalism-box-img"><img src="" alt="" /></div>
+          <div class="journalism-box-img">
+            <img :src="item.img" alt="" />
+          </div>
           <div class="journalism-box-txt">
             <span>{{ item.title }}</span>
-            <span>{{ item.text }}</span>
-            <span>{{ item.tiem }}</span>
+            <span>{{ item.ndesc }}</span>
+            <span>{{ item.createTime | _timeFormat }}</span>
           </div>
         </div>
       </div>
@@ -208,6 +213,7 @@ import {
   getCustomerService,
   productqueryProductClassify,
   queryMsgCount,
+  queryNews,
   queryNoteice,
   queryPaySetting,
   queryProductClassify,
@@ -235,23 +241,7 @@ export default {
           title: "4",
         },
       ],
-      navList: [
-        {
-          title: "我们",
-          img: require("@/assets/img/my.png"),
-          key:'/my'
-        },
-        {
-          title: "客服",
-          img: require("@/assets/img/service.png"),
-          key:'/service'
-        },
-        {
-          title: "VIP",
-          img: require("@/assets/img/vip-icon.png"),
-          key:'/vip-list'
-        },
-      ],
+
       msgCount: 0,
       servicedata: localStorage.getItem("servicedata") || "",
 
@@ -268,26 +258,32 @@ export default {
       purchaseShow: false,
       purchaseShowData: {},
       stepperValue: 1,
-      journalismList: [
-        {
-          img: require("@/assets/img/bulletin-bg.png"),
-          title: "今天去了趟云南大理也去了",
-          text: "今天去了一趟云南大理也去了今天去了一趟云南大理也去了今天去了一趟云南大理也去了",
-          time: "18:80 26/5/2024",
-        },
-        {
-          img: require("@/assets/img/bulletin-bg.png"),
-          title: "今天去了趟云南大理也去了",
-          text: "今天去了一趟云南大理也去了今天去了一趟云南大理也去了今天去了一趟云南大理也去了",
-          time: "18:80 26/5/2024",
-        },
-      ],
+      journalismList: [],
     };
   },
   computed: {
     ...mapGetters(["token", "userInfo"]),
     tabs() {
       return this.fenleiData;
+    },
+    navList() {
+      return [
+        {
+          title: this.$t("我们"),
+          img: require("@/assets/img/my.png"),
+          key: "/my",
+        },
+        {
+          title: this.$t("客服"),
+          img: require("@/assets/img/service.png"),
+          key: "/service",
+        },
+        {
+          title: "VIP",
+          img: require("@/assets/img/vip-icon.png"),
+          key: "/vip-list",
+        },
+      ];
     },
   },
   mounted() {
@@ -297,6 +293,7 @@ export default {
     // this.getlist();
     this.getqueryProductisHot();
     // this.queryPaySetting();
+    this.getNes();
     if (this.token) {
       this.queryMsgCount();
       this.getUserInfo();
@@ -304,6 +301,15 @@ export default {
   },
   methods: {
     ...mapActions(["getUserInfo"]),
+    getRouter(item) {
+      this.$router.push("/itemInformation?type=nes&id=" + item.id);
+    },
+    async getNes() {
+      try {
+        const res = await queryNews({ pageSize: 100 });
+        this.journalismList = res.data.list;
+      } catch (error) {}
+    },
     kefutz() {
       window.location.href = this.servicedata;
     },
@@ -383,9 +389,9 @@ export default {
         this.purchaseShow = false;
       }
     },
-    onSkip(key){
-      this.$router.push(key)
-    }
+    onSkip(key) {
+      this.$router.push(key);
+    },
   },
 };
 </script>
@@ -479,9 +485,10 @@ main {
   .wallet-money {
     width: 100%;
     display: flex;
+    justify-content: space-between;
 
     > div {
-      width: 50%;
+      // width: 50%;
     }
 
     .wallet-money-left {
@@ -507,7 +514,8 @@ main {
 
       > div {
         background: #f6f6f6;
-        width: 140px;
+        padding: 0 10px;
+        min-width: 140px;
         height: 60px;
         line-height: 60px;
         text-align: center;
@@ -518,6 +526,7 @@ main {
 
       > div:nth-child(1) {
         color: #b80000;
+        margin-right: 10px;
       }
     }
   }

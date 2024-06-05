@@ -36,11 +36,18 @@
             class="cell-list"
             v-for="item in data"
             :key="item.id"
-            @click="$router.push('/ProductDetails?id=' + item.id)"
+            @click="xiangqi(item)"
           >
             <div class="content-item">
-              <div class="goumai">购买</div>
-              <div class="zhuangtai">预售</div>
+              <div
+                class="goumai"
+                :style="item.status == 1 ? '' : 'background: #999999;'"
+              >
+                {{ $t("购买") }}
+              </div>
+              <div class="zhuangtai">
+                {{ statusType(item.status) }}
+              </div>
               <div class="img-box">
                 <img :src="item.img" alt="" />
               </div>
@@ -111,6 +118,24 @@ export default {
     // this.getlist();
   },
   methods: {
+    xiangqi(item) {
+      if (item.status == 1) {
+        this.$router.push("/ProductDetails?id=" + item.id);
+      }
+    },
+    statusType(val) {
+      switch (Number(val)) {
+        case 1:
+          return this.$t("上架");
+        case 3:
+          return this.$t("预售");
+        case 4:
+          return this.$t("售完");
+
+        default:
+          break;
+      }
+    },
     async ljizhifu() {
       const res = await buyProduct({
         pid: this.purchaseShowData.id,

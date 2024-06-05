@@ -87,10 +87,65 @@ export function productqueryProductClassify(params) {
     params,
   });
 }
+// 获取产品列表
+export function queryNews(params) {
+  return request({
+    url: "/api/news/queryNews", // 假地址 自行替换
+    method: "get",
+    params,
+  });
+}
+// 获取产品列表
+export function newsdetail(params) {
+  return request({
+    url: "/api/news/detail", // 假地址 自行替换
+    method: "get",
+    params,
+  });
+}
+// 获取产品列表
+export function uploadImge(params) {
+  return request({
+    url: "/api/userinfo/uploadImge", // 假地址 自行替换
+    method: "get",
+    params,
+  });
+}
 // 购买
 export function buyProduct(data) {
   return request({
     url: "/api/order/buyProduct", // 假地址 自行替换
+    method: "post",
+    data,
+  });
+}
+// 购买
+export function bindBankCard(data) {
+  return request({
+    url: "/api/userinfo/bindBankCard", // 假地址 自行替换
+    method: "post",
+    data,
+  });
+}
+// 购买
+export function rechage(data) {
+  return request({
+    url: "/api/userinfo/rechage", // 假地址 自行替换
+    method: "post",
+    data,
+  });
+}
+// 购买
+export function withdraw(data) {
+  return request({
+    url: "/api/userinfo/withdraw", // 假地址 自行替换
+    method: "post",
+    data,
+  });
+}
+export function userinfoupdatePwd(data) {
+  return request({
+    url: "/api/userinfo/updatePwd", // 假地址 自行替换
     method: "post",
     data,
   });
@@ -114,11 +169,27 @@ export function transactionRecord(params) {
     params,
   });
 }
+export function getEarnings(params) {
+  return request({
+    url: "/api/userinfo/getEarnings", // 假地址 自行替换
+    method: "get",
+    params,
+  });
+}
+
 // 发送验证码
 export function sendCode(params) {
   return request({
     url: "/api/user/sendCode", // 假地址 自行替换
     method: "get",
+    params,
+  });
+}
+// 发送验证码
+export function deleteBank(params) {
+  return request({
+    url: "/api/userinfo/deleteBank", // 假地址 自行替换
+    method: "delete",
     params,
   });
 }
@@ -188,13 +259,7 @@ export function noticedetail(params) {
     params,
   });
 }
-export function bindBankCard(data) {
-  return request({
-    url: "/api/userinfo/bindBankCard", // 假地址 自行替换
-    method: "post",
-    data,
-  });
-}
+
 export function sendComment(data) {
   return request({
     url: "/api/comment/sendComment", // 假地址 自行替换

@@ -269,7 +269,7 @@ const routes = [
     path: "/commission",
     component: commission,
     meta: {
-      show: true,
+      show: false,
     },
   },
   // 客服
@@ -277,7 +277,7 @@ const routes = [
     path: "/service",
     component: service,
     meta: {
-      show: true,
+      show: false,
     },
   },
   // {

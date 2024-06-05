@@ -24,27 +24,26 @@
           :loading-text="$t('加载中...')"
           @load="onLoad"
         >
-          <van-cell v-for="(item, index) in data" :key="item.id">
+          <van-cell v-for="item in data" :key="item.id">
             <div class="item-box">
               <div class="flex items-center">
                 <svg-icon
                   class="font-svg"
                   style="margin-left: 10px"
-                  :iconClass="index === 0 ? 'arrowdown' : 'arrowdown1'"
+                  :iconClass="statusTypeColor(item.type)"
                 />
                 <div>
-                  <p :class="`${index === 0 ? 'arrowdown' : 'arrowdown1'}`">
-                    ₹ 12.35
+                  <p :class="statusTypeColor(item.type)">
+                    {{ item.amount }}
                   </p>
-                  <p class="p-time">02 / 02 / 2040</p>
+                  <p class="p-time">{{ item.createTime }}</p>
                 </div>
               </div>
-              <div :class="`${index === 0 ? 'arrowdown tx' : 'arrowdown1 tx'}`">
-                提现
+              <div class="tx" :class="statusTypeColor(item.type)">
+                {{ statusType(item.type) }}
               </div>
             </div>
           </van-cell>
-          <!-- <div slot="finished"></div> -->
         </van-list>
       </van-pull-refresh>
     </main>
@@ -58,33 +57,80 @@ export default {
   mixins: [refresh],
   computed: {
     ...mapGetters(["userInfo"]),
+    option() {
+      return [
+        { text: this.$t("全部"), value: 0 },
+        { text: this.$t("充值"), value: 1 },
+        { text: this.$t("提现"), value: 2 },
+        { text: this.$t("购买"), value: 3 },
+        { text: this.$t("奖励"), value: 4 },
+        { text: this.$t("分润"), value: 5 },
+        { text: this.$t("收益"), value: 6 },
+        { text: this.$t("主动领取"), value: 7 },
+        { text: this.$t("返回本金"), value: 8 },
+      ];
+    },
   },
+
   data() {
     return {
-      data: [{}, {}, {}],
+      data: [],
       value: 0,
-      option: [
-        { text: "全部", value: 0 },
-        { text: "分润", value: 1 },
-        { text: "购买", value: 2 },
-        { text: "奖励", value: 2 },
-        { text: "提现", value: 2 },
-      ],
     };
   },
   watch: {
-    active(v) {
+    value(v) {
+      this.data = [];
+      this.pageNum = 1;
       this.getList();
     },
   },
   created() {
-    // this.getList();
+    this.getList();
   },
   methods: {
+    statusTypeColor(val) {
+      if (
+        val === "1" ||
+        val === "4" ||
+        val === "5" ||
+        val === "6" ||
+        val === "7" ||
+        val === "8"
+      ) {
+        return "arrowdown";
+      } else {
+        return "arrowdown1";
+      }
+    },
+    statusType(val) {
+      switch (val) {
+        case "1":
+          return this.$t("充值");
+        case "2":
+          return this.$t("提现");
+        case "3":
+          return this.$t("购买");
+        case "4":
+          return this.$t("奖励");
+        case "5":
+          return this.$t("分润");
+        case "6":
+          return this.$t("收益");
+        case "7":
+          return this.$t("主动领取");
+        case "8":
+          return this.$t("返回本金");
+        default:
+          break;
+      }
+    },
     async getList(isRefreshing) {
       let pageNum = this.pageNum;
       const res = await transactionRecord({
-        type: this.active === 0 ? "" : this.active,
+        pageSize: this.pageSize,
+        pageNum: this.pageNum,
+        type: this.value,
       });
       this.loading = false;
       if (isRefreshing) {
@@ -93,14 +139,14 @@ export default {
       try {
         if (res.status === 0) {
           if (pageNum !== 1) {
-            // this.data = [...this.data, ...res.data];
+            this.data = [...this.data, ...res.data.list];
           } else {
-            // this.data = res.data;
+            this.data = res.data.list;
           }
         }
-        // if (this.data.length >= res.data.total) {
-        this.finished = true;
-        // }
+        if (this.data.length >= res.data.total) {
+          this.finished = true;
+        }
       } catch (error) {
         this.finished = true;
       }

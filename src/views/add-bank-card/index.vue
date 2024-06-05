@@ -11,7 +11,7 @@
       >
         <van-field
           class="border-box"
-          v-model="form.inviteCode"
+          v-model="form.realName"
           :disabled="isinviteCode"
           :placeholder="$t('姓名')"
           input-align="left"
@@ -24,21 +24,21 @@
         </van-field>
         <van-field
           class="border-box"
-          v-model="form.inviteCode"
+          v-model="form.bankName"
           :disabled="isinviteCode"
           :placeholder="$t('银行卡名称')"
           input-align="left"
         />
         <van-field
           class="border-box"
-          v-model="form.inviteCode"
+          v-model="form.bankCard"
           :disabled="isinviteCode"
           :placeholder="$t('银行卡号')"
           input-align="left"
         />
         <van-field
           class="border-box"
-          v-model="form.inviteCode"
+          v-model="form.ifsc"
           :disabled="isinviteCode"
           :placeholder="$t('IFSC')"
           input-align="left"
@@ -78,7 +78,7 @@
   </div>
 </template>
 <script>
-import { register, sendCode } from "@/api";
+import { bindBankCard } from "@/api";
 import { Toast } from "vant";
 import PasswordInput from "@/components/PasswordInput/index.vue";
 
@@ -92,11 +92,11 @@ export default {
       loading: false,
       form: {
         phone: "", //手机号码
-        code: "", //验证码
-        pwd: "", //密码
-        passwordNew: "", //确认密码
-        inviteCode: "", //邀请码
-        userName: "", //用户名
+        bankCard: "", //验证码
+        bankName: "", //密码
+        code: "", //确认密码
+        ifsc: "", //邀请码
+        realName: "", //用户名
       },
     };
   },
@@ -141,7 +141,7 @@ export default {
     async registerApi() {
       try {
         this.loading = true;
-        if (this.form.userName === "") {
+        if (this.form.realName === "") {
           Toast(this.$t("用户名不能为空"));
           return false;
         }
@@ -155,27 +155,27 @@ export default {
           return false;
         }
 
-        if (this.form.pwd === "") {
-          Toast(this.$t("密码不能为空"));
+        if (this.form.bankName === "") {
+          Toast(this.$t("银行卡名称不能为空"));
           return false;
         }
 
-        if (this.form.passwordNew === "") {
-          Toast(this.$t("确认密码不能为空"));
+        if (this.form.bankCard === "") {
+          Toast(this.$t("银行卡号不能为空"));
+
+          return false;
+        }
+        if (this.form.ifsc === "") {
+          Toast(this.$t("ifsc不能为空"));
 
           return false;
         }
 
-        if (this.form.pwd !== this.form.passwordNew) {
-          Toast(this.$t("密码和确认密码不一致"));
-          return false;
-        }
-
-        const res = await register(this.form);
+        const res = await bindBankCard(this.form);
         if (res.status === 0) {
-          Toast(this.$t("注册成功，请登录"));
+          Toast(this.$t("绑定成功"));
           setTimeout(() => {
-            this.$router.push("/login");
+            this.$router.go(-1);
           }, 1500);
         }
       } catch (error) {

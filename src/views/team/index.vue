@@ -28,7 +28,7 @@
           :loading-text="$t('加载中...')"
           @load="onLoad"
         >
-          <van-cell v-for="(item) in data" :key="item.id">
+          <van-cell v-for="item in data" :key="item.id">
             <div class="item-box">
               <div class="left">
                 <div>
@@ -80,7 +80,7 @@ export default {
   data() {
     return {
       navData: 1,
-      data: [{}, {}],
+      data: [],
     };
   },
 

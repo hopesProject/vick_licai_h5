@@ -15,28 +15,22 @@
         :show-error-message="false"
         label-width="60"
       >
-        <!-- <van-field v-model="form.phone" placeholder="手机号" input-align="left">
-          <template slot="label">
-            <div class="quhao"><span>+91 </span> <van-icon name="arrow" /></div>
-          </template>
-        </van-field> -->
-
         <PasswordInput
           :placeholder="$t('旧密码')"
           name="pwd"
-          @change="iniput"
+          v-model="form.oldPassword"
         />
         <PasswordInput
           :placeholder="$t('新密码')"
           name="passwordNew"
-          @change="iniput"
+          v-model="form.newPassword"
         />
         <PasswordInput
+          v-model="form.password"
           :placeholder="$t('确认密码')"
           name="passwordNew"
-          @change="iniput"
         />
-        <van-field
+        <!-- <van-field
           v-model="form.code"
           :placeholder="$t('验证码')"
           input-align="left"
@@ -54,7 +48,7 @@
               {{ $t(codeButTexst) }}</van-button
             >
           </template>
-        </van-field>
+        </van-field> -->
       </van-form>
 
       <div class="foot">
@@ -67,19 +61,19 @@
           :round="true"
         >
           <div class="nextStep">
-            <span>下一步</span>
+            <span>{{ $t("下一步") }}</span>
             <img src="@/assets/img/white-arrow-right.png" alt="" />
           </div>
         </van-button>
         <div class="download" @click="$router.push('/download')">
-          下载·Alltech
+          {{ $t("下载·Alltech") }}
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { sendCode } from "@/api";
+import { sendCode, userinfoupdatePwd } from "@/api";
 import { Toast } from "vant";
 import PasswordInput from "@/components/PasswordInput/index.vue";
 import { mapGetters } from "vuex";
@@ -96,10 +90,9 @@ export default {
       isinviteCode: false,
       loading: false,
       form: {
-        phone: "", //手机号码
-        code: "", //验证码
-        pwd: "", //密码
-        passwordNew: "", //确认密码
+        password: "",
+        newPassword: "", //密码
+        oldPassword: "", //确认密码
       },
     };
   },
@@ -111,6 +104,26 @@ export default {
     }
   },
   methods: {
+    async userinfoupdatePwd() {
+      if (!this.form.oldPassword) {
+        return Toast(this.$t("请输入旧密码"));
+      }
+
+      if (this.form.password === this.form.newPassword) {
+        return Toast(this.$t("新密码不能为空且确认密码一致"));
+      }
+
+      try {
+        const res = await userinfoupdatePwd({
+          ...this.form,
+          userId: this.userInfo.id,
+        });
+        if (res.status === 0) {
+          Toast(this.$t("修改密码成功"));
+          this.$router.go(-1);
+        }
+      } catch (error) {}
+    },
     onClickLeft() {
       this.$router.go(-1);
     },

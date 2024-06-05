@@ -8,7 +8,13 @@
           <div>{{ $t("总收益") }}</div>
           <svg-icon style="margin-left: 10px" iconClass="yj"></svg-icon>
         </div>
-        <div class="text-box">{{ 11111 | _toLocaleString(false) }}</div>
+        <div class="text-box">
+          {{
+            (Number(userInfo.cumulativeEarnings) +
+              Number(userInfo.expectedReturn))
+              | _toLocaleString(false)
+          }}
+        </div>
       </div>
       <div class="flex shoyi-box">
         <div class="">
@@ -21,7 +27,9 @@
             </svg-icon>
             <span> {{ $t("已领取收益") }}</span>
           </div>
-          <div class="text-sl">₹284.00</div>
+          <div class="text-sl">
+            {{ userInfo.cumulativeEarnings | _toLocaleString(false) }}
+          </div>
         </div>
         <div>
           <div class="flex items-center">
@@ -33,14 +41,22 @@
             </svg-icon>
             <span>{{ $t("未来收益") }}</span>
           </div>
-          <div class="text-sl">₹284.00</div>
+          <div class="text-sl">
+            {{ userInfo.expectedReturn | _toLocaleString(false) }}
+          </div>
         </div>
       </div>
     </header>
     <main>
       <van-tabs v-model="active" class="box-tabs" line-height="0">
-        <van-tab :title="$t('进行中', { count: 1 })" :name="0"></van-tab>
-        <van-tab :title="$t('已完成', { count: 1 })" :name="1"></van-tab>
+        <van-tab
+          :title="$t('进行中', { count: userInfo.productNotCompletions })"
+          :name="0"
+        ></van-tab>
+        <van-tab
+          :title="$t('已完成', { count: userInfo.productCompletions })"
+          :name="1"
+        ></van-tab>
       </van-tabs>
       <van-pull-refresh
         :pulling-text="$t('下拉即可刷新...')"
@@ -60,24 +76,38 @@
             <div class="item-box">
               <van-row>
                 <van-col span="12" style="text-align: left">
-                  <p class="title">理财产品1</p>
-                  <p>Investment</p>
-                  <p class="amount-p">₹7834.23</p>
-                  <p>Growth period</p>
-                  <p class="amount-p">₹7834.23</p>
+                  <p class="title">{{ item.productTitle }}</p>
+                  <p>{{ $t("产品价格") }}</p>
+                  <p class="amount-p">
+                    {{ item.price | _toLocaleString(false) }}
+                  </p>
+                  <p>{{ $t("周期") }}</p>
+                  <p class="amount-p">
+                    {{ item.cycle }}
+                  </p>
                 </van-col>
                 <van-col span="12" style="text-align: right">
                   <p class="status">进行中</p>
-                  <p>Daily returns</p>
-                  <p class="amount-p">₹7834.23</p>
-                  <p>Total returns</p>
-                  <p class="amount-p">₹7834.23</p>
+                  <p>{{ $t("每日收益") }}</p>
+                  <p class="amount-p">
+                    {{ item.dailyProductRevenue | _toLocaleString(false) }}
+                  </p>
+                  <p>{{ $t("总收益") }}</p>
+                  <p class="amount-p">
+                    {{
+                      (item.dailyProductRevenue * item.cycle)
+                        | _toLocaleString(false)
+                    }}
+                  </p>
                 </van-col>
               </van-row>
               <div class="ddjd">
                 {{ $t("订单进度") }}
               </div>
-              <Progress :current="5" :total="30"></Progress>
+              <Progress
+                :current="item.sendMoneyDay"
+                :total="item.cycle"
+              ></Progress>
               <van-row>
                 <van-col span="12" style="text-align: left">
                   <p class="butoon-box">{{ $t("购买时间") }}</p>
@@ -85,9 +115,18 @@
                   <p class="butoon-box">{{ $t("当前累计收入") }}</p>
                 </van-col>
                 <van-col span="12" style="text-align: right">
-                  <p class="butoon-box">2024/02/02</p>
-                  <p class="butoon-box">2024/02/02</p>
-                  <p class="amount-p amount-butoon">₹7834.23</p>
+                  <p class="butoon-box">
+                    {{ item.createTime | _timeFormat("YYYY-MM-DD") }}
+                  </p>
+                  <p class="butoon-box">
+                    {{ item.endTime | _timeFormat("YYYY-MM-DD") }}
+                  </p>
+                  <p class="amount-p amount-butoon">
+                    {{
+                      (item.dailyProductRevenue * item.sendMoneyDay)
+                        | _toLocaleString(false)
+                    }}
+                  </p>
                 </van-col>
               </van-row>
             </div>
@@ -117,8 +156,9 @@ export default {
   },
   data() {
     return {
-      active: 1,
-      data: [{}],
+      active: 0,
+      total: 0,
+      data: [],
     };
   },
   created() {
@@ -138,15 +178,16 @@ export default {
       this.loading = false;
       try {
         if (res?.status === 0) {
+          this.total = res.data.total;
           if (pageNum !== 1) {
-            // this.data = [...this.data, ...res.data.list];
+            this.data = [...this.data, ...res.data.list];
           } else {
-            // this.data = res.data.list;
+            this.data = res.data.list;
           }
         }
-        // if (this.data.length >= res.data.total) {
-        this.finished = true;
-        // }
+        if (this.data.length >= res.data.total) {
+          this.finished = true;
+        }
       } catch (error) {
         console.log(error);
       }

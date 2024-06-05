@@ -8,7 +8,7 @@
           class="image-img"
           src="https://img01.yzcdn.cn/vant/cat.jpeg"
         />
-        <div class="name">用户名</div>
+        <div class="name">{{ $t("用户名") }}</div>
       </header>
     </div>
     <main>
@@ -27,10 +27,10 @@
           <span
             style="margin-left: 20px"
             class="fz"
-            v-clipboard:copy="userInfo.invitationCode"
+            v-clipboard:copy="invitationCode"
             v-clipboard:success="onCopy"
-            >{{ $t("复制") }}</span
-          >
+            >{{ $t("复制") }}
+          </span>
         </div>
         <div class="psoi psoibottun">
           <van-swipe
@@ -76,7 +76,14 @@
             <div>{{ $t("可领取") }}</div>
             <div>₹ {{ taskPageData.bounds }}</div>
           </div>
-          <van-button class="bonus-button" type="primary" block color="#FF5148">
+          <van-button
+            @click="getEarnings"
+            class="bonus-button"
+            type="primary"
+            block
+            color="#FF5148"
+            :loading="getEarningsLoding"
+          >
             {{ $t("领取收益") }}
           </van-button>
         </div>
@@ -103,37 +110,37 @@
             </p>
           </div>
           <div class="count-box">
-            <div class="count-text">成员规模</div>
+            <div class="count-text">{{ $t("成员规模") }}</div>
             <div class="count-num">
               {{ item.count }}
             </div>
           </div>
           <div class="count-box">
-            <div class="count-text">有效认输</div>
+            <div class="count-text">{{ $t("有效人数") }}</div>
             <div class="count-num">
               {{ item.vipCount }}
             </div>
           </div>
 
-          <div class="xq">查看详情</div>
+          <div class="xq">{{ $t("查看详情") }}</div>
         </div>
 
-        <div class="sygz">收益规则</div>
+        <div class="sygz">{{ $t("收益规则") }}</div>
       </div>
       <div class="prompt">
-        <div class="prompt-header">今日数据</div>
+        <div class="prompt-header">{{ $t("今日数据") }}</div>
         <van-row>
           <van-col span="8">
             <div class="shul">7W+</div>
-            <div class="cygm">成员规模</div>
+            <div class="cygm">{{ $t("成员规模") }}</div>
           </van-col>
           <van-col span="8">
             <div class="shul">7W+</div>
-            <div class="cygm">有效人群</div>
+            <div class="cygm">{{ $t("有效人群") }}</div>
           </van-col>
           <van-col span="8">
             <div class="shul">7W+</div>
-            <div class="cygm">团队收益</div>
+            <div class="cygm">{{ $t("团队收益") }}</div>
           </van-col>
         </van-row>
       </div>
@@ -141,11 +148,11 @@
   </div>
 </template>
 <script>
-import { taskPage } from "@/api";
-import QRCode from "qrcode";
+import { getEarnings, taskPage } from "@/api";
 import { mapGetters } from "vuex";
 import clipboard2 from "@/mixins/clipboard2";
 import HeaderBox from "@/components/header";
+import { Toast } from "vant";
 
 export default {
   mixins: [clipboard2],
@@ -159,19 +166,19 @@ export default {
     leverList() {
       return [
         {
-          laber: "Top1",
+          laber: "Level 1",
           count: this.taskPageData.fristCount,
           vipCount: this.taskPageData.fristVipCount,
           icon: "dj1",
         },
         {
-          laber: "Top2",
+          laber: "Level 2",
           count: this.taskPageData.twoCount,
           vipCount: this.taskPageData.twoVipCount,
           icon: "dj2",
         },
         {
-          laber: "Top3",
+          laber: "Level 3",
           count: this.taskPageData.thereCount,
           vipCount: this.taskPageData.thereVipCount,
           icon: "dj3",
@@ -183,20 +190,29 @@ export default {
     return {
       fanhui: require("@/assets/fanhui.png"),
       taskPageData: {},
+      getEarningsLoding: false,
     };
   },
   mounted() {
     this.getData();
-    this.generateQRCode();
+    // this.generateQRCode();
   },
   methods: {
-    generateQRCode() {
-      const canvas = this.$refs.qrCanvas;
-
-      QRCode.toCanvas(canvas, this.invitationCode, (error) => {
-        if (error) console.error(error);
-      });
+    async getEarnings() {
+      if (!this.taskPageData.bounds) {
+        return Toast.success(this.$t(`购买成功`));
+      }
+      this.getEarningsLoding = true;
+      try {
+        const res = await getEarnings();
+        if (res.status === 0) {
+          Toast.success(this.$t("领取成功"));
+          this.getData();
+        }
+      } catch (error) {}
+      this.getEarningsLoding = false;
     },
+
     async getData() {
       const res = await taskPage();
       if (res.status === 0) {
@@ -213,13 +229,13 @@ export default {
 .wrapper {
   width: 100vw;
   min-height: 100vh;
-  .titile{
-        background-image: url('@/assets/img/invite-bg.png');
-      background-size: 100%;
-      .header{
-        background-color: transparent !important;
-      }
-      padding-bottom: 70px;
+  .titile {
+    background-image: url("@/assets/img/invite-bg.png");
+    background-size: 100%;
+    .header {
+      background-color: transparent !important;
+    }
+    padding-bottom: 70px;
   }
   header {
     width: 100%;
@@ -243,7 +259,7 @@ export default {
   }
   main {
     margin-top: -16px;
-    padding:0 0 70px 0;
+    padding: 0 0 70px 0;
     background: #f6f6f6;
 
     min-height: 200px;

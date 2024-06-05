@@ -1,9 +1,22 @@
 <template>
   <div>
-    <van-nav-bar :title="$t('银行卡')" left-arrow @click-left="onClickLeft" />
+    <van-nav-bar
+      :title="$t('银行卡')"
+      left-arrow
+      @click-left="onClickLeft"
+      @click-right="onClickRight"
+    >
+      <template #right>
+        <div class="nav-bar-text">{{ $t("管理") }}</div>
+      </template>
+    </van-nav-bar>
 
     <div class="box">
       <div v-if="userInfo.bankCard" class="item-box">
+        <div class="gl-type" v-if="glType" @click="shanchu">
+          <svg-icon style="margin-left: 10px" iconClass="shanchu" />
+        </div>
+
         <div class="card-box">
           <div>
             <svg-icon
@@ -12,30 +25,33 @@
               iconClass="xinpian"
             />
           </div>
-          <p style="color: #fff" class="bank-text">**** **** **** 2345</p>
+          <p style="color: #fff" class="bank-text">{{ userInfo.bankCard }}</p>
           <div class="flex justify-between yinhangname">
-            <div class="left">XXX银行</div>
+            <div class="left">{{ userInfo.bankName }}</div>
             <div class="right">
-              <div>Expiry Date</div>
-              <div class="riqi">02/30</div>
+              <!-- <div>Expiry Date</div>
+              <div class="riqi">02/30</div> -->
             </div>
           </div>
         </div>
       </div>
-
       <div v-else class="addCard" @click="$router.push('/add-bank-card')">
-        <div>添加银行卡</div>
+        <div>{{ $t("添加银行卡") }}</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { deleteBank } from "@/api";
+import { Toast } from "vant";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
   data() {
-    return {};
+    return {
+      glType: false,
+    };
   },
   mounted() {
     this.getUserInfo();
@@ -45,6 +61,18 @@ export default {
   },
   methods: {
     ...mapActions(["getUserInfo"]),
+    async shanchu() {
+      try {
+        const res = await deleteBank();
+        Toast(this.$t("删除成功"));
+        setTimeout(() => {
+          this.getUserInfo();
+        }, 1500);
+      } catch (error) {}
+    },
+    onClickRight() {
+      this.glType = !this.glType;
+    },
     onClickLeft() {
       this.$router.go(-1);
     },
@@ -66,6 +94,7 @@ export default {
     border-radius: 40px;
     background: linear-gradient(21deg, #93278f -2%, #29abe2 67%);
     padding: 60px 50px;
+    position: relative;
     .yinhangname {
       font-size: 36px;
       font-weight: normal;
@@ -117,5 +146,11 @@ export default {
       color: #ffffff;
     }
   }
+}
+
+.gl-type {
+  position: absolute;
+  right: 30px;
+  top: 30px;
 }
 </style>

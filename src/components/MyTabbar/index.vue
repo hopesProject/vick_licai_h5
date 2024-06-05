@@ -27,8 +27,8 @@ export default {
           name: this.$t("首页"),
           to: "/",
           icon: {
-            active: require("@/assets/home1.png"),
-            inactive: require("@/assets/home.png"),
+            active: require("@/assets/home.png"),
+            inactive: require("@/assets/home1.png"),
           },
         },
         {
@@ -43,7 +43,7 @@ export default {
           name: this.$t("产品"),
           to: "/produc",
           icon: {
-            active: require("@/assets/jr.png"),
+            active: require("@/assets/jr1.png"),
             inactive: require("@/assets/jr.png"),
           },
         },

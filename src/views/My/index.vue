@@ -68,7 +68,9 @@
             <div class="jifen">
               <svg-icon class="vips" icon-class="jfen1" />
             </div>
-            <div class="but" @click="$router.push('/withdrawal')">提现</div>
+            <div class="but" @click="$router.push('/withdrawal')">
+              {{ $t("提现") }}
+            </div>
           </div>
           <div class="item-box item-box-right">
             <div class="text">
@@ -77,12 +79,14 @@
             <div class="jifen">
               <svg-icon class="vips" icon-class="jfen" />
             </div>
-            <div class="but" @click="$router.push('/recharge')">充值</div>
+            <div class="but" @click="$router.push('/recharge')">
+              {{ $t("充值") }}
+            </div>
           </div>
         </div>
       </div>
       <div class="my-fuzhu">
-        <div class="title-h2">辅助功能</div>
+        <div class="title-h2">{{ $t("辅助功能") }}</div>
 
         <div class="fuzhugong-box">
           <van-row type="flex" style="width: 100%">
@@ -116,126 +120,16 @@
         </van-cell>
       </div>
     </main>
-    <!-- <header>
-      <van-row>
-        <van-col span="16">
-          <div class="phone">
-            <div style="margin-right: 10px">
-              {{ userInfo.phone | _phoneSubstring }}
-            </div>
-            <div class="vip">VIP{{ userInfo.vip }}</div>
-          </div>
-          <div class="Id">{{ $t("ID账号：") }}{{ userInfo.code }}</div>
-          <div>
-            {{ $t("邀请码：") }}{{ userInfo.invitationCode }}
-            <span
-              class="fz"
-              v-clipboard:copy="invitationCode"
-              v-clipboard:success="onCopy"
-              >{{ $t("复制") }}</span
-            >
-          </div>
-        </van-col>
-        <van-col span="6" class="flex flex-col items-end">
-          <div class="img">
-            <van-uploader
-              :upload-icon="userInfo.img || require('@/assets/morentupian.png')"
-              preview-size="40px"
-              :after-read="afterRead"
-            />
-          </div>
-        </van-col>
-      </van-row>
-    </header> -->
-    <!-- <main>
-      <div class="main-haeder-item">
-        <div class="trxt-box">
-          <img :src="chzhiong" alt="" />
-          <div>
-            <p>
-              {{ userInfo.cumulativeRechargeAmount | _toLocaleString(false) }}
-            </p>
-            <p class="jine">{{ $t("充值金额") }}</p>
-          </div>
-        </div>
-        <div class="but-box" @click="$router.push('/recharge')">
-          {{ $t("立即充值") }}
-        </div>
-      </div>
-
-      <div class="main-haeder-item main-haeder-item1">
-        <div class="trxt-box">
-          <img :src="shouyi" alt="" />
-          <div>
-            <p>
-              {{ userInfo.cumulativeWithdrawalAmount | _toLocaleString(false) }}
-            </p>
-            <p class="jine">{{ $t("提取金额") }}</p>
-          </div>
-        </div>
-        <div class="but-box" @click="$router.push('/withdrawal')">
-          {{ $t("立即提现") }}
-        </div>
-      </div>
-
-      <div class="my-earnings">
-        <div class="title-box">{{ $t("我的收益") }}</div>
-        <van-row class="earning-list" type="flex" justify="space-between">
-          <van-col span="12">
-            <div class="list-item">
-              <h3>{{ $t("累计收益") }}</h3>
-              <div class="text">
-                {{ userInfo.cumulativeEarnings | _toLocaleString(false) }}
-              </div>
-            </div>
-          </van-col>
-          <van-col span="12">
-            <div class="list-item list-items">
-              <h3>{{ $t("累计提款") }}</h3>
-              <div class="text">
-                {{
-                  userInfo.cumulativeWithdrawalAmount | _toLocaleString(false)
-                }}
-              </div>
-            </div>
-          </van-col>
-        </van-row>
-      </div>
-
-    
-      <div class="tuceng7" @click="$router.push('/share')">
-        <div class="tuceng7text">{{ $t("邀请奖励") }}</div>
-        <div class="tuceng7text1"></div>
-      </div>
-
-      <div class="accessibility">
-        <div class="title-box">{{ $t("辅助功能") }}</div>
-
-        <van-row type="flex" justify="space-between">
-          <van-col
-            :class="`van-col-bg`"
-            span="8"
-            v-for="item in fuzhu"
-            :key="item.img"
-            @click="goRouter(item.router)"
-          >
-            <img :src="item.img" alt="" />
-            <div class="span">
-              {{ item.name }}
-            </div>
-          </van-col>
-        </van-row>
-      </div>
-    </main> -->
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import clipboard2 from "@/mixins/clipboard2";
-import { Dialog } from "vant";
+import { Dialog, Toast } from "vant";
 import axios from "axios";
 import HeaderBox from "@/components/header";
+import { uploadImge } from "@/api";
 
 export default {
   mixins: [clipboard2],
@@ -315,9 +209,10 @@ export default {
             },
           }
         );
-
-        if (res.status === 0) {
-        }
+        // res.data.data;
+        await uploadImge({ img: res.data.data });
+        Toast.success(this.$t(`修改头像成功`));
+        this.getUserInfo();
       } catch (error) {}
     },
     goRouter(key) {

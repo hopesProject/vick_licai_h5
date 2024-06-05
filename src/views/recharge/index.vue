@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <van-nav-bar
-      title="充值"
+      :title="$t('充值')"
       left-arrow
       @click-left="$router.go(-1)"
     ></van-nav-bar>
@@ -10,14 +10,14 @@
         <img class="flower" src="@/assets/img/recharge-flower.png" alt="" />
         <div class="balance-money">
           <div>
-            <div>余额</div>
-            <div>873.988</div>
+            <div>{{ $t("余额") }}</div>
+            <div>{{ userInfo.amount | _toLocaleString(false) }}</div>
           </div>
           <img src="@/assets/img/circular.png" alt="" />
         </div>
       </div>
       <div class="form">
-        <div class="form-title">充值金额</div>
+        <div class="form-title">{{ $t("充值金额") }}</div>
         <van-row gutter="16" type="flex" justify="space-around">
           <van-col
             span="12"
@@ -34,11 +34,11 @@
           class="money-input"
           type="number"
           v-model="moneyInput"
-          label="其他金额"
-          placeholder="请输入大于100的充值金额"
+          :label="$t('其他金额')"
+          :placeholder="$t('请输入大于100的充值金额')"
         />
         <div class="mode">
-          <div class="mode-title">支付方式</div>
+          <div class="mode-title">{{ $t("支付方式") }}</div>
           <van-radio-group
             v-model="radio"
             class="box-mode-radio"
@@ -64,24 +64,30 @@
             block
             color="linear-gradient(272deg, #F44848 0%, #FF782D 104%)"
             :round="true"
-            >立即充值</van-button
+            @click="rechage"
+            >{{ $t("立即充值") }}</van-button
           >
         </div>
       </div>
       <div class="illustrate">
-        <div class="illustrate-title">充值说明</div>
+        <div class="illustrate-title">{{ $t("充值说明") }}</div>
         <pre class="illustrate-txt">
-        1.当你正确的完成付款，资金会在20分钟到达你的账户中
-        2.如超过20分钟未到达请联系客服人员寻求帮助
-      </pre
-        >
+      <p>  {{ $t("1.当你正确的完成付款，资金会在20分钟到达你的账户中") }}</p>
+      <p>{{ $t('2.如超过20分钟未到达请联系客服人员寻求帮助') }}</p>
+      </pre>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { rechage } from "@/api";
 import currency from "currency.js";
+import { Toast } from "vant";
+import { mapActions, mapGetters } from "vuex";
 export default {
+  computed: {
+    ...mapGetters(["userInfo"]),
+  },
   data() {
     return {
       fanhui: require("@/assets/fanhui.png"),
@@ -104,7 +110,26 @@ export default {
       radio: "1",
     };
   },
+  mounted() {
+    this.getUserInfo();
+  },
   methods: {
+    ...mapActions(["getUserInfo"]),
+    async rechage() {
+      if (!this.moneyInput) {
+        return Toast(this.$t("请输入充值金额"));
+      }
+      try {
+        const res = await rechage({
+          amount: this.moneyInput,
+          payMethod: "",
+        });
+        Toast.success(this.$t("充值成功"));
+        setTimeout(() => {
+          this.$router.push("/my");
+        }, 1000);
+      } catch (error) {}
+    },
     setMone(num) {
       this.moneyInput = num;
     },
@@ -210,7 +235,7 @@ export default {
   padding: 0;
 
   :deep(.van-field__label) {
-    line-height: 90px;
+    // line-height: 90px;
     font-weight: 600;
   }
 }

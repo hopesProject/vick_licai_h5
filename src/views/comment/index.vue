@@ -1,12 +1,17 @@
 <template>
   <div class="page">
-    <HeaderBox />
-
-    <!-- <van-nav-bar :title="$t('')" @click-right="onClickRight">
-      <template #right>
-        <svg-icon class="svg-fb" icon-class="fb"></svg-icon>
-      </template>
-    </van-nav-bar> -->
+    <div class="header">
+      <div class="header-alltech">
+        <img src="@/assets/img/alltech.png" alt="" />
+      </div>
+      <van-badge>
+        <svg-icon
+          class="svg-fb"
+          icon-class="fb"
+          @click="onClickRight"
+        ></svg-icon>
+      </van-badge>
+    </div>
 
     <main>
       <van-pull-refresh
@@ -242,5 +247,36 @@ main {
 }
 :deep(.van-cell) {
   background: transparent;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  height: 88px;
+  align-items: center;
+  padding: 0 30px;
+
+  .header-alltech {
+    height: 48px;
+    width: 168px;
+  }
+
+  .header-news {
+    width: 54px;
+    height: 54px;
+  }
+
+  :deep(.van-badge--dot) {
+    width: 16px;
+    height: 16px;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+:deep(.van-badge--fixed) {
+  top: 7px;
+  right: 17px;
 }
 </style>
