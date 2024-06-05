@@ -305,7 +305,6 @@ export default {
 }
 .html-box {
   width: 690px;
-  font-size: 24px;
   margin: 0 auto;
   word-break: break-all;
   overflow-wrap: break-word;
