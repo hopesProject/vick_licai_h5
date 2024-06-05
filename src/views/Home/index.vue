@@ -91,7 +91,7 @@
                     >
                   </div>
                   <div>
-                    <span>{{ $t("累计收入") }}</span>
+                    <span>{{ $t("总收益") }}</span>
                     <span>{{
                       (item.dailyProductRevenue * item.cycle)
                         | _toLocaleString(false)
@@ -277,6 +277,11 @@ export default {
           title: this.$t("客服"),
           img: require("@/assets/img/service.png"),
           key: "/service",
+        },
+        {
+          title: this.$t("奖励"),
+          img: require("@/assets/img/reward.png"),
+          key: "/commission",
         },
         {
           title: "VIP",

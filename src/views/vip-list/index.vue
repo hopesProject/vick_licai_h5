@@ -1,11 +1,6 @@
 <template>
   <div class="wrapper">
-    <van-nav-bar
-      title="VIP"
-      :border="false"
-      left-arrow
-      @click-left="$router.go(-1)"
-    ></van-nav-bar>
+    <van-nav-bar title="VIP" :border="false" left-arrow @click-left="$router.go(-1)"></van-nav-bar>
     <div class="content">
       <div class="content-img">
         <img src="@/assets/img/vip-grade.png" alt="" />
@@ -16,8 +11,7 @@
           <img src="@/assets/img/commission-icon3.png" alt="" />
           <div class="list-name">{{ item.level }}</div>
           <div class="list-txt">
-            <span>{{ $t("成长值") }}</span
-            ><span>{{ item.amount }}</span>
+            <span>{{ $t("成长值") }}</span><span>{{ item.amount }}</span>
           </div>
           <div class="list-progress">
             <span>
@@ -25,28 +19,23 @@
                 (userInfo.sumBuyAmount / item.amount) * 100 >= 100
                   ? $t("已达成")
                   : $t("未达成")
-              }}</span
-            >
-            <van-progress
-              :percentage="
-                (userInfo.sumBuyAmount / item.amount) * 100 >= 100
-                  ? 100
-                  : (userInfo.sumBuyAmount / item.amount) * 100
-              "
-              stroke-width="18"
-              track-color="#F0F0F0"
-              color="linear-gradient(90deg, #FF8700 0%, #FF6200 117%)"
-            />
+              }}</span>
+            <van-progress :percentage="(userInfo.sumBuyAmount / item.amount) * 100 >= 100
+                ? 100
+                : ((userInfo.sumBuyAmount / item.amount) * 100)
+              " :pivot-text="userInfo.sumBuyAmount ? userInfo.sumBuyAmount : ''" stroke-width="18" track-color="#F0F0F0"
+              color="linear-gradient(90deg, #FF8700 0%, #FF6200 117%)" />
           </div>
         </div>
       </div>
       <div class="illustrate">
         <div class="illustrate-title">{{ $t("充值说明") }}</div>
-        <pre class="illustrate-txt">
+        <!-- <pre class="illustrate-txt">
                 1·当你正确完成付款，资金会在20分您得到的账户当中
                 2·当你正确完成付款，资金会在20分钟到达您得到的账户
                 3·当你正确完成付款，资金会在20分钟到达您得到的账</pre
-        >
+        > -->
+        <div v-html="contentTxt" class="illustrate-txt"></div>
       </div>
     </div>
   </div>
@@ -62,6 +51,7 @@ export default {
     return {
       touxiang: require("@/assets/touxiangvip.png"),
       list: [],
+      contentTxt:'<p> 1·当你正确完成付款，资金会在20分您得到的账户当中</p><p>2·当你正确完成付款，资金会在20分钟到达您得到的账户 </p><p>3·当你正确完成付款，资金会在20分钟到达您得到的账</p>'
     };
   },
   mounted() {
@@ -103,7 +93,7 @@ export default {
   width: 360px;
   height: 230px;
 
-  > img {
+  >img {
     width: 100%;
     height: 100%;
   }
@@ -132,7 +122,7 @@ export default {
     padding: 48px 36px;
     margin-top: 32px;
 
-    > img {
+    >img {
       width: 72px;
       height: 72px;
       border-radius: 24px;
@@ -150,7 +140,7 @@ export default {
       align-items: center;
       justify-content: space-between;
 
-      > span:nth-child(1) {
+      >span:nth-child(1) {
         padding-bottom: 12px;
       }
     }
@@ -187,11 +177,18 @@ export default {
   }
 
   .illustrate-txt {
-    white-space: pre-line;
     font-size: 24px;
-    font-weight: 600;
     line-height: 42px;
     color: #f6f6f6;
+    margin: 0 auto;
+    word-break: break-all;
+    overflow-wrap: break-word;
+    padding-bottom: 16px;
+
+    p {
+      word-break: break-all;
+      overflow-wrap: break-word;
+    }
   }
 }
 </style>

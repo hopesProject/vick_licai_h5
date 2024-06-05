@@ -45,9 +45,9 @@
         </van-col>
       </van-row> -->
       <van-row type="flex" justify="space-between">
-        <van-col span="12">
+        <!-- <van-col span="12">
           <div class="header">{{ $t("购买") }}</div>
-        </van-col>
+        </van-col> -->
         <van-col span="12" style="text-align: right"> </van-col>
       </van-row>
       <van-row type="flex" justify="space-between" style="align-items: center">
@@ -223,6 +223,7 @@ export default {
     letter-spacing: 0.6px;
     font-variation-settings: "opsz" auto;
     color: #818197;
+    margin-bottom: 26px;
   }
 
   .fenke {
@@ -304,9 +305,11 @@ export default {
 }
 .html-box {
   width: 690px;
+  font-size: 24px;
   margin: 0 auto;
   word-break: break-all;
   overflow-wrap: break-word;
+  padding-bottom: 16px;
   p {
     word-break: break-all;
     overflow-wrap: break-word;

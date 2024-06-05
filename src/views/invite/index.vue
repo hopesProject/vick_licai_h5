@@ -167,8 +167,8 @@ export default {
       return [
         {
           laber: "Level 1",
-          count: this.taskPageData.fristCount,
-          vipCount: this.taskPageData.fristVipCount,
+          count: 1,
+          vipCount:2,
           icon: "dj1",
         },
         {
@@ -591,6 +591,7 @@ export default {
       color: #3d3d3d;
       .count-num {
         font-weight: 500;
+        color: #d35a18;
       }
     }
     .grade-list-img {
@@ -600,7 +601,7 @@ export default {
       font-weight: 500;
       line-height: 32px;
       letter-spacing: 0.6px;
-
+      font-weight: 600;
       color: #3d3d3d;
       .font-svg {
         font-size: 72px;

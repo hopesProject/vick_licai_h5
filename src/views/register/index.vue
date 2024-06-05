@@ -1,10 +1,10 @@
 <template>
   <div class="wrapper">
     <div class="header">
-      <div @click="$router.go(-1)">
+      <div @click="$router.go(-1)" class="header-img">
         <img src="@/assets/img/go.png" alt="" />
       </div>
-      <div @click="$router.push('/login')">{{ $t("已有账户") }}</div>
+      <div class="header-login" @click="$router.push('/login')">{{ $t("已有账户") }}</div>
     </div>
     <div class="content">
       <div class="content-title">{{ $t("注册 Alltech") }}</div>
@@ -22,6 +22,12 @@
           <template slot="label">
             <div class="quhao"><span>+91 </span> <van-icon name="arrow" /></div>
           </template>
+        </van-field>
+        <van-field
+          v-model="form.userName"
+          :placeholder="$t('用户名')"
+          input-align="left"
+        >
         </van-field>
         <van-field
           v-model="form.code"
@@ -144,15 +150,15 @@ export default {
     async registerApi() {
       try {
         this.loading = true;
-        // if (this.form.userName === "") {
-        //   Toast(this.$t("用户名不能为空"));
-        //   return false;
-        // }
         if (this.form.phone === "") {
           Toast(this.$t("手机号码不能为空"));
           return false;
         }
-
+      
+        if (this.form.userName === "") {
+          Toast(this.$t("用户名不能为空"));
+          return false;
+        }
         if (this.form.code === "") {
           Toast(this.$t("验证码不能为空"));
           return false;
@@ -191,13 +197,18 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.wrapper{
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 14px 48px;
 
-  > div:nth-child(1) {
+ .header-img {
     width: 60px;
     height: 60px;
     border-radius: 18px;
@@ -209,7 +220,7 @@ export default {
     align-items: center;
   }
 
-  > div:nth-child(2) {
+ .header-login {
     font-size: 28px;
     font-weight: 600;
     color: #c1531b;
@@ -217,7 +228,9 @@ export default {
 }
 
 .content {
-  padding: 32px 96px 32px 96px;
+  flex: 1;
+  padding: 24px 96px 24px 96px;
+  overflow-y: auto;
 }
 
 .content-title {
@@ -232,11 +245,11 @@ export default {
 
   .van-cell {
     font-size: 36px;
-    height: 110px;
+    height: 100px;
     border-radius: 50px;
     background: #ffffff;
     box-shadow: 0px 36.23px 72.46px 0px rgba(0, 0, 0, 0.15);
-    margin-top: 48px;
+    margin-top: 36px;
 
     :deep(.van-field__body) {
       height: 100%;
@@ -272,7 +285,7 @@ export default {
 .login {
   margin-top: 48px;
   font-size: 36px;
-  height: 110px;
+  height: 100px;
 }
 
 .download {

@@ -8,7 +8,6 @@
         <div class="content">
             <div class="content-icon">
                 <img src="@/assets/img/alltech.png" alt="">
-                <span>美国农业公司</span>
             </div>
             <van-form class="form" :show-error-message="false">
                 <template v-if="loginShow">
@@ -130,7 +129,7 @@ export default {
     font-size: 36px;
     padding-top: 132px;
 
-    >img {
+    img {
         margin-bottom: 36px;
         width: 300px;
         height: 88px;

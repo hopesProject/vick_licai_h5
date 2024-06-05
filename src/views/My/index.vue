@@ -52,7 +52,7 @@
 
         <div class="botton-box">
           <div>{{ $t("邀请码：") }}{{ userInfo.invitationCode }}</div>
-          <div class="yqihaoyou">{{ $t("邀请好友") }}</div>
+          <div class="yqihaoyou" @click="$router.push('/share')">{{ $t("邀请好友") }}</div>
         </div>
       </div>
       <div class="my-shouyi">
@@ -61,6 +61,17 @@
         </div>
 
         <div class="flex shouyi-item">
+          <div class="item-box item-box-left">
+            <div class="text">
+              {{ userInfo.cumulativeRechargeAmount | _toLocaleString(false) }}
+            </div>
+            <div class="jifen">
+              <svg-icon class="vips" icon-class="jfen" />
+            </div>
+            <div class="but" @click="$router.push('/recharge')">
+              {{ $t("充值") }}
+            </div>
+          </div>
           <div class="item-box">
             <div class="text">
               {{ userInfo.cumulativeWithdrawalAmount | _toLocaleString(false) }}
@@ -70,17 +81,6 @@
             </div>
             <div class="but" @click="$router.push('/withdrawal')">
               {{ $t("提现") }}
-            </div>
-          </div>
-          <div class="item-box item-box-right">
-            <div class="text">
-              {{ userInfo.cumulativeRechargeAmount | _toLocaleString(false) }}
-            </div>
-            <div class="jifen">
-              <svg-icon class="vips" icon-class="jfen" />
-            </div>
-            <div class="but" @click="$router.push('/recharge')">
-              {{ $t("充值") }}
             </div>
           </div>
         </div>
@@ -130,6 +130,7 @@ import { Dialog, Toast } from "vant";
 import axios from "axios";
 import HeaderBox from "@/components/header";
 import { uploadImge } from "@/api";
+import router from "@/router";
 
 export default {
   mixins: [clipboard2],
@@ -408,7 +409,7 @@ main {
         background: linear-gradient(245deg, #86ff8c 16%, #3bb64f 69%);
       }
     }
-    .item-box-right {
+    .item-box-left {
       .vips {
         font-size: 28px;
       }
