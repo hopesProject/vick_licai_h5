@@ -4,7 +4,9 @@
       <div @click="$router.go(-1)" class="header-img">
         <img src="@/assets/img/go.png" alt="" />
       </div>
-      <div class="header-login" @click="$router.push('/login')">{{ $t("已有账户") }}</div>
+      <div class="header-login" @click="$router.push('/login')">
+        {{ $t("已有账户") }}
+      </div>
     </div>
     <div class="content">
       <div class="content-title">{{ $t("注册 Alltech") }}</div>
@@ -154,7 +156,7 @@ export default {
           Toast(this.$t("手机号码不能为空"));
           return false;
         }
-      
+
         if (this.form.userName === "") {
           Toast(this.$t("用户名不能为空"));
           return false;
@@ -197,7 +199,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.wrapper{
+.wrapper {
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -208,7 +210,7 @@ export default {
   align-items: center;
   padding: 14px 48px;
 
- .header-img {
+  .header-img {
     width: 60px;
     height: 60px;
     border-radius: 18px;
@@ -220,7 +222,7 @@ export default {
     align-items: center;
   }
 
- .header-login {
+  .header-login {
     font-size: 28px;
     font-weight: 600;
     color: #c1531b;

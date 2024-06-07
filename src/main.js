@@ -13,7 +13,7 @@ import "@/utils/components";
 import VueClipboard from "vue-clipboard2";
 
 Toast.setDefaultOptions("loading", { forbidClick: true });
-
+Vue.prototype.$utils = filters;
 Vue.config.productionTip = false;
 
 Vue.use(VueClipboard);

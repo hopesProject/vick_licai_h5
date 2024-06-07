@@ -50,7 +50,7 @@ const routes = [
     path: "/about",
     component: About,
     meta: {
-      show: true,
+      show: false,
     },
   },
   {
@@ -275,6 +275,13 @@ const routes = [
   // 客服
   {
     path: "/service",
+    component: service,
+    meta: {
+      show: false,
+    },
+  },
+  {
+    path: "/about",
     component: service,
     meta: {
       show: false,

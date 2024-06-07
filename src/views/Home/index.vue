@@ -5,8 +5,8 @@
       <div class="information">
         <van-swipe class="my-swipe" :autoplay="5000" indicator-color="white">
           <van-swipe-item v-for="(item, i) in noteic" :key="i">
-            <div class="swipe-container">
-              <img src="@/assets/banner-right.png" alt="" />
+            <div class="swipe-container" @click="dianji(item.url)">
+              <img :src="item.img" alt="" />
             </div>
           </van-swipe-item>
         </van-swipe>
@@ -212,6 +212,7 @@ import {
   buyProduct,
   getCustomerService,
   productqueryProductClassify,
+  queryBannerList,
   queryMsgCount,
   queryNews,
   queryNoteice,
@@ -241,10 +242,8 @@ export default {
           title: "4",
         },
       ],
-
       msgCount: 0,
       servicedata: localStorage.getItem("servicedata") || "",
-
       queryPaySettingData: [],
       data: [],
       fenleiData: localStorage.getItem("fenleiData")
@@ -271,7 +270,7 @@ export default {
         {
           title: this.$t("我们"),
           img: require("@/assets/img/my.png"),
-          key: "/my",
+          key: "/about",
         },
         {
           title: this.$t("客服"),
@@ -299,6 +298,7 @@ export default {
     this.getqueryProductisHot();
     // this.queryPaySetting();
     this.getNes();
+    this.queryBannerList();
     if (this.token) {
       this.queryMsgCount();
       this.getUserInfo();
@@ -306,6 +306,15 @@ export default {
   },
   methods: {
     ...mapActions(["getUserInfo"]),
+    dianji(url) {
+      window.open(url);
+    },
+    async queryBannerList() {
+      try {
+        const res = await queryBannerList();
+        this.noteic = res.data;
+      } catch (error) {}
+    },
     getRouter(item) {
       this.$router.push("/itemInformation?type=nes&id=" + item.id);
     },

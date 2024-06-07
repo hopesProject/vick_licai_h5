@@ -64,10 +64,8 @@ export default {
         { text: this.$t("提现"), value: 2 },
         { text: this.$t("购买"), value: 3 },
         { text: this.$t("奖励"), value: 4 },
-        { text: this.$t("团队分红"), value: 5 },
+        { text: this.$t("分润"), value: 5 },
         { text: this.$t("收益"), value: 6 },
-        { text: this.$t("主动领取"), value: 7 },
-        { text: this.$t("返回本金"), value: 8 },
       ];
     },
   },
@@ -118,9 +116,9 @@ export default {
         case "6":
           return this.$t("收益");
         case "7":
-          return this.$t("主动领取");
+          return this.$t("收益");
         case "8":
-          return this.$t("返回本金");
+          return this.$t("收益");
         default:
           break;
       }

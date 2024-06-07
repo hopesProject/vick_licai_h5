@@ -39,26 +39,16 @@
             :autoplay="3000"
             indicator-color="white"
           >
-            <van-swipe-item
-              ><div class="bonus-button-txt">
-                恭喜1235***985用户领取500.00奖金
-              </div></van-swipe-item
-            >
-            <van-swipe-item
-              ><div class="bonus-button-txt">
-                恭喜1235***985用户领取500.030奖金
-              </div></van-swipe-item
-            >
-            <van-swipe-item
-              ><div class="bonus-button-txt">
-                恭喜1235***985用户领取500.040奖金
-              </div></van-swipe-item
-            >
-            <van-swipe-item
-              ><div class="bonus-button-txt">
-                恭喜1235***985用户领取500.050奖金
-              </div></van-swipe-item
-            >
+            <van-swipe-item v-for="item in earningsData" :key="item.id">
+              <div class="bonus-button-txt">
+                {{
+                  $t("恭喜用户领取奖金", {
+                    phone: $utils.maskPhoneNumber(item.phone),
+                    amount: item.amount,
+                  })
+                }}
+              </div>
+            </van-swipe-item>
           </van-swipe>
         </div>
       </div>
@@ -131,15 +121,15 @@
         <div class="prompt-header">{{ $t("今日数据") }}</div>
         <van-row>
           <van-col span="8">
-            <div class="shul">7W+</div>
+            <div class="shul">{{ taskPageData.dayRegCount }}</div>
             <div class="cygm">{{ $t("成员规模") }}</div>
           </van-col>
           <van-col span="8">
-            <div class="shul">7W+</div>
+            <div class="shul">{{ taskPageData.dayRegActiveCount }}</div>
             <div class="cygm">{{ $t("有效人群") }}</div>
           </van-col>
           <van-col span="8">
-            <div class="shul">7W+</div>
+            <div class="shul">{{ taskPageData.dayTeamBound }}</div>
             <div class="cygm">{{ $t("团队收益") }}</div>
           </van-col>
         </van-row>
@@ -148,7 +138,7 @@
   </div>
 </template>
 <script>
-import { getEarnings, taskPage } from "@/api";
+import { getEarnings, taskPage, transactionGetEarnings } from "@/api";
 import { mapGetters } from "vuex";
 import clipboard2 from "@/mixins/clipboard2";
 import HeaderBox from "@/components/header";
@@ -168,7 +158,7 @@ export default {
         {
           laber: "Level 1",
           count: 1,
-          vipCount:2,
+          vipCount: 2,
           icon: "dj1",
         },
         {
@@ -191,13 +181,21 @@ export default {
       fanhui: require("@/assets/fanhui.png"),
       taskPageData: {},
       getEarningsLoding: false,
+      earningsData: [],
     };
   },
   mounted() {
+    this.transactionGetEarnings();
     this.getData();
     // this.generateQRCode();
   },
   methods: {
+    async transactionGetEarnings() {
+      try {
+        const res = await transactionGetEarnings();
+        this.earningsData = res.data;
+      } catch (error) {}
+    },
     async getEarnings() {
       if (!this.taskPageData.bounds) {
         return Toast.success(this.$t(`购买成功`));
@@ -216,7 +214,7 @@ export default {
     async getData() {
       const res = await taskPage();
       if (res.status === 0) {
-        this.taskPageData = res.data.data;
+        this.taskPageData = res.data;
       }
     },
     onClickLeft() {
@@ -392,6 +390,10 @@ export default {
     height: 112px;
   }
   .bonus-button-txt {
+    width: 622px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
     font-size: 32px;
     font-weight: 500;
     line-height: 112px;

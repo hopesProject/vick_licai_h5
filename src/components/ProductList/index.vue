@@ -46,7 +46,13 @@
                 {{ $t("购买") }}
               </div>
               <div class="zhuangtai">
-                {{ statusType(item.status) }}
+                <p v-if="item.status == 4">
+                  {{ $t("售罄") }}
+                </p>
+                <p v-else-if="item.status == 3">
+                  {{ $t("预售") }}
+                </p>
+                <p>VIP {{ item.vipRequest }}</p>
               </div>
               <div class="img-box">
                 <img :src="item.img" alt="" />
@@ -85,7 +91,11 @@
 </template>
 
 <script>
-import { buyProduct, productqueryProductClassify } from "@/api";
+import {
+  buyProduct,
+  productqueryProductClassify,
+  queryProductClassify,
+} from "@/api";
 import { Toast } from "vant";
 import { mapGetters } from "vuex";
 import refresh from "@/mixins/refresh";
@@ -100,12 +110,15 @@ export default {
       return this.fenleiData;
     },
   },
+  mounted() {
+    this.getfenlei();
+  },
   data() {
     return {
       stepperValue: 1,
       purchaseShow: false,
       purchaseShowData: {},
-      data: [],
+
       fenleiData: localStorage.getItem("fenleiData")
         ? JSON.parse(localStorage.getItem("fenleiData"))
         : [],
@@ -114,10 +127,18 @@ export default {
         : 2,
     };
   },
-  mounted() {
-    // this.getlist();
-  },
+
   methods: {
+    async getfenlei() {
+      const res = await queryProductClassify();
+      if (res.status === 0) {
+        localStorage.setItem("fenleiData", JSON.stringify(res.data));
+        localStorage.setItem("tabsAcitve", JSON.stringify(res.data[0].id));
+        this.fenleiData = res.data;
+        this.tabsAcitve = res.data[0].id;
+        this.getlist();
+      }
+    },
     xiangqi(item) {
       if (item.status == 1) {
         this.$router.push("/ProductDetails?id=" + item.id);
@@ -159,33 +180,26 @@ export default {
         pageSize: this.pageSize,
         pageNum: this.pageNum,
       });
+      console.log(res, pageNum);
       if (isRefreshing) {
         this.refreshing = false;
       }
       this.loading = false;
       try {
-        if (res?.status === 0) {
-          if (pageNum !== 1) {
-            this.data = [...this.data, ...res.data];
-          } else {
-            this.data = res.data;
-          }
+        if (pageNum !== 1) {
+          this.data = [...this.data, ...res.data.list];
+        } else {
+          this.data = res.data.list;
         }
-        // if (this.data.length >= res.data.total) {
-        this.finished = true;
-        // }
+        console.log(this.data);
+        if (this.data.length >= res.data.total) {
+          this.finished = true;
+        }
       } catch (error) {
         this.finished = true;
       }
     },
-    // async getlist() {
-    //   this.data = [];
-    //   let id = this.tabsAcitve;
-    //   const res = await productqueryProductClassify({ id: this.tabsAcitve });
-    //   if (res.status === 0 && this.tabsAcitve === id) {
-    //     this.data = res.data;
-    //   }
-    // },
+
     async purchaseShowClick(item) {
       this.purchaseShow = true;
       this.purchaseShowData = item;

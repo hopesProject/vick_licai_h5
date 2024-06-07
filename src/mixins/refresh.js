@@ -7,9 +7,10 @@ export default {
       finished: false,
       data: [],
       pageNum: 1,
-      pageSize: 15,
+      pageSize: 20,
     };
   },
+  mounted() {},
   methods: {
     onRefresh() {
       // 清空列表数据
@@ -21,15 +22,15 @@ export default {
       this.getList(1);
     },
     onLoad() {
-      console.log(3333);
       if (this.refreshing) {
         this.data = [];
         this.refreshing = false;
       }
-      this.pageNum++;
+
       this.finished = false;
       this.loading = true;
       this.getList();
+      this.pageNum++;
     },
   },
 };

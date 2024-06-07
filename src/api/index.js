@@ -82,7 +82,36 @@ export function queryMsg(params) {
 // 获取产品列表
 export function productqueryProductClassify(params) {
   return request({
-    url: "/admin/product/queryProductClassify", // 假地址 自行替换
+    url: "/api/product/queryProductClassify", // 假地址 自行替换
+    method: "get",
+    params,
+  });
+}
+
+export function queryPaySetting(params) {
+  return request({
+    url: "/api/paySetting/queryPaySetting", // 假地址 自行替换
+    method: "get",
+    params,
+  });
+}
+export function productqueryProductClassify(params) {
+  return request({
+    url: "/api/product/queryProductClassify", // 假地址 自行替换
+    method: "get",
+    params,
+  });
+}
+export function transactionGetEarnings(params) {
+  return request({
+    url: "/api/userinfo/transactionGetEarnings", // 假地址 自行替换
+    method: "get",
+    params,
+  });
+}
+export function getAppSettingInfo(params) {
+  return request({
+    url: "/api/user/getAppSettingInfo", // 假地址 自行替换
     method: "get",
     params,
   });
@@ -255,6 +284,13 @@ export function queryPaySetting(params) {
 export function noticedetail(params) {
   return request({
     url: "/api/notice/detail", // 假地址 自行替换
+    method: "get",
+    params,
+  });
+}
+export function queryBannerList(params) {
+  return request({
+    url: "/api/comment/queryBannerList", // 假地址 自行替换
     method: "get",
     params,
   });

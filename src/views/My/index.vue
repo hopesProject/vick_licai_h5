@@ -11,9 +11,12 @@
       </div>
 
       <div>
-        <div class="flex">
-          <span> {{ userInfo.phone | _phoneSubstring }}</span>
-          <svg-icon style="margin-left: 9px" class="vips" icon-class="vips" />
+        <div class="flex text-felx">
+          <!-- <span> {{ userInfo.phone | _phoneSubstring }}</span> -->
+          <span> {{ userInfo.userName }}</span>
+          <span style="margin-left: 9px; color: #ff4b00; font-size: 12px">
+            VIP{{ userInfo.vip }}
+          </span>
         </div>
         <div class="idCode">ID:{{ userInfo.code }}</div>
       </div>
@@ -52,7 +55,13 @@
 
         <div class="botton-box">
           <div>{{ $t("邀请码：") }}{{ userInfo.invitationCode }}</div>
-          <div class="yqihaoyou" @click="$router.push('/share')">{{ $t("邀请好友") }}</div>
+          <div
+            class="yqihaoyou"
+            v-clipboard:copy="invitationCode"
+            v-clipboard:success="onCopy"
+          >
+            {{ $t("邀请好友") }}
+          </div>
         </div>
       </div>
       <div class="my-shouyi">
@@ -130,7 +139,6 @@ import { Dialog, Toast } from "vant";
 import axios from "axios";
 import HeaderBox from "@/components/header";
 import { uploadImge } from "@/api";
-import router from "@/router";
 
 export default {
   mixins: [clipboard2],
@@ -824,5 +832,10 @@ header {
 
   color: #d25815;
   box-shadow: 2.67px 2.67px 10.67px 0px rgba(0, 11, 222, 0.24);
+}
+
+.text-felx {
+  // align-items: flex-end;
+  align-items: center;
 }
 </style>

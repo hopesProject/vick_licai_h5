@@ -4,7 +4,11 @@ const moment = require("moment-timezone");
 // moment.tz.setDefault("Asia/Kolkata");
 
 export function _timeFormat(v, format = "YYYY-MM-DD HH:mm:ss") {
-  return moment(v).format(format);
+  if (v) {
+    return moment(v).format(format);
+  } else {
+    return "";
+  }
 }
 export function _phoneSubstring(str) {
   let result = str.substring(0, 3) + "***" + str.substring(str.length - 3);

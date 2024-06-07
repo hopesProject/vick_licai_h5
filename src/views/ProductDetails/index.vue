@@ -36,12 +36,29 @@
           </div>
         </van-col>
       </van-row>
+      <van-row type="flex" justify="space-between">
+        <van-col span="12">
+          <div class="title">{{ $t("限购") }}</div>
+          <div class="text">
+            {{ dataDetail.purchaseLimit }}
+          </div>
+        </van-col>
+        <van-col span="12" style="text-align: right">
+          <div class="title">{{ $t("限时") }}</div>
+          <div class="text">
+            {{ dataDetail.endTime | _timeFormat }}
+          </div>
+        </van-col>
+      </van-row>
       <!-- <van-row type="flex" justify="space-between" class="fenke">
         <van-col span="12">
           <Progress :current="49" :total="50" text="已售%" />
         </van-col>
         <van-col span="12" class="flex justify-end">
           <svg-icon class="font-svg" iconClass="vipgm" />
+          <span style="color: #fe500d">
+            {{ dataDetail.vipRequest }}
+          </span>
         </van-col>
       </van-row> -->
       <van-row type="flex" justify="space-between">

@@ -59,8 +59,7 @@
       <div class="illustrate">
         <div class="illustrate-title">{{ $t("提现提示") }}</div>
         <pre class="illustrate-txt">
-        1.后台配置文案，资金会在20分钟到达您得到的账户当中
-        2.如超过20分钟未到达请联系客服人员寻求帮助
+       {{ e_setting_withdraw }}
       </pre
         >
       </div>
@@ -68,7 +67,7 @@
   </div>
 </template>
 <script>
-import { withdraw } from "@/api";
+import { getAppSettingInfo, withdraw } from "@/api";
 import currency from "currency.js";
 import { Toast } from "vant";
 import { mapActions, mapGetters } from "vuex";
@@ -100,9 +99,19 @@ export default {
   },
   mounted() {
     this.getUserInfo();
+    this.getShuoming();
   },
   methods: {
     ...mapActions(["getUserInfo"]),
+
+    async getShuoming() {
+      try {
+        const res = await getAppSettingInfo({
+          key: "e_setting_withdraw",
+        });
+        this.e_setting_withdraw = res.data.svalue;
+      } catch (error) {}
+    },
     async withdraw() {
       if (!this.moneyInput) {
         return Toast(this.$t("请输入充值金额"));

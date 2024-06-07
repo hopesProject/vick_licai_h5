@@ -8,7 +8,6 @@
 <script>
 import MyTabbar from "@/components/MyTabbar/index.vue";
 import { mapActions, mapGetters, mapMutations } from "vuex";
-// import SvgIcon from "@/components/SvgIcon"; // svg component
 
 export default {
   methods: {
@@ -19,7 +18,6 @@ export default {
     ...mapGetters(["token"]),
   },
   created() {
-    console.log();
     if (this.$route.query.token) {
       this.SET_TOKEN(JSON.parse(this.$route.query.token));
     }

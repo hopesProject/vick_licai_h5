@@ -72,15 +72,15 @@
       <div class="illustrate">
         <div class="illustrate-title">{{ $t("充值说明") }}</div>
         <pre class="illustrate-txt">
-      <p>  {{ $t("1.当你正确的完成付款，资金会在20分钟到达你的账户中") }}</p>
-      <p>{{ $t('2.如超过20分钟未到达请联系客服人员寻求帮助') }}</p>
-      </pre>
+          {{ e_setting_rechage }}
+      </pre
+        >
       </div>
     </div>
   </div>
 </template>
 <script>
-import { rechage } from "@/api";
+import { getAppSettingInfo, rechage } from "@/api";
 import currency from "currency.js";
 import { Toast } from "vant";
 import { mapActions, mapGetters } from "vuex";
@@ -108,13 +108,24 @@ export default {
       moneyKey: "300",
       moneyInput: "",
       radio: "1",
+      e_setting_rechage: "",
     };
   },
   mounted() {
     this.getUserInfo();
+    this.getShuoming();
   },
   methods: {
     ...mapActions(["getUserInfo"]),
+
+    async getShuoming() {
+      try {
+        const res = await getAppSettingInfo({
+          key: "e_setting_rechage",
+        });
+        this.e_setting_rechage = res.data.svalue;
+      } catch (error) {}
+    },
     async rechage() {
       if (!this.moneyInput) {
         return Toast(this.$t("请输入充值金额"));
