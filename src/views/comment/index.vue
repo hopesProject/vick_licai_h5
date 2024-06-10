@@ -4,12 +4,13 @@
       <div class="header-alltech">
         <img src="@/assets/img/alltech.png" alt="" />
       </div>
-      <van-badge>
+      <van-badge style="display: flex; align-items: center">
         <svg-icon
           class="svg-fb"
           icon-class="fb"
           @click="onClickRight"
         ></svg-icon>
+        <div style="font-size: 12px">Upload</div>
       </van-badge>
     </div>
 

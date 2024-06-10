@@ -45,17 +45,26 @@
               >
                 {{ $t("购买") }}
               </div>
-              <div class="zhuangtai">
-                <p v-if="item.status == 4">
+              <div class="zhuangtai" v-if="item.isBuy == 0">
+                <p>
+                  <svg-icon class="font-svg" iconClass="suo" />
+                </p>
+              </div>
+              <div class="zhuangtai" v-else-if="item.status == 4">
+                <p>
                   {{ $t("售罄") }}
                 </p>
-                <p v-else-if="item.status == 3">
+              </div>
+              <div class="zhuangtai" v-else-if="item.status == 3">
+                <p>
                   {{ $t("预售") }}
                 </p>
+              </div>
+              <div class="zhuangtai" v-else-if="item.vipRequest !== 0">
                 <p>VIP {{ item.vipRequest }}</p>
               </div>
               <div class="img-box">
-                <img :src="item.img" alt="" />
+                <img :src="$utils.getImgUrl(item.img)" alt="" />
               </div>
               <div class="item-text">
                 <div class="title">{{ item.productTitle }}</div>
@@ -65,7 +74,7 @@
                     <div>{{ $t("购买价格") }}</div>
                     <div class="text1">{{ item.price }}</div>
                     <div class="top-m">{{ $t("成长周期") }}</div>
-                    <div class="text1">{{ item.price }}</div>
+                    <div class="text1">{{ item.cycle }}</div>
                   </div>
                   <div class="right">
                     <div>{{ $t("每日收入") }}</div>
@@ -136,7 +145,7 @@ export default {
         localStorage.setItem("tabsAcitve", JSON.stringify(res.data[0].id));
         this.fenleiData = res.data;
         this.tabsAcitve = res.data[0].id;
-        this.getlist();
+        this.getList();
       }
     },
     xiangqi(item) {
@@ -335,6 +344,12 @@ export default {
 
     color: #f6f6f6;
     background: #d25815;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .font-svg {
+      font-size: 44px;
+    }
   }
   .right {
     margin-right: 24px;

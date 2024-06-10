@@ -47,9 +47,12 @@
           <div class="invite-list-txt">
             <span>{{ $t("活跃会员") }}</span>
             <div class="invite-progress">
-              <span>{{ item.payLevelTitle }}</span>
+              <span
+                >{{ item.payLevelTitle }}
+
+              </span>
               <van-progress
-                :percentage="item.directThrustCount"
+                :percentage="(userInfo.oneCount / item.directThrustCount) * 100"
                 stroke-width="8"
                 :show-pivot="false"
               />
@@ -66,8 +69,12 @@
 </template>
 <script>
 import { getAppSettingInfo, queryPaySetting } from "@/api";
+import { mapGetters } from "vuex";
 
 export default {
+  computed: {
+    ...mapGetters(["userInfo"]),
+  },
   data() {
     return {
       e_setting_first_purchase_commission: [],

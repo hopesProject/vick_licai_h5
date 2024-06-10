@@ -11,7 +11,7 @@
         <div class="balance-money">
           <div>
             <div>{{ $t("余额") }}</div>
-            <div>{{ userInfo.amount | _toLocaleString(false) }}</div>
+            <div>{{ userInfo.canWithdrawAmount | _toLocaleString(false) }}</div>
           </div>
           <img src="@/assets/img/circular.png" alt="" />
         </div>
@@ -32,7 +32,7 @@
             icon-size="20px"
             checked-color="#D25815"
           >
-            <van-cell-group>
+            <!-- <van-cell-group>
               <van-cell title="支付宝" clickable @click="radio = '1'">
                 <van-radio slot="right-icon" name="1" />
               </van-cell>
@@ -42,7 +42,7 @@
               <van-cell title="银行卡" clickable @click="radio = '3'">
                 <van-radio slot="right-icon" name="3" />
               </van-cell>
-            </van-cell-group>
+            </van-cell-group> -->
           </van-radio-group>
         </div>
         <div class="recharge-button">

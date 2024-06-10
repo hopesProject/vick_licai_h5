@@ -17,7 +17,11 @@
           input-align="left"
         />
 
-        <van-field v-model="form.phone" placeholder="手机号" input-align="left">
+        <van-field
+          v-model="form.phone"
+          :placeholder="$t('手机号')"
+          input-align="left"
+        >
           <template slot="label">
             <div class="quhao"><span>+91 </span> <van-icon name="arrow" /></div>
           </template>
@@ -53,7 +57,7 @@
         >
           <template #button>
             <van-button
-              :disabled="codeButTexst !== '获取验证码'"
+              :disabled="codeButTexst !== '发送验证码'"
               @click="sendCode"
               type="primary"
               size="small"
@@ -86,7 +90,7 @@ export default {
   components: { PasswordInput },
   data() {
     return {
-      codeButTexst: "获取验证码",
+      codeButTexst: "发送验证码",
       tiem: null,
       isinviteCode: false,
       loading: false,
@@ -116,7 +120,7 @@ export default {
       this.form[name] = e;
     },
     async sendCode() {
-      if (this.codeButTexst !== "获取验证码") {
+      if (this.codeButTexst !== "发送验证码") {
         return;
       }
       if (this.form.phone) {
@@ -129,7 +133,7 @@ export default {
           this.tiem = setInterval(() => {
             this.codeButTexst = this.codeButTexst - 1;
             if (this.codeButTexst === 0) {
-              this.codeButTexst = "获取验证码";
+              this.codeButTexst = "发送验证码";
               clearInterval(this.tiem);
             }
           }, 1000);

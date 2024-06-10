@@ -20,7 +20,7 @@
           <div class="dispasdj">
             <span class="text-posi">{{ $t("邀请链接：") }}</span>
             <span class="underlines">
-              {{ invitationCode }}
+              {{ invitationCodetext }}
             </span>
           </div>
 
@@ -32,13 +32,9 @@
             >{{ $t("复制") }}
           </span>
         </div>
-        <div class="psoi psoibottun">
-          <van-swipe
-            class="swipe-box"
-            vertical
-            :autoplay="3000"
-            indicator-color="white"
-          >
+        <div class="psoibottun">
+          <van-notice-bar :text="noticeTexe" />
+          <!-- <van-swipe class="swipe-box" :autoplay="3000" indicator-color="white">
             <van-swipe-item v-for="item in earningsData" :key="item.id">
               <div class="bonus-button-txt">
                 {{
@@ -49,22 +45,23 @@
                 }}
               </div>
             </van-swipe-item>
-          </van-swipe>
+          </van-swipe> -->
         </div>
       </div>
-
       <div class="bonus">
         <div class="top-box">
           <div class="bonus-title">{{ $t("累计奖金") }}</div>
           <div class="bonus-num">
-            <div>₹ {{ taskPageData.accumulatedBonus }}</div>
+            <div>
+              {{ taskPageData.accumulatedBonus | _toLocaleString(false) }}
+            </div>
           </div>
         </div>
 
         <div class="button-box">
           <div class="bonus-income">
             <div>{{ $t("可领取") }}</div>
-            <div>₹ {{ taskPageData.bounds }}</div>
+            <div>{{ taskPageData.bounds | _toLocaleString(false) }}</div>
           </div>
           <van-button
             @click="getEarnings"
@@ -149,8 +146,24 @@ export default {
   components: { HeaderBox },
   computed: {
     ...mapGetters(["userInfo"]),
+    noticeTexe() {
+      let str = "";
+      this.earningsData.map((item) => {
+        str +=
+          this.$t("恭喜用户领取奖金", {
+            phone: this.$utils.maskPhoneNumber(item.phone),
+            amount: item.amount,
+          }) + "                                 ";
+      });
+      return str;
+    },
     invitationCode() {
       return `${window.location.origin}/#/register?code=${this.userInfo.invitationCode}`;
+    },
+    invitationCodetext() {
+      let str = `${window.location.origin}/#/register?code=${this.userInfo.invitationCode}`;
+      let result = str.substring(0, 15) + "***" + str.substring(str.length - 6);
+      return result;
     },
 
     leverList() {
@@ -224,6 +237,13 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.dispasdj {
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-start;
+  width: 550px;
+}
 .wrapper {
   width: 100vw;
   min-height: 100vh;
@@ -342,7 +362,7 @@ export default {
   font-variation-settings: "opsz" auto;
   color: #d25815;
   .text-posi {
-    width: 180px;
+    // width: 180px;
     font-size: 36px;
     font-weight: 600;
     line-height: 42px;
@@ -354,7 +374,7 @@ export default {
   }
   .underlines {
     display: inline-block;
-    width: 250px;
+    width: 500px;
     text-decoration: underline;
     overflow: hidden;
     white-space: nowrap;
@@ -615,5 +635,15 @@ export default {
 
 :deep(.van-swipe__indicators--vertical) {
   display: none;
+}
+
+:deep(.van-notice-bar) {
+  width: 100%;
+  background-color: transparent;
+  color: #3f3f65;
+
+  .van-notice-bar__content {
+    white-space: pre;
+  }
 }
 </style>

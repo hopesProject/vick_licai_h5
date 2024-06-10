@@ -1,8 +1,14 @@
 <template>
   <div style="min-height: 100vh">
     <van-nav-bar :title="$t('产品详情')" left-arrow @click-left="onClickLeft" />
-    <van-image class="img-box" :src="dataDetail.img" />
+    <!-- <van-image class="img-box" :src="dataDetail.img" /> -->
+
     <div class="main">
+      <van-image
+        class="img-box"
+        fit="cover"
+        :src="$utils.getImgUrl(dataDetail.img)"
+      />
       <!-- 两端对齐 -->
       <van-row type="flex" justify="space-between">
         <van-col span="12">
@@ -40,7 +46,7 @@
         <van-col span="12">
           <div class="title">{{ $t("限购") }}</div>
           <div class="text">
-            {{ dataDetail.purchaseLimit }}
+            {{ dataDetail.purchaseLimit || "Unlimited" }}
           </div>
         </van-col>
         <van-col span="12" style="text-align: right">
@@ -131,6 +137,11 @@ export default {
       loading: false,
     };
   },
+  watch: {
+    "$route.query.id"() {
+      this.queryProductDetail();
+    },
+  },
   mounted() {
     this.queryProductDetail();
   },
@@ -146,6 +157,13 @@ export default {
           Toast.success(this.$t(`购买成功`));
           setTimeout(() => {
             this.$router.push("/purchase-history");
+          }, 1000);
+        } else if (res.status === 403) {
+          console.log(res.data);
+
+          Toast.fail(this.$t(`购买条件不足`));
+          setTimeout(() => {
+            this.$router.push("/ProductDetails?id=" + res.data);
           }, 1000);
         }
       } catch (error) {}
@@ -316,19 +334,20 @@ export default {
   margin-top: 50px;
 }
 .img-box {
-  width: 690px;
-  height: 690px;
-  margin: 0 auto;
+  width: 100%;
+  height: 400px;
 }
-.html-box {
+:deep(.html-box) {
   width: 690px;
   margin: 0 auto;
+  padding-bottom: 100px;
   word-break: break-all;
   overflow-wrap: break-word;
   padding-bottom: 16px;
   p {
     word-break: break-all;
     overflow-wrap: break-word;
+    font-size: 28px;
   }
 }
 </style>

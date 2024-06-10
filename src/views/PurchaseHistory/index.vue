@@ -87,7 +87,7 @@
                   </p>
                 </van-col>
                 <van-col span="12" style="text-align: right">
-                  <p class="status">进行中</p>
+                  <p class="status">{{ " " }}</p>
                   <p>{{ $t("每日收益") }}</p>
                   <p class="amount-p">
                     {{ item.dailyProductRevenue | _toLocaleString(false) }}
@@ -242,6 +242,7 @@ export default {
     font-weight: 500;
     color: #ff752f;
     margin-bottom: 17px;
+    height: 32px;
   }
   .amount-p {
     font-size: 24px;

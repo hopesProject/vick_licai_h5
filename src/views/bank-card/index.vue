@@ -130,7 +130,8 @@ export default {
     justify-content: center;
     align-items: center;
     div {
-      width: 280px;
+      // width: 280px;
+      padding: 0 20px;
       height: 88px;
       border-radius: 119px;
       opacity: 1;

@@ -294,7 +294,7 @@ main {
     margin: 0 auto;
     margin-top: 24px;
     overflow: hidden;
-    font-size: 42.67px;
+    font-size: 28px;
     font-weight: bold;
     line-height: normal;
     letter-spacing: 0em;
@@ -372,9 +372,11 @@ main {
       /* 智学100/主色/背景色 */
       background: #fafafe;
       position: relative;
+      display: flex;
+      align-items: center;
       .text {
-        margin-top: 50px;
-        font-size: 42.67px;
+        margin-top: 10px;
+        font-size: 28px;
         font-weight: bold;
         line-height: normal;
         letter-spacing: 0em;
@@ -406,7 +408,7 @@ main {
         height: 45px;
         border-radius: 21.33px 0px 21.33px 10.67px;
         opacity: 1;
-        font-size: 24px;
+        font-size: 18px;
         font-weight: bold;
         line-height: 45px;
         letter-spacing: 0em;
@@ -449,7 +451,7 @@ main {
         display: flex;
         align-items: center;
         flex-direction: column;
-        font-size: 24px;
+        font-size: 20px;
         font-weight: normal;
         line-height: normal;
         letter-spacing: 0em;

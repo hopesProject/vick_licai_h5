@@ -3,6 +3,7 @@ const moment = require("moment-timezone");
 // 设置时区为印度标准时间
 // moment.tz.setDefault("Asia/Kolkata");
 
+// 时间转换
 export function _timeFormat(v, format = "YYYY-MM-DD HH:mm:ss") {
   if (v) {
     return moment(v).format(format);
@@ -10,11 +11,12 @@ export function _timeFormat(v, format = "YYYY-MM-DD HH:mm:ss") {
     return "";
   }
 }
+// 手机号码去中间
 export function _phoneSubstring(str) {
   let result = str.substring(0, 3) + "***" + str.substring(str.length - 3);
   return result;
 }
-
+// 金额展示
 export function _toLocaleString(
   number,
   showCurrencySymbol = true, // 是否显示货币符号，默认为 true
@@ -51,7 +53,11 @@ export function maskPhoneNumber(phoneNumber) {
 
   return masked;
 }
-
+// 树脂默认
 export function defaultAmount(phoneNumber) {
   return phoneNumber || "0.00";
+}
+// 拼接图片
+export function getImgUrl(url) {
+  return process.env.VUE_APP_BASE_IMGURL + url;
 }

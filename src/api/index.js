@@ -88,20 +88,20 @@ export function productqueryProductClassify(params) {
   });
 }
 
-export function queryPaySetting(params) {
-  return request({
-    url: "/api/paySetting/queryPaySetting", // 假地址 自行替换
-    method: "get",
-    params,
-  });
-}
-export function productqueryProductClassify(params) {
-  return request({
-    url: "/api/product/queryProductClassify", // 假地址 自行替换
-    method: "get",
-    params,
-  });
-}
+// export function queryPaySetting(params) {
+//   return request({
+//     url: "/api/paySetting/queryPaySetting", // 假地址 自行替换
+//     method: "get",
+//     params,
+//   });
+// }
+// export function productqueryProductClassify(params) {
+//   return request({
+//     url: "/api/product/queryProductClassify", // 假地址 自行替换
+//     method: "get",
+//     params,
+//   });
+// }
 export function transactionGetEarnings(params) {
   return request({
     url: "/api/userinfo/transactionGetEarnings", // 假地址 自行替换

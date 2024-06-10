@@ -1,7 +1,7 @@
 <template>
   <div>
     <van-nav-bar :title="$t('关于我们')" left-arrow @click-left="onClickLeft" />
-    <div v-html="e_setting_about_us"></div>
+    <div class="html" v-html="e_setting_about_us"></div>
   </div>
 </template>
 
@@ -33,5 +33,12 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+:deep(.html) {
+  width: 690px;
+  margin: 0 auto;
+  p {
+    font-size: 32px;
+  }
+}
 </style>

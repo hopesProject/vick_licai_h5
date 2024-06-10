@@ -4,7 +4,7 @@
     <main>
       <div class="information">
         <van-swipe class="my-swipe" :autoplay="5000" indicator-color="white">
-          <van-swipe-item v-for="(item, i) in noteic" :key="i">
+          <van-swipe-item v-for="(item, i) in bannerList" :key="i">
             <div class="swipe-container" @click="dianji(item.url)">
               <img :src="item.img" alt="" />
             </div>
@@ -47,7 +47,7 @@
           </div>
           <div>
             <span>{{ $t("可提现金额") }}</span>
-            <span>{{ userInfo.amount | _toLocaleString() }}</span>
+            <span>{{ userInfo.canWithdrawAmount | _toLocaleString() }}</span>
           </div>
         </div>
       </div>
@@ -58,7 +58,7 @@
           <van-swipe-item v-for="(item, index) in isHotData" :key="index">
             <div class="popular-content">
               <div class="img-box">
-                <img :src="item.img" alt="" />
+                <img :src="$utils.getImgUrl(item.img)" alt="" />
               </div>
               <div class="popular-right">
                 <div class="popular-product">
@@ -112,7 +112,7 @@
           @click="getRouter(item)"
         >
           <div class="journalism-box-img">
-            <img :src="item.img" alt="" />
+            <img :src="$utils.getImgUrl(item.img)" alt="" />
           </div>
           <div class="journalism-box-txt">
             <span>{{ item.title }}</span>
@@ -122,105 +122,16 @@
         </div>
       </div>
     </main>
-
-    <!-- 活动通知 -->
-    <van-popup
-      v-model="noticeShow"
-      class="notice"
-      :closeable="true"
-      :close-on-click-overlay="false"
-    >
-      <div class="notice-box">
-        <div class="notice-title">{{ $t("活动通知") }}</div>
-        <pre class="notice-txt">
-          1.最新优惠活动没法及时告诉你哦开通后消息及时推送，不错过任何消息.
-          2.最新优惠活动没法及时告诉你哦开通后消息及时推送，不错过任何消息.
-          3.最新优惠活动没法及时告诉你哦开通后消息及时推送，不错过任何消息.
-        </pre>
-      </div>
-    </van-popup>
-    <van-overlay :show="purchaseShow" class="purchase">
-      <div class="purchase-box">
-        <van-icon
-          name="close"
-          class="purchase-close"
-          color="#fff"
-          @click="purchaseShow = false"
-        />
-
-        <div class="purchase-top">
-          <van-row type="flex" justify="space-between" class="purchase-income">
-            <van-col span="11">
-              <div>
-                {{ $t("每日收入：")
-                }}{{
-                  (purchaseShowData.dailyProductRevenue * stepperValue)
-                    | _toLocaleString(false)
-                }}
-              </div>
-            </van-col>
-            <van-col span="11">
-              <div>
-                {{ $t("总收益：") }}
-
-                {{
-                  (purchaseShowData.dailyProductRevenue *
-                    purchaseShowData.cycle *
-                    stepperValue)
-                    | _toLocaleString(false)
-                }}
-              </div>
-            </van-col>
-          </van-row>
-          <van-row type="flex" justify="space-between" class="purchase-num">
-            <van-col span="6">{{ $t("购买数量") }}</van-col>
-            <van-col span="12">
-              <van-stepper v-model="stepperValue" button-size="28px"
-            /></van-col>
-          </van-row>
-        </div>
-        <div class="purchase-bottom">
-          <img :src="purchaseShowData.img" alt="" />
-          <div class="purchase-commodity">
-            <div>{{ purchaseShowData.productTitle }}</div>
-            <div>
-              <span>{{ $t("购买价格：") }}</span
-              ><span>{{ purchaseShowData.price }}</span>
-            </div>
-            <div>
-              <span>{{ $t("总价格：") }}</span
-              ><span>{{ purchaseShowData.price * stepperValue }}</span>
-            </div>
-          </div>
-        </div>
-        <div class="purchase-but">
-          <van-button
-            type="primary"
-            block
-            color="linear-gradient(0deg,#ff947c 0%, #ffb98c 100%), linear-gradient(0deg,#e11b31 1%, #f3354e 100%)"
-            :round="true"
-            @click="ljizhifu"
-            >{{ $t("立即支付") }}</van-button
-          >
-        </div>
-      </div>
-    </van-overlay>
   </div>
 </template>
 <script>
 import {
-  buyProduct,
-  getCustomerService,
   productqueryProductClassify,
   queryBannerList,
-  queryMsgCount,
   queryNews,
-  queryNoteice,
-  queryPaySetting,
   queryProductClassify,
   queryProductisHot,
 } from "@/api";
-import { Toast } from "vant";
 import { mapActions, mapGetters } from "vuex";
 
 import HeaderBox from "@/components/header";
@@ -228,30 +139,7 @@ export default {
   components: { HeaderBox },
   data() {
     return {
-      noteic: [
-        {
-          title: "1",
-        },
-        {
-          title: "2",
-        },
-        {
-          title: "3",
-        },
-        {
-          title: "4",
-        },
-      ],
-      msgCount: 0,
-      servicedata: localStorage.getItem("servicedata") || "",
-      queryPaySettingData: [],
-      data: [],
-      fenleiData: localStorage.getItem("fenleiData")
-        ? JSON.parse(localStorage.getItem("fenleiData"))
-        : [],
-      tabsAcitve: localStorage.getItem("tabsAcitve")
-        ? JSON.parse(localStorage.getItem("tabsAcitve"))
-        : 2,
+      bannerList: [],
       isHotData: [],
       noticeShow: false,
       purchaseShow: false,
@@ -262,9 +150,7 @@ export default {
   },
   computed: {
     ...mapGetters(["token", "userInfo"]),
-    tabs() {
-      return this.fenleiData;
-    },
+
     navList() {
       return [
         {
@@ -291,16 +177,10 @@ export default {
     },
   },
   mounted() {
-    this.getfenlei();
-    this.getCustomerService();
-    this.getQueryNoteice();
-    // this.getlist();
     this.getqueryProductisHot();
-    // this.queryPaySetting();
     this.getNes();
     this.queryBannerList();
     if (this.token) {
-      this.queryMsgCount();
       this.getUserInfo();
     }
   },
@@ -309,100 +189,35 @@ export default {
     dianji(url) {
       window.open(url);
     },
+    // 获取轮播图
     async queryBannerList() {
       try {
         const res = await queryBannerList();
-        this.noteic = res.data;
+        res.data.map((item) => {
+          item.img = this.$utils.getImgUrl(item.img);
+        });
+
+        this.bannerList = res.data;
       } catch (error) {}
     },
     getRouter(item) {
       this.$router.push("/itemInformation?type=nes&id=" + item.id);
     },
+    // 获取新闻
     async getNes() {
       try {
         const res = await queryNews({ pageSize: 100 });
         this.journalismList = res.data.list;
       } catch (error) {}
     },
-    kefutz() {
-      window.location.href = this.servicedata;
-    },
-    async queryMsgCount() {
-      const res = await queryMsgCount();
-      if (res.status === 0) {
-        this.msgCount = res.data;
-      }
-    },
-    async getCustomerService() {
-      const res = await getCustomerService();
-      if (res.status === 0) {
-        localStorage.setItem("servicedata", res.data);
-        this.servicedata = res.data;
-      }
-    },
+    // 热门铲平
     async getqueryProductisHot() {
       const res = await queryProductisHot();
       if (res.status === 0) {
         this.isHotData = res.data;
       }
     },
-    async queryPaySetting() {
-      const res = await queryPaySetting();
-      if (res.status === 0) {
-        this.queryPaySettingData = res.data;
-      }
-    },
-    async purchaseShowClick(item) {
-      this.purchaseShow = true;
-      this.purchaseShowData = item;
-    },
-    async getQueryNoteice() {
-      const res = await queryNoteice({
-        pageSize: 10,
-        pageNum: 1,
-      });
-      if (res.status === 0) {
-        this.noteic = res.data.list;
-      }
-    },
-    tabsClick(item) {
-      this.tabsAcitve = item;
-      this.getlist();
-    },
-    async getfenlei() {
-      const res = await queryProductClassify();
-      if (res.status === 0) {
-        localStorage.setItem("fenleiData", JSON.stringify(res.data));
-        localStorage.setItem("tabsAcitve", JSON.stringify(res.data[0].id));
-        this.fenleiData = res.data;
-        this.tabsAcitve = res.data[0].id;
-        this.getlist();
-      }
-    },
-    async getlist() {
-      this.data = [];
-      let id = this.tabsAcitve;
-      const res = await productqueryProductClassify({ id: 3 });
-      if (res.status === 0 && this.tabsAcitve === id) {
-        this.data = res.data;
-      }
-    },
-    async ljizhifu() {
-      const res = await buyProduct({
-        pid: this.purchaseShowData.id,
-        num: this.stepperValue,
-      });
 
-      if (res.status === 0) {
-        this.purchaseShow = false;
-        Toast.success(this.$t(`购买成功`));
-        setTimeout(() => {
-          this.$router.push("/purchase-history");
-        }, 1000);
-      } else {
-        this.purchaseShow = false;
-      }
-    },
     onSkip(key) {
       this.$router.push(key);
     },

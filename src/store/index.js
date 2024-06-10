@@ -9,7 +9,7 @@ Vue.use(Vuex);
 let state = {
   userInfo: {},
   token: "",
-  lang: "zh-CN",
+  lang: "en",
 };
 
 export default new Vuex.Store({

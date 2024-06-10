@@ -43,7 +43,7 @@
                 </div>
               </div>
               <div class="item-content">
-                <img :src="item.img" alt="" />
+                <img :src="$utils.getImgUrl(item.img)" alt="" />
 
                 <div>
                   <div class="h3">{{ $t("基金编号：") }}{{ item.id }}</div>
