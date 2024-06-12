@@ -5,7 +5,6 @@ import store from "@/store";
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_APIS, // url = base url + request url
-  // withCredentials: true, // send cookies when cross-domain requests
   timeout: 20000, // request timeout
 });
 
@@ -17,6 +16,7 @@ service.interceptors.request.use(
     if (store.getters.token) {
       config.headers["token"] = store.getters.token;
     }
+    config.headers["lang"] = store.getters.lang;
     return config;
   },
   (error) => {

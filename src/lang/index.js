@@ -11,19 +11,18 @@ Vue.use(VueI18n); // 全局注册国际化包
 
 // 准备翻译的语言环境信息
 const i18n = new VueI18n({
-  // locale: Cookies.get("language") || "en", // set locale
   locale: store.getters.lang, // set locale
   messages: {
-    "zh-CN": {
-      ...zh,
-    },
+    // "zh-CN": {
+    //   ...zh,
+    // },
     en: {
       ...en,
     },
-    hi: {
+    id: {
       ...hi,
     },
-    tm: {
+    te: {
       ...tm,
     },
     ta: {

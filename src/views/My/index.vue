@@ -9,10 +9,8 @@
           :after-read="afterRead"
         />
       </div>
-
       <div>
         <div class="flex text-felx">
-          <!-- <span> {{ userInfo.phone | _phoneSubstring }}</span> -->
           <span> {{ userInfo.userName }}</span>
           <span style="margin-left: 9px; color: #ff4b00; font-size: 12px">
             VIP{{ userInfo.vip }}
@@ -50,9 +48,7 @@
             </div>
           </van-col>
         </van-row>
-
         <div class="border-box"></div>
-
         <div class="botton-box">
           <div>{{ $t("邀请码：") }}{{ userInfo.invitationCode }}</div>
           <div

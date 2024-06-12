@@ -20,6 +20,7 @@ export default {
   created() {
     if (this.$route.query.token) {
       this.SET_TOKEN(JSON.parse(this.$route.query.token));
+      this.$router.push("/");
     }
     if (this.token) {
       // this.getUserInfo();

@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="header">
       <div @click="onClickLeft"><img src="@/assets/img/go.png" alt="" /></div>
-      <div>找回密码</div>
+      <div>{{ $t("找回密码") }}</div>
       <div></div>
     </div>
     <div class="content">
@@ -15,7 +15,11 @@
         :show-error-message="false"
         label-width="60"
       >
-        <van-field v-model="form.phone" placeholder="手机号" input-align="left">
+        <van-field
+          v-model="form.phone"
+          :placeholder="$t('手机号')"
+          input-align="left"
+        >
           <template slot="label">
             <div class="quhao"><span>+91 </span> <van-icon name="arrow" /></div>
           </template>
@@ -56,12 +60,12 @@
           :round="true"
         >
           <div class="nextStep">
-            <span>下一步</span>
+            <span>{{ $t("下一步") }}</span>
             <img src="@/assets/img/white-arrow-right.png" alt="" />
           </div>
         </van-button>
         <div class="download" @click="$router.push('/download')">
-          下载·Alltech
+          {{ $t("下载·Alltech") }}
         </div>
       </div>
     </div>

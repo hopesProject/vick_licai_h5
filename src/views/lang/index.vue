@@ -29,11 +29,11 @@ export default {
   data() {
     return {
       list: [
-        { label: "简体中文", value: "zh-CN" },
+        // { label: "简体中文", value: "zh-CN" },
         { label: "English", value: "en" },
-        { label: "हिन्दी或हिंदी", value: "hi" },
-        { label: "తెలుగు", value: "tm" },
-        { label: "தமிழ்", value: "ta" },
+        { label: "हिन्दी或हिंदी", value: "id" },
+        { label: "తెలుగు", value: "ta" },
+        { label: "தமிழ்", value: "te" },
       ],
     };
   },

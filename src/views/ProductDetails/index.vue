@@ -112,7 +112,7 @@
         :loading="loading"
         class="ljzhf"
         @click="ljzf"
-        loading-text="购买中..."
+        :loading-text="$t('购买中...')"
       >
         {{ $t("立即支付") }}
       </van-button>
