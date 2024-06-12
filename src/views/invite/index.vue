@@ -303,7 +303,7 @@ export default {
         margin: 48px 0 38px;
       }
       .shul {
-        font-size: 64px;
+        font-size: 44px;
         font-weight: 600;
         line-height: 72px;
         text-align: center;
@@ -313,7 +313,7 @@ export default {
         color: #3d3d3d;
       }
       .cygm {
-        font-size: 32px;
+        font-size: 22px;
         font-weight: 500;
         line-height: 32px;
         letter-spacing: 0.6px;
@@ -338,7 +338,7 @@ export default {
   margin: 0 35px;
   text-align: center;
   border-radius: 32px;
-  font-size: 36px;
+  font-size: 26px;
   font-weight: 600;
   line-height: 42px;
   text-align: center;
@@ -355,7 +355,7 @@ export default {
   text-align: left;
   padding: 0px 24px;
   height: 112px;
-  font-size: 36px;
+  font-size: 26px;
   font-weight: 500;
   line-height: 42px;
   letter-spacing: 0px;
@@ -363,7 +363,7 @@ export default {
   color: #d25815;
   .text-posi {
     // width: 180px;
-    font-size: 36px;
+    font-size: 26px;
     font-weight: 600;
     line-height: 42px;
     text-align: center;
@@ -379,7 +379,7 @@ export default {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    font-size: 36px;
+    font-size: 26px;
     font-weight: 500;
     line-height: 42px;
     letter-spacing: 0px;
@@ -423,7 +423,7 @@ export default {
 }
 
 .bonus {
-  height: 667px;
+  height: 637px;
   background-image: url("@/assets/Rectangle@1x.png");
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -436,7 +436,7 @@ export default {
   .top-box {
     margin-top: 80px;
     .bonus-title {
-      font-size: 40px;
+      font-size: 30px;
       font-weight: 500;
       line-height: 40px;
       letter-spacing: 0.6px;
@@ -446,7 +446,7 @@ export default {
     }
 
     .bonus-num {
-      font-size: 64px;
+      font-size: 44px;
       font-weight: 600;
       line-height: 72px;
       text-align: center;
@@ -463,9 +463,7 @@ export default {
       text-align: center;
 
       > div:nth-child(1) {
-        font-size: 40px;
-        font-weight: 500;
-        line-height: 40px;
+        font-size: 30px;
         letter-spacing: 0.6px;
 
         font-variation-settings: "opsz" auto;
@@ -474,7 +472,7 @@ export default {
 
       > div:nth-child(2) {
         margin-top: 24px;
-        font-size: 64px;
+        font-size: 44px;
         font-weight: 600;
         line-height: 72px;
         text-align: center;
@@ -563,7 +561,7 @@ export default {
     padding-top: 10px;
   }
   .grade-title {
-    font-size: 32px;
+    font-size: 36px;
     font-weight: 500;
     line-height: 32px;
     letter-spacing: 0.6px;
@@ -585,26 +583,27 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 24px;
+    padding: 0 12px;
     width: 630px;
     height: 168px;
     border-radius: 40px;
     opacity: 1;
-    margin-bottom: 32px;
+    margin-bottom: 16px;
     border: 2px solid #ff8700;
 
     .xq {
-      width: 50px;
-      font-size: 24px;
+      width: 100px;
+      font-size: 28px;
       font-weight: normal;
       line-height: 32px;
       letter-spacing: 0.6px;
-
+      text-align: center;
       font-variation-settings: "opsz" auto;
       color: #ff8700;
     }
     .count-box {
-      font-size: 24px;
+      width: 150px;
+      font-size: 28px;
       font-weight: normal;
       line-height: 32px;
       letter-spacing: 0.6px;
@@ -612,21 +611,25 @@ export default {
       font-variation-settings: "opsz" auto;
       color: #3d3d3d;
       .count-num {
+        margin-top: 10px;
+        font-size: 28px;
         font-weight: 500;
         color: #d35a18;
       }
     }
     .grade-list-img {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      font-size: 32px;
+      font-size: 28px;
       font-weight: 500;
       line-height: 32px;
       letter-spacing: 0.6px;
       font-weight: 600;
       color: #3d3d3d;
       .font-svg {
-        font-size: 72px;
+        margin-bottom: 10px;
+        font-size: 66px;
         margin-right: 18px;
       }
     }
