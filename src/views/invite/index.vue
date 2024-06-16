@@ -170,8 +170,8 @@ export default {
       return [
         {
           laber: "Level 1",
-          count: 1,
-          vipCount: 2,
+          count: this.taskPageData.fristCount,
+          vipCount: this.taskPageData.fristVipCount,
           icon: "dj1",
         },
         {

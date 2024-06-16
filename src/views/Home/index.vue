@@ -236,7 +236,10 @@ main {
 .information {
   margin: 38px 0 170px 0;
   position: relative;
-
+  .my-swipe {
+    width: 100%;
+    height: 320px;
+  }
   .swipe-container {
     height: 320px;
     border-radius: 16px;
@@ -580,7 +583,7 @@ main {
   .journalism-box-img {
     width: 220px;
     height: 220px;
-
+    min-width: 220px;
     > img {
       width: 220px;
       height: 220px;
@@ -600,8 +603,11 @@ main {
       font-size: 32px;
       overflow: hidden;
       text-overflow: ellipsis;
-      white-space: nowrap;
+      // white-space: nowrap;
       font-weight: 600;
+      display: -webkit-box;
+      -webkit-line-clamp: 2; /* 限制最多显示 2 行 */
+      -webkit-box-orient: vertical;
     }
 
     > span:nth-child(2) {

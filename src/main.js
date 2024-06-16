@@ -11,16 +11,16 @@ import "@/styles/index.scss"; // global css
 import "amfe-flexible";
 import "@/utils/components";
 import VueClipboard from "vue-clipboard2";
+import autocompleteDirective from "./directives/autocomplete";
 
 Toast.setDefaultOptions("loading", { forbidClick: true });
 Vue.prototype.$utils = filters;
 Vue.config.productionTip = false;
-
 Vue.use(VueClipboard);
-
 Object.keys(filters).forEach((key) => {
   Vue.filter(key, filters[key]);
 });
+Vue.directive("autocomplete", autocompleteDirective);
 
 Vue.use(Vant);
 new Vue({

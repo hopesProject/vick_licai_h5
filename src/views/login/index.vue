@@ -19,10 +19,12 @@
             v-model="form.phone"
             :placeholder="$t('请输入手机号')"
             input-align="left"
+            v-autocomplete
           />
           <PasswordInput
             :placeholder="$t('请输入密码')"
             name="password"
+            v-autocomplete
             @change="iniput"
           />
           <div class="forget" @click="$router.push('/password')">
@@ -80,7 +82,7 @@
 <script>
 import { login } from "@/api";
 import { Toast } from "vant";
-import { mapActions } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 import PasswordInput from "@/components/PasswordInput/index.vue";
 export default {
   components: { PasswordInput },
@@ -94,8 +96,19 @@ export default {
       },
     };
   },
+  mounted() {
+    if (this.$route.query.token) {
+      this.SET_TOKEN(JSON.parse(this.$route.query.token));
+      Toast.success(this.$t("登录成功"));
+      setTimeout(() => {
+        this.$router.push("/");
+      }, 1000);
+    }
+  },
   methods: {
     ...mapActions(["getLogin"]),
+    ...mapMutations(["SET_TOKEN"]),
+
     iniput(e, name) {
       this.form[name] = e;
     },

@@ -276,10 +276,14 @@ export default {
   }
 }
 .tabs {
-  margin-top: 100px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #fff;
   display: flex;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 30px 20px;
   margin-bottom: 22px;
 
   .tabs-item {
@@ -304,6 +308,18 @@ export default {
   }
 
   .tabs-item-active {
+    width: 231px;
+    position: relative;
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -10px; /* 调整这值以控制线的位置 */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 4px; /* 线的粗细 */
+      background-color: red; /* 线的颜色 */
+    }
   }
 }
 

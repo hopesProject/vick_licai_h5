@@ -20,6 +20,7 @@
           v-model="form.phone"
           :placeholder="$t('手机号')"
           input-align="left"
+          v-autocomplete
         >
           <template slot="label">
             <div class="quhao"><span>+91 </span> <van-icon name="arrow" /></div>
@@ -29,6 +30,7 @@
           v-model="form.userName"
           :placeholder="$t('用户名')"
           input-align="left"
+          v-autocomplete
         >
         </van-field>
         <van-field
@@ -36,6 +38,7 @@
           :placeholder="$t('验证码')"
           input-align="left"
           center
+          v-autocomplete
           clearable
           class="verification"
         >
@@ -55,6 +58,7 @@
           :placeholder="$t('确认密码')"
           name="passwordNew"
           @change="iniput"
+          v-autocomplete
         />
         <van-field
           class="border-box"
