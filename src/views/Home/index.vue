@@ -31,7 +31,7 @@
         <div class="wallet-money">
           <div class="wallet-money-left">
             <span>{{ $t("总资金") }}</span>
-            <span>{{ userInfo.amount | _toLocaleString() }}</span>
+            <span>{{ userInfo.totalAssets | _toLocaleString() }}</span>
           </div>
           <div class="wallet-money-right">
             <div @click="$router.push('/recharge')">{{ $t("充值") }}</div>
@@ -42,7 +42,7 @@
           <div>
             <span>{{ $t("充值金额") }}</span>
             <span>{{
-              userInfo.cumulativeRechargeAmount | _toLocaleString()
+              userInfo.amount | _toLocaleString()
             }}</span>
           </div>
           <div>
